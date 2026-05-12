@@ -1,0 +1,220 @@
+{
+  "name": "JustDrinks LTD",
+
+  "dataColors": [
+    "#1E2761",
+    "#3D5A9E",
+    "#F2A65A",
+    "#7B2D26",
+    "#5B8C7E",
+    "#A86A3D",
+    "#CADCFC",
+    "#0F172A",
+    "#94A3B8",
+    "#475569"
+  ],
+
+  "background": "#FFFFFF",
+  "foreground": "#0F172A",
+  "tableAccent": "#1E2761",
+
+  "good": "#059669",
+  "neutral": "#D97706",
+  "bad": "#DC2626",
+  "maximum": "#1E2761",
+  "center": "#94A3B8",
+  "minimum": "#CADCFC",
+  "null": "#E2E8F0",
+
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI",
+      "fontSize": 20,
+      "color": "#1E2761"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 14,
+      "color": "#1E2761"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#475569"
+    },
+    "callout": {
+      "fontFace": "Segoe UI",
+      "fontSize": 36,
+      "color": "#1E2761"
+    }
+  },
+
+  "visualStyles": {
+    "page": {
+      "*": {
+        "background": [
+          { "color": { "solid": { "color": "#F8FAFC" } }, "transparency": 0 }
+        ]
+      }
+    },
+
+    "*": {
+      "*": {
+        "background": [
+          { "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }
+        ],
+        "border": [
+          { "show": true, "color": { "solid": { "color": "#E2E8F0" } }, "radius": 6 }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#1E2761" } },
+            "fontSize": 13,
+            "fontFamily": "Segoe UI Semibold",
+            "alignment": "left"
+          }
+        ]
+      }
+    },
+
+    "card": {
+      "*": {
+        "categoryLabels": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#475569" } },
+            "fontSize": 10,
+            "fontFamily": "Segoe UI"
+          }
+        ],
+        "labels": [
+          {
+            "color": { "solid": { "color": "#1E2761" } },
+            "fontSize": 32,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ]
+      }
+    },
+
+    "slicer": {
+      "*": {
+        "header": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#1E2761" } },
+            "fontSize": 11,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ],
+        "items": [
+          {
+            "fontColor": { "solid": { "color": "#0F172A" } },
+            "fontSize": 10
+          }
+        ]
+      }
+    },
+
+    "columnChart": {
+      "*": {
+        "dataPoint": [{ "defaultColor": { "solid": { "color": "#1E2761" } } }],
+        "categoryAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9,
+            "gridlineColor": { "solid": { "color": "#E2E8F0" } }
+          }
+        ]
+      }
+    },
+
+    "barChart": {
+      "*": {
+        "dataPoint": [{ "defaultColor": { "solid": { "color": "#1E2761" } } }],
+        "categoryAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9,
+            "gridlineColor": { "solid": { "color": "#E2E8F0" } }
+          }
+        ]
+      }
+    },
+
+    "lineChart": {
+      "*": {
+        "dataPoint": [{ "defaultColor": { "solid": { "color": "#1E2761" } } }],
+        "categoryAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9
+          }
+        ],
+        "valueAxis": [
+          {
+            "show": true,
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 9,
+            "gridlineColor": { "solid": { "color": "#E2E8F0" } }
+          }
+        ]
+      }
+    },
+
+    "donutChart": {
+      "*": {
+        "labels": [
+          { "show": true, "color": { "solid": { "color": "#0F172A" } }, "fontSize": 10 }
+        ],
+        "legend": [
+          {
+            "show": true,
+            "position": "Right",
+            "fontColor": { "solid": { "color": "#475569" } },
+            "fontSize": 10
+          }
+        ]
+      }
+    },
+
+    "tableEx": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": { "solid": { "color": "#FFFFFF" } },
+            "backColor": { "solid": { "color": "#1E2761" } },
+            "fontSize": 10,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ],
+        "values": [
+          {
+            "fontColor": { "solid": { "color": "#0F172A" } },
+            "fontSize": 10,
+            "backColorPrimary": { "solid": { "color": "#FFFFFF" } },
+            "backColorSecondary": { "solid": { "color": "#F8FAFC" } }
+          }
+        ]
+      }
+    }
+  }
+}
