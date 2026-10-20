@@ -65,7 +65,6 @@ justdrinks-ltd-analysis/
 ├── JustDrinks_Theme.json                   # Power BI custom brand theme
 ├── JustDrinks_DataModel_Documentation.docx # Full data model docs + maturity rating
 ├── JustDrinks_Dashboard_BuildSpec.docx     # Power BI dashboard build specification
-├── JustDrinks_PitchDeck_v3.pptx           # 13-slide pitch deck with live links
 ├── JustDrinks_Gamma_Outline.md             # Presentation outline
 ├── README.md                               # This file
 ├── LICENSE                                 # MIT License
@@ -344,6 +343,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
   <sub>Power BI · DAX · Power Query M · HTML · CSS · JavaScript · Chart.js</sub><br/><br/>
   <a href="https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html">🌐 Live Dashboard</a> ·
   <a href="https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare">📊 Power BI Report</a> ·
-  <a href="JustDrinks_DataModel_Documentation.docx">📄 Documentation</a> ·
-  <a href="JustDrinks_PitchDeck_v3.pptx">🎤 Pitch Deck</a>
+  <a href="JustDrinks_DataModel_Documentation.docx">📄 Documentation</a>
 </div>
