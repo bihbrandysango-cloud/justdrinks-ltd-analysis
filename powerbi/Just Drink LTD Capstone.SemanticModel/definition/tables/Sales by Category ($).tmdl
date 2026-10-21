@@ -1,0 +1,34 @@
+table 'Sales by Category ($)'
+	lineageTag: 72affba9-1801-45b5-b580-c200d9ead5c2
+
+	column Classification
+		formatString: 0
+		lineageTag: 48ab71cf-90d6-4cd0-8f72-5f21eaed4c52
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: SalesFINAL12312016[Classification]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Sales'
+		lineageTag: 5407c67b-4714-4fed-898e-244582b9544e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Total Sales]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Sales by Category ($)' = calculated
+		mode: import
+		source =
+				
+				SUMMARIZE(
+				    SalesFINAL12312016,
+				    SalesFINAL12312016[Classification],
+				    "Total Sales", SUM(SalesFINAL12312016[SalesDollars]
+				))
+
+	annotation PBI_Id = a7bc9356932e4cf295cf623d3f340699
+

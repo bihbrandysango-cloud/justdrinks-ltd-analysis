@@ -1,0 +1,28 @@
+/// Per-store revenue, COGS, and gross profit summary
+table 'Profit by Store'
+	lineageTag: 1f14f1ff-f434-4128-8657-71e29de587ee
+
+	column Store
+		lineageTag: 6f9b78eb-e272-43aa-969b-90efadc3e176
+		isNameInferred
+		sourceColumn: SalesFINAL12312016[Store]
+
+	column 'Total Sales ($)'
+		lineageTag: 73fee56f-68d3-47c3-aeee-049a08810ff4
+		isNameInferred
+		sourceColumn: [Total Sales ($)]
+
+	column 'Total COGS'
+		lineageTag: 069692e5-9aae-490b-915e-8704e30bae21
+		isNameInferred
+		sourceColumn: [Total COGS]
+
+	column 'Gross Profit'
+		lineageTag: 5b840a45-2001-4d05-9f89-0f7c684cc6be
+		isNameInferred
+		sourceColumn: [Gross Profit]
+
+	partition 'Profit by Store' = calculated
+		mode: import
+		source = SUMMARIZE ( SalesFINAL12312016, SalesFINAL12312016[Store], "Total Sales ($)", [Total Sales ($)], "Total COGS", [Total COGS], "Gross Profit", [Gross Profit] )
+

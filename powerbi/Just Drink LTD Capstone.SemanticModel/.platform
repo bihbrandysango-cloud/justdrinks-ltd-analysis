@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Just Drink LTD Capstone"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9be08c5a-5bc8-4a0d-ba76-b416c9edc214"
+  }
+}

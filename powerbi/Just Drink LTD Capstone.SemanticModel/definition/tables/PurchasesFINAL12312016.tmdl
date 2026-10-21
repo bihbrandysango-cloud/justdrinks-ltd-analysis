@@ -1,0 +1,180 @@
+table PurchasesFINAL12312016
+	lineageTag: 4cada79d-7894-40cc-91c2-3a5da87a2013
+
+	column InventoryId
+		dataType: string
+		isHidden
+		lineageTag: 9191de84-0254-425e-8c7d-33d398525b3d
+		summarizeBy: none
+		sourceColumn: InventoryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Store
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6dc14eaf-36a3-4402-88d9-b6fd2654857c
+		summarizeBy: sum
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: int64
+		formatString: 0
+		lineageTag: e3ac08d4-f116-4866-b0b3-b95fb8df0f23
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: c557e563-8745-4cd5-8625-99915456c114
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: b3106086-01f0-4e1e-b7a4-16db41a319fc
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorNumber
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9efc3f34-22a3-4c70-9760-03b8125e192d
+		summarizeBy: sum
+		sourceColumn: VendorNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorName
+		dataType: string
+		lineageTag: 8af9e0d4-770c-4ce4-8227-fdfe9d0dd532
+		summarizeBy: none
+		sourceColumn: VendorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PONumber
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: bd7af2f2-5aec-4eaf-9940-168dd3e9e187
+		summarizeBy: none
+		sourceColumn: PONumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column PODate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 1e5e0765-c16f-4b63-be8f-82fa4c013a62
+		summarizeBy: none
+		sourceColumn: PODate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column ReceivingDate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 14cd92e7-4719-4e10-9a36-b1765e8384c6
+		summarizeBy: none
+		sourceColumn: ReceivingDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column InvoiceDate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 7faf8c17-7504-43b9-9cbc-d751c5a03e73
+		summarizeBy: none
+		sourceColumn: InvoiceDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column PayDate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 4f5befe5-7bb3-4acc-a71b-8991646cb596
+		summarizeBy: none
+		sourceColumn: PayDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column PurchasePrice
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 2bfd0322-0667-4981-8b0a-a7b455f3649f
+		summarizeBy: sum
+		sourceColumn: PurchasePrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 245ec059-489c-451f-9c07-72f75ef5d701
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dollars
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: ddf1ef5c-6602-4ca6-8d39-cf3feb4d89dc
+		summarizeBy: sum
+		sourceColumn: Dollars
+
+		annotation SummarizationSetBy = Automatic
+
+	column Classification
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3058f73a-1064-492a-9f2e-3d6bb6727f53
+		summarizeBy: sum
+		sourceColumn: Classification
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PurchasesFINAL12312016 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sango\Desktop\WOMEN TECHSTER FELLOWSHIP\Projects\Just Drink Ltd\Data Viz Case Study Dataset-20251106T085318Z-1-001\Data Viz Case Study Dataset\Purchases\PurchasesFINAL12312016.csv"),[Delimiter=",", Columns=16, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"InventoryId", type text}, {"Store", Int64.Type}, {"Brand", Int64.Type}, {"Description", type text}, {"Size", type text}, {"VendorNumber", Int64.Type}, {"VendorName", type text}, {"PONumber", Int64.Type}, {"PODate", type date}, {"ReceivingDate", type date}, {"InvoiceDate", type date}, {"PayDate", type date}, {"PurchasePrice", type number}, {"Quantity", Int64.Type}, {"Dollars", type number}, {"Classification", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

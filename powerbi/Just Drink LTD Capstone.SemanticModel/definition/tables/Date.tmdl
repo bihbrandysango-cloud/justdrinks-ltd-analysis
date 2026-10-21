@@ -1,0 +1,108 @@
+/// Date dimension built in Power Query (M) covering 2015-2017
+table Date
+	lineageTag: 327e3cfd-02ae-465e-ae72-cf0ef4566354
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isUnique
+		isKey
+		formatString: Long Date
+		lineageTag: 447a09a6-a2bc-4b50-b701-a6d4e00cfee9
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: string
+		isHidden
+		lineageTag: f9c6ccde-39a0-4634-8e54-25d3045ceaca
+		sourceColumn: DateKey
+
+	column Year
+		dataType: int64
+		lineageTag: 769ba3e4-046e-488b-a1d8-f6835ff6b37d
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: string
+		lineageTag: 165b09fe-e521-41c9-b56e-e6ba614fa621
+		sourceColumn: Quarter
+
+	column MonthNumber
+		dataType: int64
+		lineageTag: 10da2a43-f0a1-4c4b-a1a7-e4d29beb07da
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+	column MonthName
+		dataType: string
+		lineageTag: f7237f63-ab83-4de8-b66a-f673becb3dd6
+		sourceColumn: MonthName
+		sortByColumn: MonthNumber
+
+	column MonthYear
+		dataType: string
+		lineageTag: 40da00b8-fcbc-4941-9b32-d05dfd14302c
+		sourceColumn: MonthYear
+		sortByColumn: MonthYearSort
+
+	column MonthYearSort
+		dataType: int64
+		isHidden
+		lineageTag: a17f48d4-6ce5-4876-8d60-6a9baffc27c0
+		summarizeBy: none
+		sourceColumn: MonthYearSort
+
+	column DayOfWeek
+		dataType: string
+		lineageTag: f6493c8d-2a11-4521-9d05-eec5a06f81f2
+		sourceColumn: DayOfWeek
+		sortByColumn: DayOfWeekNumber
+
+	column DayOfWeekNumber
+		dataType: int64
+		isHidden
+		lineageTag: 9b885a2e-8ea4-4add-81d3-dead3dcaebec
+		summarizeBy: none
+		sourceColumn: DayOfWeekNumber
+
+	column IsWeekend
+		dataType: boolean
+		lineageTag: d7b733cf-f78f-4b58-81d0-2a723af0c212
+		sourceColumn: IsWeekend
+
+	column WeekNumber
+		dataType: int64
+		lineageTag: dccf9f92-757c-422b-9689-f887bbd270b0
+		summarizeBy: none
+		sourceColumn: WeekNumber
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    StartDate = #date(2015, 1, 1),
+				    EndDate = #date(2017, 12, 31),
+				    NumberOfDays = Duration.Days(EndDate - StartDate) + 1,
+				    Source = List.Dates(StartDate, NumberOfDays, #duration(1, 0, 0, 0)),
+				    TableFromList = Table.FromList(Source, Splitter.SplitByNothing(), {"Date"}),
+				    ChangedType = Table.TransformColumnTypes(TableFromList, {{"Date", type date}}),
+				    AddDateKey = Table.AddColumn(ChangedType, "DateKey", each Date.ToText([Date], "yyyyMMdd"), type text),
+				    AddYear = Table.AddColumn(AddDateKey, "Year", each Date.Year([Date]), Int64.Type),
+				    AddQuarter = Table.AddColumn(AddYear, "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    AddMonthNumber = Table.AddColumn(AddQuarter, "MonthNumber", each Date.Month([Date]), Int64.Type),
+				    AddMonthName = Table.AddColumn(AddMonthNumber, "MonthName", each Date.MonthName([Date]), type text),
+				    AddMonthYear = Table.AddColumn(AddMonthName, "MonthYear", each Date.ToText([Date], "MMM yyyy"), type text),
+				    AddMonthYearSort = Table.AddColumn(AddMonthYear, "MonthYearSort", each Date.Year([Date]) * 100 + Date.Month([Date]), Int64.Type),
+				    AddDayOfWeek = Table.AddColumn(AddMonthYearSort, "DayOfWeek", each Date.DayOfWeekName([Date]), type text),
+				    AddDayOfWeekNumber = Table.AddColumn(AddDayOfWeek, "DayOfWeekNumber", each Date.DayOfWeek([Date], Day.Monday) + 1, Int64.Type),
+				    AddIsWeekend = Table.AddColumn(AddDayOfWeekNumber, "IsWeekend", each Date.DayOfWeek([Date], Day.Monday) >= 5, type logical),
+				    AddWeekNumber = Table.AddColumn(AddIsWeekend, "WeekNumber", each Date.WeekOfYear([Date]), Int64.Type)
+				in
+				    AddWeekNumber
+

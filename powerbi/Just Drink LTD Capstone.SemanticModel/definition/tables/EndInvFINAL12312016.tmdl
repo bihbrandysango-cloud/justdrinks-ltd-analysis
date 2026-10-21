@@ -1,0 +1,102 @@
+table EndInvFINAL12312016
+	lineageTag: eed1727e-574c-49ee-8a4c-55600a883265
+
+	column InventoryId
+		dataType: string
+		isHidden
+		lineageTag: 80b89c51-5da4-4914-8167-24d20a4bfc9c
+		summarizeBy: none
+		sourceColumn: InventoryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Store
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f3398ddb-c637-4b21-9016-c41185e14a92
+		summarizeBy: sum
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		isHidden
+		lineageTag: 9a7acd43-b99c-4e55-9a9b-0f2e98162081
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: int64
+		formatString: 0
+		lineageTag: 0193080f-a8ff-4859-af2c-e1963159860e
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: c27b5521-0300-4a27-8b9b-1acd43d6f965
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: 28acbc7d-282d-4ead-b618-4ea7515f7e63
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column onHand
+		dataType: int64
+		formatString: 0
+		lineageTag: a7d33ed3-6ab8-47f5-a648-df0e0efd38da
+		summarizeBy: sum
+		sourceColumn: onHand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: af9b04c4-6839-4db4-897e-192bf692e8ed
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column endDate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 4d3d38ed-424c-483e-90ac-4d0faf0d08a9
+		summarizeBy: none
+		sourceColumn: endDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition EndInvFINAL12312016 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sango\Desktop\WOMEN TECHSTER FELLOWSHIP\Projects\Just Drink Ltd\Data Viz Case Study Dataset-20251106T085318Z-1-001\Data Viz Case Study Dataset\EndInv\EndInvFINAL12312016.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"InventoryId", type text}, {"Store", Int64.Type}, {"City", type text}, {"Brand", Int64.Type}, {"Description", type text}, {"Size", type text}, {"onHand", Int64.Type}, {"Price", type number}, {"endDate", type date}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

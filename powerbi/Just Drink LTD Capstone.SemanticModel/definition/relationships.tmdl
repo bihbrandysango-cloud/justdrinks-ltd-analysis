@@ -1,0 +1,86 @@
+relationship AutoDetected_b81373f6-b75c-42d2-b682-bb6623429f4e
+	fromColumn: BegInvFINAL12312016.Brand
+	toColumn: 2017PurchasePricesDec.Brand
+
+relationship AutoDetected_fddc622c-3cf6-4b22-8826-541d1f585c25
+	fromColumn: EndInvFINAL12312016.Brand
+	toColumn: 2017PurchasePricesDec.Brand
+
+relationship AutoDetected_b6dd127a-1b70-418a-9900-f3bbd1082075
+	fromColumn: PurchasesFINAL12312016.Brand
+	toColumn: 2017PurchasePricesDec.Brand
+
+relationship AutoDetected_c6a992da-169d-40f8-b7ac-4debc58d0198
+	fromColumn: PurchasesFINAL12312016.PONumber
+	toColumn: InvoicePurchases12312016.PONumber
+
+relationship AutoDetected_a704014e-0d18-446d-934e-1876b335a79a
+	fromColumn: SalesFINAL12312016.Brand
+	toColumn: 2017PurchasePricesDec.Brand
+
+relationship FactSales_SalesDate_to_Date
+	fromColumn: SalesFINAL12312016.SalesDate
+	toColumn: Date.Date
+
+relationship FactPurchases_PODate_to_Date
+	fromColumn: PurchasesFINAL12312016.PODate
+	toColumn: Date.Date
+
+relationship FactPurchases_ReceivingDate_to_Date
+	isActive: false
+	fromColumn: PurchasesFINAL12312016.ReceivingDate
+	toColumn: Date.Date
+
+relationship FactPurchases_InvoiceDate_to_Date
+	isActive: false
+	fromColumn: PurchasesFINAL12312016.InvoiceDate
+	toColumn: Date.Date
+
+relationship FactPurchases_PayDate_to_Date
+	isActive: false
+	fromColumn: PurchasesFINAL12312016.PayDate
+	toColumn: Date.Date
+
+relationship FactBegInv_StartDate_to_Date
+	fromColumn: BegInvFINAL12312016.startDate
+	toColumn: Date.Date
+
+relationship FactEndInv_EndDate_to_Date
+	fromColumn: EndInvFINAL12312016.endDate
+	toColumn: Date.Date
+
+relationship FactPurchaseInvoices_InvoiceDate_to_Date
+	isActive: false
+	fromColumn: InvoicePurchases12312016.InvoiceDate
+	toColumn: Date.Date
+
+relationship FactPurchaseInvoices_PODate_to_Date
+	isActive: false
+	fromColumn: InvoicePurchases12312016.PODate
+	toColumn: Date.Date
+
+relationship FactPurchaseInvoices_PayDate_to_Date
+	isActive: false
+	fromColumn: InvoicePurchases12312016.PayDate
+	toColumn: Date.Date
+
+relationship FactSales_Store_to_DimStore
+	fromColumn: SalesFINAL12312016.Store
+	toColumn: DimStore.Store
+
+relationship FactPurchases_Store_to_DimStore
+	fromColumn: PurchasesFINAL12312016.Store
+	toColumn: DimStore.Store
+
+relationship FactBegInv_Store_to_DimStore
+	fromColumn: BegInvFINAL12312016.Store
+	toColumn: DimStore.Store
+
+relationship FactEndInv_Store_to_DimStore
+	fromColumn: EndInvFINAL12312016.Store
+	toColumn: DimStore.Store
+
+relationship ShelfTimeHelper_Brand_to_DimProduct
+	fromColumn: _ShelfTimeHelper.Brand
+	toColumn: 2017PurchasePricesDec.Brand
+

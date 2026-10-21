@@ -1,0 +1,82 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "f77359a26d3a2955ff47",
+  "position": {
+    "x": 0,
+    "y": 96.378693856836378,
+    "z": 0,
+    "height": 623.62684260305889,
+    "width": 1279.37991649173,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "SUMMARY",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "32pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Times New Roman, serif"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " JustDrinks Ltd. has a strong revenue base but is currently hampered by operational inefficiencies, particularly in inventory management and procurement, and a critical flaw in its data model. By implementing the recommended actions, specifically fixing the data model, optimizing inventory through liquidation, and strategically shifting the purchasing timeline, the company can transition from simply tracking sales to actively driving profitability and maximizing capital efficiency. The focus should shift from total sales to granular, SKU-level profit  (Stock Keeping Unit) and localized store performance.",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "24pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

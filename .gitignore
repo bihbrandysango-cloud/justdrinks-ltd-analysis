@@ -1,0 +1,51 @@
+# Power BI temporary files
+*.pbix.bak
+*.pbix.tmp
+~$*.pbix
+
+# Microsoft Office temp files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Node (if any tooling is added later)
+node_modules/
+npm-debug.log*
+
+# Python (if any tooling is added later)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# Editor / IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local environment
+.env
+.env.local
+
+# Build output
+dist/
+build/
+out/
+
+# Power BI project (PBIP): local cache and per-user settings
+**/.pbi/cache.abf
+**/.pbi/localSettings.json

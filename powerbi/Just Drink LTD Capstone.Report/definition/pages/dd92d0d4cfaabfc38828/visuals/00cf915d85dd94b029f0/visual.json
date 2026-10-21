@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "00cf915d85dd94b029f0",
+  "position": {
+    "x": 0,
+    "y": 105.82758541142819,
+    "z": 0,
+    "height": 614.17795104846709,
+    "width": 1279.37991649173,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": " INTRODUCTION",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "40pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "20pt"
+                    }
+                  },
+                  {
+                    "value": "This report presents the findings from a comprehensive data analysis of JustDrinks Ltd., a major alcoholic beverage retailer. The analysis was conducted on the company's sales, inventory, and purchasing data for the most recently concluded 12-month financial period. The primary objective is to leverage data visualization and analytics to generate ",
+                    "textStyle": {
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "24pt"
+                    }
+                  },
+                  {
+                    "value": "actionable business insights",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "24pt"
+                    }
+                  },
+                  {
+                    "value": " that will assist the leadership team in making sound strategic and operational decisions to improve overall performance",
+                    "textStyle": {
+                      "fontFamily": "Times New Roman, serif",
+                      "fontSize": "24pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

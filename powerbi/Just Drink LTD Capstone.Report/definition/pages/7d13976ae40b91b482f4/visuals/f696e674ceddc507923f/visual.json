@@ -1,0 +1,97 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "f696e674ceddc507923f",
+  "position": {
+    "x": 662,
+    "y": 102,
+    "z": 3000,
+    "height": 618,
+    "width": 617,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "2017PurchasePricesDec"
+                    }
+                  },
+                  "Property": "Total Sales ($)"
+                }
+              },
+              "queryRef": "2017PurchasePricesDec.Total Sales ($)",
+              "nativeQueryRef": "Total Sales ($)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimStore"
+                    }
+                  },
+                  "Property": "Store"
+                }
+              },
+              "queryRef": "DimStore.Store",
+              "nativeQueryRef": "Store"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "18D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "335.26829751857576D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "2017PurchasePricesDec.Total Sales ($)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "201.68434008555172D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "DimStore.Store"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

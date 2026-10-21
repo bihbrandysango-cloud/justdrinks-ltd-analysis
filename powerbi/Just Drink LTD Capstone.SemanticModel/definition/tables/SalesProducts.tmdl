@@ -1,0 +1,20 @@
+table SalesProducts
+	lineageTag: f49b8186-eb33-4ad5-99d8-fa1caeb079f3
+
+	column Column
+		formatString: 0
+		lineageTag: e79ef4dd-dc51-4a1b-b316-7ed51007f6a4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SalesProducts = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 017d2712ef7742feb86dbc1e07671086
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

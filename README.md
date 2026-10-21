@@ -65,7 +65,12 @@ justdrinks-ltd-analysis/
 ├── JustDrinks_Theme.json                   # Power BI custom brand theme
 ├── JustDrinks_DataModel_Documentation.docx # Full data model docs + maturity rating
 ├── JustDrinks_Dashboard_BuildSpec.docx     # Power BI dashboard build specification
+├── JustDrinks_PitchDeck_v3.pptx            # 13-slide pitch deck with live links
 ├── JustDrinks_Gamma_Outline.md             # Presentation outline
+├── powerbi/                                # Power BI project (PBIP), readable in GitHub
+│   ├── Just Drink LTD Capstone.pbip        # Open this in Power BI Desktop
+│   ├── Just Drink LTD Capstone.Report/     # 18 report pages and visuals (PBIR JSON)
+│   └── Just Drink LTD Capstone.SemanticModel/  # Tables, relationships and all DAX measures (TMDL)
 ├── README.md                               # This file
 ├── LICENSE                                 # MIT License
 └── .gitignore                              # Git ignore rules
@@ -97,7 +102,7 @@ The Power BI model follows a **star-schema design** built from six raw source fi
 
 ### Relationships
 
-- **13 active** relationships — all Many-to-One, single-direction
+- **14 active** relationships — all Many-to-One, single-direction
 - **6 inactive** role-playing date relationships activated via `USERELATIONSHIP()`
 - **No bidirectional** relationships — ensures clean, unambiguous filter propagation
 
@@ -151,6 +156,16 @@ Clicking any chart element sets a visual filter that affects all other visuals s
 ---
 
 ## 📐 Power BI Dashboard
+
+View the published report in [Power BI Service](https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare).
+
+The full report is saved as a **Power BI project (PBIP)** in [`powerbi/`](powerbi/), so you can read it right here on GitHub:
+- **DAX measures, tables and relationships:** [`SemanticModel/definition`](<powerbi/Just Drink LTD Capstone.SemanticModel/definition>), in plain-text TMDL
+- **Report pages and visuals:** [`Report/definition/pages`](<powerbi/Just Drink LTD Capstone.Report/definition/pages>), one folder per page
+
+To open it, clone the repo and double-click `Just Drink LTD Capstone.pbip` in Power BI Desktop. The data cache is not included, so the visuals load once you point the data source to your own copy of the six CSV files and click **Refresh**.
+
+**Report pages:** Introduction · Overview · Sales by Category & Size · Store Pricing & City Sales · Vendor Purchases · Monthly Purchasing Trend · Inventory & Shelf Time · Sales vs Purchases · Sales Value by Size · Category Mix & Store Pricing · Profitability Overview · Brand & Vendor Profitability · Performance Review · Future Data Needs · Key Notes · Insights · Recommendations · Summary
 
 A complete build specification (`JustDrinks_Dashboard_BuildSpec.docx`) covers every visual with exact position, field bindings, and formatting.
 
@@ -214,6 +229,7 @@ A **13-slide PowerPoint pitch deck** (`JustDrinks_PitchDeck_v3.pptx`) was built 
 | Top Store | **Store 76 · Doncaster — $25.5M** |
 | Top Product | **Jack Daniels No 7 Black — $7.96M** |
 | Avg Shelf Days | **7.7 days from receiving to first sale** |
+| Inventory Turnover | **7.2× per year** (units sold ÷ average units on hand, about 50 days to sell through) |
 
 ---
 
@@ -280,11 +296,13 @@ https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086
 ## 🗺 Improvement Roadmap
 
 ### 🔴 High Priority
-- [ ] **H1** — Delete dormant Sales↔Purchases Many-to-Many bidirectional relationship
-- [ ] **H2** — Delete 4 unused auto-detected fact-to-fact InventoryId relationships
-- [ ] **H3** — Mark `Date` as a date table in Power BI Desktop UI
+- [x] **H1** — Delete dormant Sales↔Purchases Many-to-Many bidirectional relationship *(done Oct 2026)*
+- [x] **H2** — Delete 4 unused auto-detected fact-to-fact InventoryId relationships *(done Oct 2026)*
+- [x] **H3** — Mark `Date` as a date table *(done Oct 2026)*
 - [ ] **H4** — Fix 4 products with `Size = "Unknown"` in Power Query
 - [ ] **H5** — Replace Total COGS proxy with true cost-of-sold-goods
+
+- [x] **Fix** — `AvgInv` averaged stock per inventory row instead of totalling it, which made Inventory Turnover read 1,560,331. It now sums units on hand, giving 7.2× *(done Oct 2026)*
 
 ### 🟡 Medium Priority
 - [ ] **M1** — Rename tables to dimensional conventions (FactSales, DimProduct, etc.)
@@ -307,8 +325,8 @@ https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086
 | # | Dimension | Score |
 |---|---|---|
 | 1 | Star schema integrity | ⭐⭐⭐⭐ 4/5 |
-| 2 | Date dimension quality | ⭐⭐⭐⭐ 4/5 |
-| 3 | Relationships hygiene | ⭐⭐⭐ 3/5 |
+| 2 | Date dimension quality | ⭐⭐⭐⭐⭐ 5/5 |
+| 3 | Relationships hygiene | ⭐⭐⭐⭐⭐ 5/5 |
 | 4 | Measure organisation | ⭐⭐⭐⭐⭐ 5/5 |
 | 5 | DAX quality & efficiency | ⭐⭐⭐⭐ 4/5 |
 | 6 | Naming conventions | ⭐⭐ 2/5 |
@@ -317,9 +335,9 @@ https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086
 | 9 | UX for report builders | ⭐⭐⭐⭐ 4/5 |
 | 10 | Documentation & governance | ⭐⭐⭐⭐ 4/5 |
 
-### Overall: **37 / 50 · 74% · Grade B (Good)**
+### Overall: **40 / 50 · 80% · Grade B+ (Very good)**
 
-Completing the 5 high-priority roadmap items would bring the score to approximately **84% (A−)**.
+H1–H3 were completed in October 2026: 5 unused relationships removed (25 to 20, none many-to-many) and `Date` marked as the date table. Key totals were checked before and after and did not change ($452.06M revenue, $130.16M gross profit). Finishing H4 and H5 would bring the score to about **84% (A−)**.
 
 ---
 
@@ -343,5 +361,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
   <sub>Power BI · DAX · Power Query M · HTML · CSS · JavaScript · Chart.js</sub><br/><br/>
   <a href="https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html">🌐 Live Dashboard</a> ·
   <a href="https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare">📊 Power BI Report</a> ·
-  <a href="JustDrinks_DataModel_Documentation.docx">📄 Documentation</a>
+  <a href="JustDrinks_DataModel_Documentation.docx">📄 Documentation</a> ·
+  <a href="JustDrinks_PitchDeck_v3.pptx">🎤 Pitch Deck</a>
 </div>

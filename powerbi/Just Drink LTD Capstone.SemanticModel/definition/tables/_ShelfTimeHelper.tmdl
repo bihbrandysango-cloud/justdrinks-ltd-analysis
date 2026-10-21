@@ -1,0 +1,51 @@
+/// Precomputed shelf time (days from first receive to first sale) per InventoryId. Used by [Avg Shelf Time (Days)].
+table _ShelfTimeHelper
+	isHidden
+	lineageTag: ab641961-a660-44ab-9581-9680fff00200
+
+	column InventoryId
+		lineageTag: bce8710d-3409-4e05-b925-4733ee3f6451
+		isNameInferred
+		sourceColumn: [InventoryId]
+
+	column Brand
+		lineageTag: cb8f9aed-0e46-43e8-bc9d-f34f33854d3e
+		isNameInferred
+		sourceColumn: [Brand]
+
+	column ShelfDays
+		lineageTag: 60ef70ee-360b-460a-8a50-23db81bfa8a1
+		isNameInferred
+		sourceColumn: [ShelfDays]
+
+	partition _ShelfTimeHelper = calculated
+		mode: import
+		source =
+				VAR ReceiveDates =
+				    SUMMARIZE (
+				        PurchasesFINAL12312016,
+				        PurchasesFINAL12312016[InventoryId],
+				        "ReceiveDate", MIN ( PurchasesFINAL12312016[ReceivingDate] )
+				    )
+				VAR FirstSales =
+				    SUMMARIZE (
+				        SalesFINAL12312016,
+				        SalesFINAL12312016[InventoryId],
+				        SalesFINAL12312016[Brand],
+				        "FirstSale", MIN ( SalesFINAL12312016[SalesDate] )
+				    )
+				VAR Joined =
+				    ADDCOLUMNS (
+				        FirstSales,
+				        "ReceiveDate",
+				            VAR CurInv = SalesFINAL12312016[InventoryId]
+				            RETURN MAXX ( FILTER ( ReceiveDates, [InventoryId] = CurInv ), [ReceiveDate] )
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        FILTER ( Joined, NOT ISBLANK ( [ReceiveDate] ) ),
+				        "InventoryId", SalesFINAL12312016[InventoryId],
+				        "Brand", SalesFINAL12312016[Brand],
+				        "ShelfDays", DATEDIFF ( [ReceiveDate], [FirstSale], DAY )
+				    )
+

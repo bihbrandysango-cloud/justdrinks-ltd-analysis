@@ -1,0 +1,36 @@
+table 'Sales by Size'
+	lineageTag: 887742bd-c1a6-4804-84dc-3cda4d774c99
+
+	column Size
+		lineageTag: 7392311d-2c61-4c41-9df7-55869d9c1f87
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: SalesFINAL12312016[Size]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Sales'
+		lineageTag: f0c2cfd6-4aa1-4992-89eb-46e48439b366
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Total Sales]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Quantity'
+		formatString: 0
+		lineageTag: fa6a9772-3871-43c0-ae59-89dff22f461e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Total Quantity]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sales by Size' = calculated
+		mode: import
+		source = SUMMARIZE ( SalesFINAL12312016, SalesFINAL12312016[Size], "Total Sales", SUM ( SalesFINAL12312016[SalesDollars] ), "Total Quantity", SUM ( SalesFINAL12312016[SalesQuantity] ))
+
+	annotation PBI_Id = 38238d09e3d245268c98509a5b57291e
+

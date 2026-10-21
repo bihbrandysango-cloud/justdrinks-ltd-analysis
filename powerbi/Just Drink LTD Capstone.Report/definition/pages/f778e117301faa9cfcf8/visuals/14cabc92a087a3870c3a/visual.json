@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "14cabc92a087a3870c3a",
+  "position": {
+    "x": 0,
+    "y": 100.1582504786731,
+    "z": 0,
+    "height": 619.84728598122217,
+    "width": 1279.37991649173,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Area:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " The company’s performance was evaluated across four key areas — Inventory and Sales, Profitability and Category Focus, Procurement and Vendor Management, and Data Quality and Performance Measurement. These areas highlight how effectively the business manages stock, generates profit from core categories, coordinates purchasing with demand cycles, and ensures reliable data for informed decision-making.",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Insights:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " Findings show that the Inventory Turnover Ratio is low at 2.0, with much of the stock remaining unsold for about a year, tying up capital in slow-moving products. Although Spirits contribute 64.19% of total sales, the Gross Profit Margin stands at just 30%, indicating under-optimization of the main revenue category. Procurement is heavily concentrated among a few vendors, with late purchasing in December missing peak holiday demand. Additionally, data modeling errors are producing identical metrics across stores, preventing accurate local performance tracking and deeper operational insights.",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Recommended Actions:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " To improve performance, the company should conduct an ABC analysis to prioritize fast-moving inventory and liquidate obsolete stock, enhancing cash flow and storage efficiency. A profit margin by SKU review within the Spirits category is needed to identify and emphasize high-margin products. Procurement cycles should shift to October–November to ensure product availability during peak sales, while supplier negotiations can leverage bulk purchasing power for better terms. Finally, a comprehensive data model audit and correction in Power BI are essential to restore data integrity and enable store-level profitability and inventory tracking for more strategic decision-making.",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

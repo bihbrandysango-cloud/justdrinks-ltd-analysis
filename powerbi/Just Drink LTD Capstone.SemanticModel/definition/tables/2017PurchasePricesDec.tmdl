@@ -1,0 +1,526 @@
+table 2017PurchasePricesDec
+	lineageTag: 59dc8770-0214-41fe-be9e-fe12c44e04ed
+
+	/// Total sales amount in dollars (sum of SalesDollars)
+	measure 'Total Sales ($)' = SUM ( SalesFINAL12312016[SalesDollars] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 01 Sales
+		lineageTag: 42e9dca8-d42a-42e5-9b57-f4a037dd511b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Total units sold
+	measure 'Total Quantity Sold' = SUM(SalesFINAL12312016[SalesQuantity])
+		formatString: #,0
+		displayFolder: 01 Sales
+		lineageTag: 97576f14-c165-4af7-a992-7da72cab3728
+
+	/// Percentage of total sales by Category
+	measure '% Sales by Category' =
+			
+			DIVIDE(
+			    SUM(SalesFINAL12312016[SalesDollars]),
+			    CALCULATE(SUM(SalesFINAL12312016[SalesDollars]), ALL(SalesFINAL12312016))
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01 Sales
+		lineageTag: 060832b3-849e-4ae2-8f74-4625a872afdb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Average selling price per unit
+	measure 'Avg Selling Price' = ```
+			
+			DIVIDE(
+			    SUM(SalesFINAL12312016[SalesDollars]),
+			    SUM(SalesFINAL12312016[SalesQuantity])
+			)
+			
+			```
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 01 Sales
+		lineageTag: f6475375-1ac4-49b2-a987-0ff8bcd7f742
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Total purchase amount in dollars
+	measure 'Total Purchase ($)' = SUM(PurchasesFINAL12312016[Dollars])
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 02 Purchases
+		lineageTag: a7c4539d-76f4-45cc-a304-f482fcc3ba9b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Total quantity purchased
+	measure 'Total Purchased Qty' = SUM(PurchasesFINAL12312016[Quantity])
+		formatString: #,0
+		displayFolder: 02 Purchases
+		lineageTag: 7c7b46ab-ea95-4311-8e8f-0960becc6bc3
+
+	/// Distinct count of purchase orders
+	measure 'PO Count' = DISTINCTCOUNT(PurchasesFINAL12312016[PONumber])
+		formatString: #,0
+		displayFolder: 02 Purchases
+		lineageTag: d14792b9-dd83-47d6-bac5-056751eec80e
+
+	/// Monthly purchase amount in dollars
+	measure 'Monthly Purchase ($)' =
+			
+			CALCULATE(
+			    SUM(PurchasesFINAL12312016[Dollars]),
+			    GROUPBY(
+			        PurchasesFINAL12312016,
+			        PurchasesFINAL12312016[PODate]
+			    )
+			)
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 02 Purchases
+		lineageTag: cd080811-e0e1-4055-aad3-6e0d66b12b03
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Vendor ranking score (lower = more critical)
+	measure 'Critical Supplier Score' =
+			
+			RANKX(
+			    ALL(PurchasesFINAL12312016[VendorName]),
+			    SUM(PurchasesFINAL12312016[Dollars]) + COUNTROWS(PurchasesFINAL12312016),
+			    ,
+			    DESC
+			)
+		formatString: #,0
+		displayFolder: 02 Purchases
+		lineageTag: 9044055a-c167-4eb8-a34d-3294a08a9a3c
+
+	/// Average purchase amount per purchase order
+	measure 'Avg Purchase per PO' = DIVIDE ( [Total Purchase ($)], [PO Count] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 02 Purchases
+		lineageTag: ba8251ea-da8b-4972-8a72-f95f40083328
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Average units on hand: total beginning plus total ending inventory, divided by 2.
+	measure AvgInv = ( SUM ( BegInvFINAL12312016[onHand] ) + SUM ( EndInvFINAL12312016[onHand] ) ) / 2
+		formatString: #,0
+		displayFolder: 03 Inventory
+		lineageTag: 2f603c62-2340-4f1f-ac0e-b24c538542dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Units sold divided by average units on hand. How many times stock sold through in the period.
+	measure 'Inventory Turnover' = DIVIDE([Total Quantity Sold], [AvgInv])
+		formatString: 0.00
+		displayFolder: 03 Inventory
+		lineageTag: bf083250-1d42-4e68-81ed-5e6bf33f7226
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Net change in stock (Purchased Qty - Sold Qty)
+	measure 'Net Stock Change' = [Total Purchased Qty] - [Total Quantity Sold]
+		formatString: #,0;-#,0
+		displayFolder: 03 Inventory
+		lineageTag: f37a1c8e-0c4d-47cc-a970-c0775b16f364
+
+	/// Beginning inventory value (qty * price)
+	measure 'BegInv Value' =
+			SUMX(
+			    BegInvFINAL12312016,
+			    BegInvFINAL12312016[onHand] * BegInvFINAL12312016[Price]
+			)
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 03 Inventory
+		lineageTag: af297356-2140-407b-9600-5750df70b79b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Ending inventory value (qty * price)
+	measure 'EndInv Value' =
+			SUMX(
+			    EndInvFINAL12312016,
+			    EndInvFINAL12312016[onHand] * EndInvFINAL12312016[Price]
+			)
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 03 Inventory
+		lineageTag: e3380ecd-4465-4029-86fe-a7c811afdbc6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Average inventory value in dollars
+	measure 'AvgInv Value' = ([BegInv Value] + [EndInv Value]) / 2
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 03 Inventory
+		lineageTag: 449a6e6a-d495-4e4b-812e-409a71698440
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Inventory turnover ratio ($-based): Total Sales / Average Inventory Value
+	measure 'Inventory Turnover Value' = DIVIDE([Total Sales ($)], [AvgInv Value])
+		formatString: 0.00
+		displayFolder: 03 Inventory
+		lineageTag: 5d802175-ff92-4af2-8573-5b28256c3f62
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Sales of products classified as Wine (Classification = 1)
+	measure 'Wine Sales' = CALCULATE ( [Total Sales ($)], SalesFINAL12312016[Classification] = 1 )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 01 Sales
+		lineageTag: b475aadf-65ed-4205-ab0b-c3957c21c06e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Sales of products classified as Spirits (Classification = 2)
+	measure 'Spirit Sales' = CALCULATE ( [Total Sales ($)], SalesFINAL12312016[Classification] = 2 )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 01 Sales
+		lineageTag: 61faedd0-52b3-4946-8783-fab51e5b863b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Percentage of total sales by Classification
+	measure '% of Total Sales' = DIVIDE ( [Total Sales ($)], CALCULATE ( [Total Sales ($)], ALL ( SalesFINAL12312016[Classification] ) ) )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01 Sales
+		lineageTag: a5662584-fb76-4af8-8c30-369ee3b871be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Total quantity of items sold grouped by Size
+	measure 'Total Quantity by Size' =
+			
+			SUMX (
+			    VALUES ( SalesFINAL12312016[Size] ),
+			    CALCULATE ( SUM ( SalesFINAL12312016[SalesQuantity] ) )
+			)
+		formatString: #,0
+		displayFolder: 01 Sales
+		lineageTag: 797d4c99-563f-4180-81c6-9fce9ec32629
+
+	/// Total Cost of Goods Sold (sum of FactPurchases.Dollars)
+	measure 'Total COGS' = SUM ( PurchasesFINAL12312016[Dollars] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 04 Profitability
+		lineageTag: f0457292-2ee0-4bcf-a893-6c56e2570d9a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Gross profit (Total Sales - Total COGS)
+	measure 'Gross Profit' = [Total Sales ($)] - [Total COGS]
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 04 Profitability
+		lineageTag: d1d7629e-7722-47e9-8a38-9979aad020c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Gross profit margin: Gross Profit / Total Sales
+	measure 'Gross Profit Margin (%)' = DIVIDE ( [Gross Profit], [Total Sales ($)], 0 )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 04 Profitability
+		lineageTag: 85c8f9b9-a92a-48c7-ba63-3775bbda4449
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Month-over-month sales growth percentage
+	measure 'Sales Growth %' =
+			VAR CurrentRevenue = [Total Sales ($)]
+			VAR PrevRevenue = CALCULATE ( [Total Sales ($)], PREVIOUSMONTH ( 'Date'[Date] ) )
+			RETURN IF ( ISBLANK ( PrevRevenue ) || PrevRevenue = 0, BLANK(), DIVIDE ( CurrentRevenue - PrevRevenue, PrevRevenue ) )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 05 Time Intelligence
+		lineageTag: f48154ce-00dd-404c-b191-b25d8f4d3b25
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Average days to sell through stock: 365 divided by Inventory Turnover.
+	measure 'Shelf Time (Day)' = DIVIDE ( 365, [Inventory Turnover] )
+		formatString: 0.0
+		displayFolder: 03 Inventory
+		lineageTag: ce019877-11bc-47b3-a842-104cf493dc74
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Alias of [Total Sales ($)] - kept for backward compatibility with existing visuals
+	measure 'Total Revenue' = [Total Sales ($)]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: ef89a4bd-07c3-4d47-a28a-cffdfd930356
+
+	/// Alias of [Total Sales ($)] - kept for backward compatibility with existing visuals
+	measure 'Total Sales Value' = [Total Sales ($)]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 964f88f1-309c-4a33-8b48-12c83a105eee
+
+	/// Alias of [Total Sales ($)] - kept for backward compatibility with existing visuals
+	measure 'Sales Value' = [Total Sales ($)]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: ab4f97b5-cae6-4d96-9102-89d25e542490
+
+	/// Alias of [Total Quantity Sold] - kept for backward compatibility with existing visuals
+	measure 'Sales Qty' = [Total Quantity Sold]
+		formatString: #,0
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: c7e9bdd4-11a1-4519-b303-b0927d9bd0e5
+
+	/// Alias of [Total Purchase ($)] - kept for backward compatibility with existing visuals
+	measure 'Total Purchase Value' = [Total Purchase ($)]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 8bf894e8-1b1e-44d7-a192-e00266c872a9
+
+	/// Alias of [Total Purchase ($)] - kept for backward compatibility with existing visuals
+	measure 'Purchased Value' = [Total Purchase ($)]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 7ef5ffd3-8159-45ec-94f5-9ea23aec9aa2
+
+	/// Alias of [Total Purchased Qty] - kept for backward compatibility with existing visuals
+	measure 'Total Purchase Quantity' = [Total Purchased Qty]
+		formatString: #,0
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 33debde9-a92e-432e-b8c4-c3a8c3f0656d
+
+	/// Alias of [Total Purchased Qty] - kept for backward compatibility with existing visuals
+	measure 'Purchase Quantity' = [Total Purchased Qty]
+		formatString: #,0
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 075143d2-ceb4-4d32-bc15-3fe06611d578
+
+	/// Alias of [PO Count] - kept for backward compatibility with existing visuals
+	measure 'Number of POs' = [PO Count]
+		formatString: #,0
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: e92eb497-bb50-42d9-8ca2-22085070e281
+
+	/// Alias of [Inventory Turnover] - kept for backward compatibility with existing visuals
+	measure 'Inventory Turnover Ratio' = [Inventory Turnover]
+		formatString: 0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: c2223fbc-821a-4c20-9c08-80f5534589a4
+
+	/// Alias of [Avg Selling Price] - kept for backward compatibility with existing visuals
+	measure 'Average Selling Price' = [Avg Selling Price]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: e1741d7a-4d12-4a68-a5eb-02dc283b27f4
+
+	/// Alias of [EndInv Value] - kept for backward compatibility with existing visuals
+	measure 'Ending Inv ($)' = [EndInv Value]
+		formatString: "$"#,0.00;-"$"#,0.00
+		isHidden
+		displayFolder: 99 Aliases (Deprecated)
+		lineageTag: 6ad156bd-7a55-404e-a897-2ea133db70b9
+
+	/// Year-to-date sales running total
+	measure 'Sales YTD' = CALCULATE ( [Total Sales ($)], DATESYTD ( 'Date'[Date] ) )
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: 05 Time Intelligence
+		lineageTag: 8c79d1d5-e98b-4ab4-be64-311305337cf7
+
+	/// Sales for the same period in the prior year
+	measure 'Sales PY' = CALCULATE ( [Total Sales ($)], SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: 05 Time Intelligence
+		lineageTag: cd0db6f6-4590-4642-9cb6-dc49f1175739
+
+	/// Year-over-year sales delta in dollars
+	measure 'Sales YoY $' = [Total Sales ($)] - [Sales PY]
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: 05 Time Intelligence
+		lineageTag: 40ff4e41-4285-4b37-8745-d1cabe6f2954
+
+	/// Year-over-year sales delta as a percentage
+	measure 'Sales YoY %' = DIVIDE ( [Sales YoY $], [Sales PY] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05 Time Intelligence
+		lineageTag: 77df325b-5e8c-4917-98ce-34c55acb8cc6
+
+	/// Distinct count of stores active in the current filter context
+	measure 'Active Stores' = DISTINCTCOUNT ( DimStore[Store] )
+		formatString: #,0
+		displayFolder: 06 Store Analysis
+		lineageTag: 1dc09281-30ee-42d5-855b-70892cb5ded2
+
+	/// Distinct count of brands sold in the current filter context
+	measure 'Brands Sold' = CALCULATE ( DISTINCTCOUNT ( SalesFINAL12312016[Brand] ), SalesFINAL12312016[SalesQuantity] > 0 )
+		formatString: #,0
+		displayFolder: 01 Sales
+		lineageTag: 7a987683-afef-4355-92f9-736bd0dd68e7
+
+	/// Average sales per active store
+	measure 'Sales per Store' = DIVIDE ( [Total Sales ($)], [Active Stores] )
+		formatString: "$"#,0;-"$"#,0
+		displayFolder: 06 Store Analysis
+		lineageTag: d3cab302-6767-478b-9ef0-34b518485839
+
+	/// KPI status for Gross Profit Margin: 1 = healthy (>30%), 0 = watch (>25%), -1 = below target (<=25%)
+	measure 'GP Margin Status' = VAR M = [Gross Profit Margin (%)] RETURN SWITCH ( TRUE(), M > 0.30, 1, M > 0.25, 0, -1 )
+		formatString: 0
+		displayFolder: 04 Profitability
+		lineageTag: dec6f928-b40c-427e-b5a7-11210e48a5a5
+
+	/// KPI status for Inventory Turnover: 1 = healthy (>2), 0 = watch (>1), -1 = slow (<=1)
+	measure 'Turnover Status' = VAR T = [Inventory Turnover] RETURN SWITCH ( TRUE(), T > 2, 1, T > 1, 0, -1 )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: 8e0da0c9-6e8c-4724-a9be-d73e357eaf4f
+
+	/// Dynamic page title that adapts to current filter context
+	measure 'Dynamic Title' =
+			VAR YearFilter =
+			    IF (
+			        ISFILTERED ( 'Date'[Year] ),
+			        " · " & CONCATENATEX ( VALUES ( 'Date'[Year] ), 'Date'[Year], ", " ),
+			        ""
+			    )
+			VAR CategoryFilter =
+			    IF (
+			        ISFILTERED ( SalesFINAL12312016[Category] ),
+			        " · " & CONCATENATEX ( VALUES ( SalesFINAL12312016[Category] ), SalesFINAL12312016[Category], ", " ),
+			        ""
+			    )
+			RETURN "JustDrinks LTD Performance" & YearFilter & CategoryFilter
+		displayFolder: 07 Dashboard Helpers
+		lineageTag: c49a3025-97ef-4db8-b412-169741294f47
+
+	column Brand
+		dataType: int64
+		formatString: 0
+		lineageTag: 6346896f-bc32-48e5-a479-4380c230a405
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 464964e2-8030-4048-9181-e0f00f00d857
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 029e20b4-1825-4d43-a097-e15ec846dc8a
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: d41e761c-64ed-4295-ab1a-1b3981892bb4
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Volume
+		dataType: int64
+		formatString: 0
+		lineageTag: cfdf653e-feef-4ef1-87ca-ddebe2d44c98
+		summarizeBy: sum
+		sourceColumn: Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column Classification
+		dataType: int64
+		formatString: 0
+		lineageTag: 14fa8e35-8801-4a43-b84d-edc847fc1ea8
+		summarizeBy: sum
+		sourceColumn: Classification
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchasePrice
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 37d593b6-1de6-4328-aa9d-8939952e5071
+		summarizeBy: sum
+		sourceColumn: PurchasePrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorNumber
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8553a409-1b23-4d1b-bbee-b8c019390cfc
+		summarizeBy: sum
+		sourceColumn: VendorNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorName
+		dataType: string
+		lineageTag: 12dc5057-05d5-45e5-a5be-e9911a85f8bd
+		summarizeBy: none
+		sourceColumn: VendorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Beginning Inv ($)' =
+			
+			SUMX(
+			    BegInvFINAL12312016,
+			    BegInvFINAL12312016[onHand] * BegInvFINAL12312016[Price]
+			)
+		lineageTag: 1d4568d8-cdcd-4a29-adde-fc127040cc21
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Sales by Size' =
+			
+			SUMX (
+			    VALUES ( SalesFINAL12312016[Size] ),
+			    CALCULATE ( SUM ( SalesFINAL12312016[SalesDollars] ) )
+			)
+		lineageTag: e83ce703-148b-4ce6-96ae-44973f4d8eb5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Profit by Store'
+		type: calculated
+		lineageTag: f540c483-7fd6-4f73-93c3-bbff679319ff
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 2017PurchasePricesDec = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sango\Desktop\WOMEN TECHSTER FELLOWSHIP\Projects\Just Drink Ltd\Data Viz Case Study Dataset-20251106T085318Z-1-001\Data Viz Case Study Dataset\PurchasePrices\2017PurchasePricesDec.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Brand", Int64.Type}, {"Description", type text}, {"Price", type number}, {"Size", type text}, {"Volume", Int64.Type}, {"Classification", Int64.Type}, {"PurchasePrice", type number}, {"VendorNumber", Int64.Type}, {"VendorName", type text}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type", each true),
+				    #"Filtered Rows" = Table.SelectRows(#"Filtered Rows1", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

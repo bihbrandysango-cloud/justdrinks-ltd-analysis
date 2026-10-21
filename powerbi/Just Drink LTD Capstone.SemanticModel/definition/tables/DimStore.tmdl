@@ -1,0 +1,20 @@
+/// Store dimension: one row per Store with its City
+table DimStore
+	lineageTag: 84136121-260c-4d30-99e9-40bfc99a64a5
+
+	column Store
+		isUnique
+		lineageTag: e6b884f0-8a6c-4d4a-b021-cdde27d1f2cc
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: EndInvFINAL12312016[Store]
+
+	column City
+		lineageTag: 24f7ed6e-b57c-474b-9052-6ff518729bd4
+		isNameInferred
+		sourceColumn: EndInvFINAL12312016[City]
+
+	partition DimStore = calculated
+		mode: import
+		source = SUMMARIZE ( EndInvFINAL12312016, EndInvFINAL12312016[Store], EndInvFINAL12312016[City] )
+

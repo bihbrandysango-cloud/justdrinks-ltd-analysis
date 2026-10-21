@@ -1,0 +1,34 @@
+table Stores
+	lineageTag: fe0c2825-be65-4569-8d78-d2272d2b4607
+
+	column Store
+		formatString: 0
+		lineageTag: ade3565d-e3d3-4a8d-a7a9-f447e7716781
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Store]
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		lineageTag: a342586b-d94b-4c55-bf15-7b53546d5901
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [City]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Stores = calculated
+		mode: import
+		source =
+				
+				DISTINCT (
+				    SELECTCOLUMNS (
+				       BegInvFINAL12312016,
+				        "Store", BegInvFINAL12312016[Store],
+				        "City", BegInvFINAL12312016[City]
+				    )
+				)
+
+	annotation PBI_Id = 0046d689bb5348f88f9c289ef7f843d0
+

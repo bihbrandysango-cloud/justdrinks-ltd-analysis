@@ -1,0 +1,48 @@
+expression 'Errors in 2017PurchasePricesDec' =
+		let
+		Source = #"2017PurchasePricesDec",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brand", "Description", "Price", "Size", "Volume", "Classification", "PurchasePrice", "VendorNumber", "VendorName"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brand", "Description", "Price", "Size", "Volume", "Classification", "PurchasePrice", "VendorNumber", "VendorName"}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Reordered Columns","Unknown","Null",Replacer.ReplaceText,{"Size"})
+		in
+		    #"Replaced Value"
+	lineageTag: 012a6995-c6f1-4093-ae39-dd35e4a57f02
+	queryGroup: 'Query Errors - 5/9/2026 7:07:40 AM'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Errors in 2017PurchasePricesDec (2)' =
+		let
+		Source = #"2017PurchasePricesDec",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"Brand", "Description", "Price", "Size", "Volume", "Classification", "PurchasePrice", "VendorNumber", "VendorName"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "Brand", "Description", "Price", "Size", "Volume", "Classification", "PurchasePrice", "VendorNumber", "VendorName"}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Reordered Columns","Unknown","Null",Replacer.ReplaceText,{"Size"})
+		in
+		  #"Replaced Value"
+	lineageTag: e1dea65d-be85-4bb4-9ec3-da5b34bb5933
+	queryGroup: 'Query Errors - 5/9/2026 7:15:36 AM'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

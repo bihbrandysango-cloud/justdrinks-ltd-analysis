@@ -1,0 +1,125 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "588a1c5165c0d6fab048",
+  "position": {
+    "x": 296.55674935604389,
+    "y": 102.65425939247673,
+    "z": 6000,
+    "height": 617.82656115842474,
+    "width": 482.85522010535351,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "2017PurchasePricesDec"
+                    }
+                  },
+                  "Property": "Brand"
+                }
+              },
+              "queryRef": "2017PurchasePricesDec.Brand",
+              "nativeQueryRef": "Brand"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SalesFINAL12312016"
+                    }
+                  },
+                  "Property": "Avg Shelf Time (Days)"
+                }
+              },
+              "queryRef": "SalesFINAL12312016.Avg Shelf Time (Days)",
+              "nativeQueryRef": "Avg Shelf Time (Days)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SalesFINAL12312016"
+                    }
+                  },
+                  "Property": "Category"
+                }
+              },
+              "queryRef": "SalesFINAL12312016.Category",
+              "nativeQueryRef": "Category"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "269.3085280902518D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "SalesFINAL12312016.Category"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "177.14497373231023D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "SalesFINAL12312016.Avg Shelf Time (Days)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "81.11909126772329D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "2017PurchasePricesDec.Brand"
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

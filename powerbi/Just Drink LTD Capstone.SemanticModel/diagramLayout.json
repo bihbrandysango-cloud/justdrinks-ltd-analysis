@@ -1,0 +1,189 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 2
+          },
+          "nodeIndex": "2017PurchasePricesDec",
+          "nodeLineageTag": "59dc8770-0214-41fe-be9e-fe12c44e04ed",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 1,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 2
+          },
+          "nodeIndex": "BegInvFINAL12312016",
+          "nodeLineageTag": "cbb67d84-e594-4e19-8cdf-0defb09290df",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 2
+          },
+          "nodeIndex": "EndInvFINAL12312016",
+          "nodeLineageTag": "eed1727e-574c-49ee-8a4c-55600a883265",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 0
+          },
+          "nodeIndex": "InvoicePurchases12312016",
+          "nodeLineageTag": "4dcf62a0-92b0-46c5-b551-0376f037ef89",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 4,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1196,
+            "y": 94
+          },
+          "nodeIndex": "PurchasesFINAL12312016",
+          "nodeLineageTag": "4cada79d-7894-40cc-91c2-3a5da87a2013",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 13,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1443,
+            "y": 0
+          },
+          "nodeIndex": "SalesFINAL12312016",
+          "nodeLineageTag": "41213ace-9002-4964-a899-70f6fc33a98a",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1727,
+            "y": 71
+          },
+          "nodeIndex": "Date",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 2011,
+            "y": 71
+          },
+          "nodeIndex": "SalesProducts",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 2295,
+            "y": 71
+          },
+          "nodeIndex": "Sales by Category ($)",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 2579,
+            "y": 71
+          },
+          "nodeIndex": "Sales by Size Table",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 2863,
+            "y": 71
+          },
+          "nodeIndex": "Sales by Size",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 3147,
+            "y": 71
+          },
+          "nodeIndex": "Stores",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 3431,
+            "y": 71
+          },
+          "nodeIndex": "Profit by Store",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 12
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 95.111111111111114,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

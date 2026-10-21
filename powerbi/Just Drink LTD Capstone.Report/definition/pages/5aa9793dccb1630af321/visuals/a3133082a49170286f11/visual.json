@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "a3133082a49170286f11",
+  "position": {
+    "x": 0,
+    "y": 100.1582504786731,
+    "z": 3000,
+    "height": 619.84728598122217,
+    "width": 1279.37991649173,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "RECOMMENDATION",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "32pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The following actionable recommendations are proposed to address the identified insights and improve JustDrinks Ltd.'s performance:",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Firstly, in Inventory, the company must implement an ABC Analysis to prioritize the high-revenue 750mL and 1750mL sizes and immediately liquidate the slow-moving stock with a 365-day shelf life to reduce holding costs and free up capital. ",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Secondly, for Profitability, a detailed SKU-level Profit Analysis is required for the dominant Spirits category to inform better vendor negotiations or strategic price increases, thereby increasing the overall Gross Profit Margin. ",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Thirdly, Procurement must shift the seasonal purchasing timeline, moving the bulk of holiday stock orders from December to October and November to mitigate the risk of stock-outs during the peak season, while simultaneously leveraging high purchase volume with top vendors like Diageo to negotiate better terms. ",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Lastly, Data Quality requires an immediate Data Model Audit and Correction to fix the relationship errors that currently prevent accurate, localized performance analysis by store and city. Finally, for Future Data, the company should begin tracking new, profit-focused metrics such as Profit Margin by SKU/Store, Inventory Carrying Cost, and Customer Loyalty Data to enhance the accuracy and strategic value of future analysis.",
+                    "textStyle": {
+                      "fontFamily": "Calibri",
+                      "fontSize": "20pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

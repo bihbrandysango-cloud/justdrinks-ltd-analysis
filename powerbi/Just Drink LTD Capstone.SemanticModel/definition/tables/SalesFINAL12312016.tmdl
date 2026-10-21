@@ -1,0 +1,243 @@
+table SalesFINAL12312016
+	lineageTag: 41213ace-9002-4964-a899-70f6fc33a98a
+
+	/// Highest average selling price across stores
+	measure 'Highest Avg Price' = MAXX ( VALUES ( SalesFINAL12312016[Store] ), [Avg Selling Price] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 06 Store Analysis
+		lineageTag: 55d2b936-0044-45ea-bcaf-7bdd632f5117
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Lowest average selling price across stores
+	measure 'Lowest Avg Price' = MINX ( VALUES ( SalesFINAL12312016[Store] ), [Avg Selling Price] )
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 06 Store Analysis
+		lineageTag: e878a057-0d1d-4084-8ee4-1c7aa0a6165a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Store ID with the highest average selling price
+	measure 'Store with Highest Price' =
+			
+			CALCULATE(
+			    FIRSTNONBLANK ( SalesFINAL12312016[Store], 1 ),
+			    FILTER (
+			        VALUES ( SalesFINAL12312016[Store] ),
+			        [Avg Selling Price] = [Highest Avg Price]
+			    )
+			)
+		formatString: 0
+		displayFolder: 06 Store Analysis
+		lineageTag: 84bf3f17-5605-4d44-b8bf-548b6a902466
+
+	/// Store ID with the lowest average selling price
+	measure 'Store with Lowest Price' =
+			
+			CALCULATE(
+			    FIRSTNONBLANK ( SalesFINAL12312016[Store], 1 ),
+			    FILTER (
+			        VALUES ( SalesFINAL12312016[Store] ),
+			        [Avg Selling Price] = [Lowest Avg Price]
+			    )
+			)
+		formatString: 0
+		displayFolder: 06 Store Analysis
+		lineageTag: 174c9902-f005-4e5a-b762-818519f3e11e
+
+	/// Profit per row using SalesPrice - PurchasePrice * SalesQuantity
+	measure Profit =
+			
+			SUMX(
+			    'SalesFINAL12312016',
+			    'SalesFINAL12312016'[SalesQuantity] *
+			    (
+			        'SalesFINAL12312016'[SalesPrice] -
+			        RELATED('2017PurchasePricesDec'[PurchasePrice])
+			    )
+			)
+		formatString: "$"#,0.00;-"$"#,0.00
+		displayFolder: 04 Profitability
+		lineageTag: b6dbe05c-8751-4a21-878e-35320dc52fc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Average days between an inventory item being received and its first sale (per InventoryId). Negative values (sold before received per data) treated as 0.
+	measure 'Avg Shelf Time (Days)' =
+			VAR FilteredHelper =
+			    CALCULATETABLE (
+			        '_ShelfTimeHelper',
+			        TREATAS ( VALUES ( SalesFINAL12312016[Brand] ), '_ShelfTimeHelper'[Brand] )
+			    )
+			RETURN
+			    AVERAGEX (
+			        FilteredHelper,
+			        IF ( '_ShelfTimeHelper'[ShelfDays] < 0, 0, '_ShelfTimeHelper'[ShelfDays] )
+			    )
+		formatString: 0.0
+		displayFolder: 03 Inventory
+		lineageTag: c36c3e78-6d49-4bf7-b738-944440943a16
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InventoryId
+		dataType: string
+		isHidden
+		lineageTag: 3ba9e6b6-a69b-49e9-ba69-25416a35dbce
+		summarizeBy: none
+		sourceColumn: InventoryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Store
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d94b8382-0609-4409-886c-811988ef4201
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = User
+
+	column Brand
+		dataType: int64
+		formatString: 0
+		lineageTag: 09a5b5a9-258f-484d-ba7d-0904f2feab52
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: bdba4058-95cd-403e-b008-91cbaf7d12ea
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: bf379fc0-a226-48a1-849b-9d2f78263e71
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: d7013916-e1bf-43d3-b5be-b653778e049b
+		summarizeBy: sum
+		sourceColumn: SalesQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesDollars
+		dataType: double
+		lineageTag: 9dd70cca-3460-4024-a1ad-2112177744a3
+		summarizeBy: sum
+		sourceColumn: SalesDollars
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesPrice
+		dataType: double
+		lineageTag: 8ccec529-0aa1-4065-ad6b-37bc0cfcffbd
+		summarizeBy: sum
+		sourceColumn: SalesPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesDate
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: ff51c715-8deb-4849-9592-56315ce2359a
+		summarizeBy: none
+		sourceColumn: SalesDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Volume
+		dataType: int64
+		formatString: 0
+		lineageTag: 8a788ebc-2509-48ed-b8e4-32006fef681c
+		summarizeBy: sum
+		sourceColumn: Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column Classification
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 18bc2bde-d4cb-44b6-9ecd-88bf5ab4a61c
+		summarizeBy: sum
+		sourceColumn: Classification
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExciseTax
+		dataType: double
+		lineageTag: 594e06f3-6e17-4d57-b063-fe5eec2022d1
+		summarizeBy: sum
+		sourceColumn: ExciseTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VendorNo
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6769fadf-a71d-48d0-84af-8c78ac0b549c
+		summarizeBy: sum
+		sourceColumn: VendorNo
+
+		annotation SummarizationSetBy = Automatic
+
+	column VendorName
+		dataType: string
+		lineageTag: 314a2cea-9faa-4759-be36-5224b96a2a89
+		summarizeBy: none
+		sourceColumn: VendorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category =
+			
+			SWITCH(
+			    SalesFINAL12312016[Classification],
+			    1, "Wine",
+			    2, "Spirits",
+			    "Other"
+			)
+		lineageTag: ac0d5a12-8bae-4fb0-814c-dff751413e86
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SalesFINAL12312016 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Sango\Desktop\WOMEN TECHSTER FELLOWSHIP\Projects\Just Drink Ltd\Data Viz Case Study Dataset-20251106T085318Z-1-001\Data Viz Case Study Dataset\Sales\SalesFINAL12312016.csv"),[Delimiter=",", Columns=14, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"InventoryId", type text}, {"Store", Int64.Type}, {"Brand", Int64.Type}, {"Description", type text}, {"Size", type text}, {"SalesQuantity", Int64.Type}, {"SalesDollars", type number}, {"SalesPrice", type number}, {"SalesDate", type date}, {"Volume", Int64.Type}, {"Classification", Int64.Type}, {"ExciseTax", type number}, {"VendorNo", Int64.Type}, {"VendorName", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
