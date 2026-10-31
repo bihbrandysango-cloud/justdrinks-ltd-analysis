@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json",
+  "pageOrder": [
+    "jd_home",
+    "jd_exec",
+    "jd_sales",
+    "jd_stores",
+    "jd_purchasing",
+    "jd_inventory",
+    "jd_profit",
+    "jd_findings",
+    "jd_insights",
+    "jd_recs",
+    "jd_future",
+    "jd_summary"
+  ],
+  "activePageName": "jd_exec"
+}

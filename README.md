@@ -1,366 +1,265 @@
-# 🍷 JustDrinks LTD — Analytics Dashboard
+# JustDrinks LTD Analysis
 
-> A complete end-to-end business intelligence project for **JustDrinks LTD**, a multi-store UK beverage retailer. Built from scratch covering data modelling, DAX measure development, Power BI dashboard design, and a responsive web analytics application. Covers FY 2016 sales, purchasing, and inventory analysis across 80 stores.
+**Where does the money come from, and where does it slip away?**
 
-**Built by Bih Brandy Sango · May 2026**
+A Power BI report on a year of sales, purchasing and inventory for JustDrinks Ltd., a retailer of wine and spirits with 80 stores in 68 cities. It answers the six sections of the JustDrinks data-visualisation case study in 12 pages, with a star-schema model, 54 DAX measures, and a web dashboard.
 
----
+![JustDrinks LTD executive summary](docs/screenshots/hero.jpg)
 
-## 📋 Table of Contents
+## Quick links
 
-- [Project Overview](#-project-overview)
-- [Live Links](#-live-links)
-- [Project Structure](#-project-structure)
-- [Data Model](#-data-model)
-- [Web Dashboard Features](#-web-dashboard-features)
-- [Power BI Dashboard](#-power-bi-dashboard)
-- [Key Metrics](#-key-metrics)
-- [Getting Started](#-getting-started)
-- [Tech Stack](#-tech-stack)
-- [Data Sources](#-data-sources)
-- [Improvement Roadmap](#-improvement-roadmap)
-- [Maturity Rating](#-maturity-rating)
-- [License](#-license)
+- 🌐 [Web dashboard](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html), an interactive version with cross-filtering and dark mode
+- 📊 [Power BI project](powerbi/JustDrinks%20LTD.pbip) (open in Power BI Desktop)
+- 📄 [Strategic brief (PDF)](docs/JustDrinks-Strategic-Brief.pdf), which renders inline on GitHub
+- 🎞️ [Presentation (PowerPoint)](docs/JustDrinks-Presentation.pptx) with the speech in the slide notes
+- 🎤 [Speech and likely questions](docs/Speech.md)
 
 ---
 
-## 📌 Project Overview
-
-JustDrinks LTD is a multi-store beverage retailer operating 80 stores across 68 cities in the UK. This project was built from scratch as a full business intelligence solution delivering:
-
-- A **Power BI data model** built from raw source files — star-schema design with three dimensions (Date, DimStore, DimProduct) and 54 DAX measures organised into display folders
-- A **custom JustDrinks brand theme** for Power BI matching the company identity
-- A **responsive single-file web dashboard** with real embedded data, Power BI-style cross-filtering, dark mode, and LocalStorage persistence
-- A **13-slide pitch deck** presenting the project to stakeholders with live clickable links
-- **Full documentation** covering the data model architecture, dashboard build specification, improvement roadmap, and best-practice maturity rating
-
-### Business Questions Answered
-
-| Area | Questions |
-|---|---|
-| **Sales** | How much revenue and profit per store, city, and category? Which products drive the most volume? |
-| **Purchasing** | Which suppliers are most critical? What is the average cost per PO? How do purchase trends compare to sales? |
-| **Inventory** | How fast does inventory turn over? Which items sit on shelves the longest? |
-| **Profitability** | What is the gross profit margin by category, store, and product? |
-| **Time** | How does monthly performance trend across the year? Which months drive peak revenue? |
+> **A note on GitHub previews.** GitHub renders Markdown, PDFs and images inline. It does not preview PowerPoint files or Power BI projects in the browser. For those, GitHub shows a file page with a **Download** button on the top right. This is normal.
 
 ---
 
-## 🌐 Live Links
+## Table of Contents
 
-| Resource | Link |
-|---|---|
-| 🌐 **Web Dashboard** | [Open in browser](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html) |
-| 📊 **Power BI Report** | [Open in Power BI Service](https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare) |
-| 📁 **GitHub Repository** | [bihbrandysango-cloud/justdrinks-ltd-analysis](https://github.com/bihbrandysango-cloud/justdrinks-ltd-analysis) |
+- [About the project](#about-the-project)
+- [Headline findings](#headline-findings)
+- [Report pages](#report-pages)
+- [Repository structure](#repository-structure)
+- [Data model](#data-model)
+- [Run it locally](#run-it-locally)
+- [Key insights](#key-insights)
+- [Recommendations](#recommendations)
+- [What changed in this version](#what-changed-in-this-version)
+- [Tech stack](#tech-stack)
+- [Limitations](#limitations)
+- [License](#license)
 
 ---
 
-## 📁 Project Structure
+## About the project
+
+The leadership team asked for due diligence on sales, purchases and inventory for the year. The report follows the case-study sections in order: sales and the wine and spirits split, vendor activity, inventory and shelf time, store performance, strategic insights, and future data needs.
+
+The work covers the full BI cycle:
+
+1. **Modelling** six source files into a star schema with a date table, a store dimension and five fact tables
+2. **Measuring** sales, purchases, inventory, margin and vendor ranking in 54 DAX measures
+3. **Visualising** the results in a 12-page report with a navigation rail and a web dashboard
+4. **Presenting** the findings in an 11-slide deck, a strategic brief and a speech
+
+---
+
+## Headline findings
+
+| Metric | Value | Note |
+|---|---|---|
+| Sales | **$452.1M** | 80 stores in 68 cities |
+| Spirits and wine | **64.19% and 35.81%** | Spirits $290.2M, wine $161.9M |
+| Gross profit | **$130.2M** | A margin of 28.8%, with sales minus purchases of $321.9M |
+| Sales from two sizes | **85%** | 750mL ($254.0M) and 1750mL ($132.1M) |
+| Largest vendor | **15.8% of purchases** | Diageo, $51.0M. The top five vendors are 45% |
+| December sales vs purchases | **$52.3M vs $26.3M** | Stock is drawn down by about a million units |
+
+---
+
+## Report pages
+
+Click any image to view full size.
+
+### 1. Home
+
+![Home](docs/screenshots/01-home.jpg)
+
+### 2. Executive summary
+
+*Sales and purchases by month, four KPIs, category and size splits, and the vendor ranking.*
+
+![Executive summary](docs/screenshots/02-executive-summary.jpg)
+
+### 3. Sales
+
+*Total sales, the wine and spirits split, and the most popular sizes in each.*
+
+![Sales](docs/screenshots/03-sales.jpg)
+
+### 4. Stores and cities
+
+*Average selling price by store and category, with the highest and lowest priced stores, and sales by city and store.*
+
+![Stores and cities](docs/screenshots/04-stores-and-cities.jpg)
+
+### 5. Purchasing
+
+*Vendors by value and quantity, the critical suppliers, and purchases by month.*
+
+![Purchasing](docs/screenshots/05-purchasing.jpg)
+
+### 6. Inventory
+
+*Units sold against units purchased, net stock change by month, and shelf time by brand and category.*
+
+![Inventory](docs/screenshots/06-inventory.jpg)
+
+### 7. Profitability
+
+*Sales and margin by month, gross profit by city and vendor, and brand profitability.*
+
+![Profitability](docs/screenshots/07-profitability.jpg)
+
+### 8. Key findings
+
+![Key findings](docs/screenshots/08-key-findings.jpg)
+
+### 9. Insights
+
+![Insights](docs/screenshots/09-insights.jpg)
+
+### 10. Recommendations
+
+![Recommendations](docs/screenshots/10-recommendations.jpg)
+
+### 11. Future data needs
+
+![Future data needs](docs/screenshots/11-future-data-needs.jpg)
+
+### 12. Summary
+
+![Summary](docs/screenshots/12-summary.jpg)
+
+For the story behind each page, see [the strategic brief](docs/JustDrinks-Strategic-Brief.pdf).
+
+---
+
+## Repository structure
 
 ```
 justdrinks-ltd-analysis/
 │
-├── JustDrinks_Dashboard.html               # Single-file interactive web dashboard
-├── JustDrinks_Theme.json                   # Power BI custom brand theme
-├── JustDrinks_DataModel_Documentation.docx # Full data model docs + maturity rating
-├── JustDrinks_Dashboard_BuildSpec.docx     # Power BI dashboard build specification
-├── JustDrinks_PitchDeck_v3.pptx            # 13-slide pitch deck with live links
-├── JustDrinks_Gamma_Outline.md             # Presentation outline
-├── powerbi/                                # Power BI project (PBIP), readable in GitHub
-│   ├── Just Drink LTD Capstone.pbip        # Open this in Power BI Desktop
-│   ├── Just Drink LTD Capstone.Report/     # 18 report pages and visuals (PBIR JSON)
-│   └── Just Drink LTD Capstone.SemanticModel/  # Tables, relationships and all DAX measures (TMDL)
-├── README.md                               # This file
-├── LICENSE                                 # MIT License
-└── .gitignore                              # Git ignore rules
+├── README.md                                 This file
+├── LICENSE                                   MIT
+├── CONTRIBUTING.md                           Contribution guidelines
+├── .gitignore
+├── JustDrinks_Dashboard.html                 The interactive web dashboard
+│
+├── docs/
+│   ├── JustDrinks-Strategic-Brief.pdf        Renders inline on GitHub
+│   ├── JustDrinks-Presentation.pptx          11 slides, speech in the notes
+│   ├── Speech.md                             The speech and likely questions
+│   ├── logo.png
+│   ├── screenshots/                          Report page JPGs and hero image
+│   └── legacy/                               Earlier documents: data model notes,
+│                                             build spec, outline, 13-slide deck, theme
+│
+└── powerbi/
+    ├── JustDrinks LTD.pbip                   Open this in Power BI Desktop
+    ├── JustDrinks LTD.Report/                12 pages and visuals as readable JSON
+    └── JustDrinks LTD.SemanticModel/         Tables, relationships and 54 measures as TMDL
 ```
 
 ---
 
-## 🗂 Data Model
+## Data model
 
-The Power BI model follows a **star-schema design** built from six raw source files extracted year-end 2016.
+The model is a star schema built from six source files for the 2016 year.
 
-### Dimensions
-
-| Table | Type | Grain | Rows |
-|---|---|---|---|
-| `Date` | Power Query (M) | 1 row per day · 2015–2017 | 1,096 |
-| `DimStore` | DAX calculated | 1 row per store with City | 80 |
-| `2017PurchasePricesDec` | Source-loaded | 1 row per product (Brand) | 12,261 |
-
-### Fact Tables
-
-| Table | Rows | Description |
+| Table | Type | Grain |
 |---|---|---|
-| `SalesFINAL12312016` | 12.8M | Sales transactions |
-| `PurchasesFINAL12312016` | 2.4M | Purchase order line items |
-| `InvoicePurchases12312016` | ~5K | Purchase invoices with freight |
-| `BegInvFINAL12312016` | ~200K | Beginning-of-period inventory |
-| `EndInvFINAL12312016` | ~200K | End-of-period inventory |
+| `Date` | Dimension | One row per day, 2015 to 2017 |
+| `DimStore` | Dimension | One row per store, with its city (80 stores, 68 cities) |
+| `2017PurchasePricesDec` | Dimension and measure home | One row per brand, and the home of the DAX measures |
+| `SalesFINAL12312016` | Fact | About 12.8M sales lines |
+| `PurchasesFINAL12312016` | Fact | About 2.4M purchase lines |
+| `InvoicePurchases12312016` | Fact | Purchase invoices with freight |
+| `BegInvFINAL12312016` | Fact | Stock at the start of the year |
+| `EndInvFINAL12312016` | Fact | Stock at the end of the year |
 
-### Relationships
+There are 20 relationships, all many-to-one and single-direction, and the 54 measures sit in display folders for sales, purchases, inventory, profitability, time intelligence and store analysis.
 
-- **14 active** relationships — all Many-to-One, single-direction
-- **6 inactive** role-playing date relationships activated via `USERELATIONSHIP()`
-- **No bidirectional** relationships — ensures clean, unambiguous filter propagation
-
-### Measures — 54 across 7 display folders
-
-| Folder | Count | Key Measures |
-|---|---|---|
-| 01 Sales | 8 | Total Sales ($), Avg Selling Price, Wine Sales, Spirit Sales, Brands Sold |
-| 02 Purchases | 6 | Total Purchase ($), PO Count, Avg Purchase per PO, Critical Supplier Score |
-| 03 Inventory | 9 | Inventory Turnover, Net Stock Change, Avg Shelf Time (Days), AvgInv Value |
-| 04 Profitability | 5 | Gross Profit, Gross Profit Margin (%), GP Margin Status, Profit |
-| 05 Time Intelligence | 5 | Sales YTD, Sales PY, Sales YoY $, Sales YoY %, Sales Growth % |
-| 06 Store Analysis | 6 | Active Stores, Sales per Store, Highest/Lowest Avg Price |
-| 07 Dashboard Helpers | 3 | Dynamic Title, Turnover Status, GP Margin Status |
+The case-study data is not included, because the sales file alone is 1.7 GB.
 
 ---
 
-## 📊 Web Dashboard Features
+## Run it locally
 
-The web dashboard (`JustDrinks_Dashboard.html`) is a **zero-dependency single HTML file** that runs in any browser — no server, no installation required.
-
-### 3 Pages
-
-#### 📊 Dashboard
-- **6 KPI cards** — Total Revenue, Gross Profit, Active Stores, Purchases, Units Sold, Avg Shelf Days
-- **Monthly Revenue & GP bar chart** — click any bar to cross-filter all visuals
-- **Wine vs Spirits donut chart** — click a slice to cross-filter everything
-- **Top 10 Stores horizontal bar chart** — click a store to cross-filter
-- **GP Margin by Category** bar chart
-- **Sales vs Purchases combo chart** (bar + line overlay)
-- **Store Performance scatter chart** (Revenue vs GP%, bubble size = sales volume)
-- **Top 20 Products table** with conditional GP% badges and progress bars
-- **Recent Transactions table** — highlights newly added entries in green
-
-#### ➕ Add Transaction
-- Form: Date · Store · Product (autocomplete) · Category · Qty · Unit Price · Cost · City
-- **Add Transaction** — updates all dashboard visuals instantly
-- **⚡ Add 10 Random Transactions** — generates realistic data from real product/store list
-- **🔄 Reset 60-Day Demo** — loads 60 days of representative daily transactions
-- Mini KPI strip: Total Transactions · Today's Count · Total Added Revenue
-
-#### ⚙️ Settings
-- Dark / Light mode toggle — persists across sessions
-- 5 accent colour swatches (Navy · Amber · Green · Wine · Sage)
-- LocalStorage usage display and CSV export
-- Full model statistics panel
-
-### Cross-Filtering
-Clicking any chart element sets a visual filter that affects all other visuals simultaneously. Active filters shown as removable chips. Clear all with one button.
+1. Clone or download this repository.
+2. Open `powerbi/JustDrinks LTD.pbip` in Power BI Desktop (free from Microsoft). To see data, point the model's CSV sources at your copy of the case-study files, using Transform data.
+3. For the web dashboard, open [the live page](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html), or download `JustDrinks_Dashboard.html` and open it in a browser.
 
 ---
 
-## 📐 Power BI Dashboard
+## Key insights
 
-View the published report in [Power BI Service](https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare).
+1. **Purchasing lags the holiday peak.** Sales climb into November and December ($42.3M and $52.3M), but monthly purchases fall from $31.8M in October to $26.3M in December.
 
-The full report is saved as a **Power BI project (PBIP)** in [`powerbi/`](powerbi/), so you can read it right here on GitHub:
-- **DAX measures, tables and relationships:** [`SemanticModel/definition`](<powerbi/Just Drink LTD Capstone.SemanticModel/definition>), in plain-text TMDL
-- **Report pages and visuals:** [`Report/definition/pages`](<powerbi/Just Drink LTD Capstone.Report/definition/pages>), one folder per page
+2. **Sales and margin rise together.** December has the highest sales and margin (49.6% against 35.9% in January). October has the lowest margin (12.6%) after heavy buying. Stock is counted only at the start and end of the year, so turnover (7.2 times, about 50 days of stock) can't be tracked by month.
 
-To open it, clone the repo and double-click `Just Drink LTD Capstone.pbip` in Power BI Desktop. The data cache is not included, so the visuals load once you point the data source to your own copy of the six CSV files and click **Refresh**.
+3. **A few vendors, stores and brands drive profit.** Diageo leads vendors on gross profit ($17.8M), then Martignetti ($13.2M). Doncaster is the top city ($14.6M) and store 76 the top store ($7.9M).
 
-**Report pages:** Introduction · Overview · Sales by Category & Size · Store Pricing & City Sales · Vendor Purchases · Monthly Purchasing Trend · Inventory & Shelf Time · Sales vs Purchases · Sales Value by Size · Category Mix & Store Pricing · Profitability Overview · Brand & Vendor Profitability · Performance Review · Future Data Needs · Key Notes · Insights · Recommendations · Summary
+4. **Store results vary widely.** Sales per store run from $0.4M to $25.5M. Average prices run from about $10 to $19 in both wine and spirits.
 
-A complete build specification (`JustDrinks_Dashboard_BuildSpec.docx`) covers every visual with exact position, field bindings, and formatting.
+5. **Two sizes carry the business.** The 750mL and 1750mL bottles make 85% of sales.
 
-### Brand Colour Palette
+6. **Some brands sit a long time.** A few wine brands take 280 to 340 days to make a first sale, while category averages are 9.1 days for wine and 6.2 for spirits.
 
-| Role | Hex | Usage |
+---
+
+## Recommendations
+
+| Priority | Action | Expected impact |
 |---|---|---|
-| Primary — Deep Navy | `#1E2761` | Headers, primary measures, table headers |
-| Accent — Warm Amber | `#F2A65A` | Highlights, targets, active filters |
-| Wine — Bordeaux | `#7B2D26` | Wine category visuals |
-| Spirits — Sage | `#5B8C7E` | Spirits category visuals |
-| Good | `#059669` | Above-target KPI indicators |
-| Watch | `#D97706` | Borderline indicators |
-| Bad | `#DC2626` | Below-target indicators |
+| High | Buy holiday stock earlier | Closes the gap between December sales and purchases |
+| High | Protect the 750mL and 1750mL sizes | They are 85% of sales |
+| Medium | Use vendor volume to negotiate, and line up a back-up supplier | Diageo is 15.8% of purchases and the top five are 45% |
+| Medium | Learn from the best stores and cities | Lifts the weakest stores |
+| Medium | Track profit by product, and review the slowest brands | Moves decisions from sales to profit |
 
-### How to import the theme
-1. Open Power BI Desktop with your `.pbix` file
-2. Go to **View → Themes → Browse for themes**
-3. Select `JustDrinks_Theme.json`
-4. Click **Got it** — theme applies instantly
+Full discussion in [the strategic brief](docs/JustDrinks-Strategic-Brief.pdf) and [the speech](docs/Speech.md).
 
 ---
 
-## 🎤 Pitch Deck
+## What changed in this version
 
-A **13-slide PowerPoint pitch deck** (`JustDrinks_PitchDeck_v3.pptx`) was built to present this project to stakeholders. It includes:
+While rebuilding the report I checked its text against the model and corrected these:
 
-| Slide | Content |
+- **Wine and spirits codes.** The two were labelled the wrong way round. The group labelled wine held 50mL minis and 1750mL bottles, and the group labelled spirits held 5-litre boxes and 187mL four-packs. Spirits are now 64.19% of sales.
+- **Inventory turnover.** About 7.2 (50 days of stock), not 2.0.
+- **December purchasing.** There is no spike. Purchases fall while sales peak.
+- **Store figures.** They are not identical across stores.
+- **Critical Supplier Score.** It returned 1 for every vendor. It now ranks vendors by purchase value, with order count as the tie-breaker.
+
+The earlier documents, including the first deck and the data model notes, are kept in `docs/legacy`. They describe the first version.
+
+---
+
+## Tech stack
+
+| Layer | Tool |
 |---|---|
-| 1 | Cover — live clickable links to Power BI and web app |
-| 2 | Agenda |
-| 3 | Executive Summary — the problem and solution in plain business language |
-| 4 | Company Overview |
-| 5 | The Problem |
-| 6 | Our Solution |
-| 7 | Data Model & Star Schema diagram |
-| 8 | DAX Measures — all 54 measures listed by folder |
-| 9 | Key Findings — revenue, profit, inventory insights |
-| 10 | Power BI Dashboard — mock-up with 4 real charts |
-| 11 | Web Analytics App — browser mock-up |
-| 12 | Recommendations — 6 data-driven actions |
-| 13 | Closing — thank you + all live links |
+| Data preparation | Power Query |
+| Modelling and measures | Power BI, DAX |
+| Visualisation | Power BI Desktop, Chart.js (web dashboard) |
+| Documentation | PowerPoint, PDF |
 
 ---
 
-## 📈 Key Metrics
+## Limitations
 
-| Metric | Value |
-|---|---|
-| Total Revenue (FY 2016) | **$452.1M** |
-| Gross Profit | **$130.2M** |
-| Gross Profit Margin | **28.8%** |
-| Total Purchases | **$321.9M** |
-| Units Sold | **32.9M** |
-| Active Stores | **80** |
-| Cities | **68** |
-| Products | **12,261** |
-| Purchase Orders | **5,543** |
-| Avg Sales per Store | **$5.65M** |
-| Peak Month | **December 2016 — $52.3M revenue, $26.0M GP** |
-| Top Store | **Store 76 · Doncaster — $25.5M** |
-| Top Product | **Jack Daniels No 7 Black — $7.96M** |
-| Avg Shelf Days | **7.7 days from receiving to first sale** |
-| Inventory Turnover | **7.2× per year** (units sold ÷ average units on hand, about 50 days to sell through) |
+- **The data is a case study.** JustDrinks is fictitious, so the findings show the analytical approach more than a real business.
+- **Stock is counted only twice.** Turnover can't be tracked by month, and monthly figures are affected by the timing of buying.
+- **Gross profit is sales minus purchases.** It is not sales minus the cost of the goods actually sold.
+- **No reasons.** The data shows what happened, not why.
 
 ---
 
-## 🚀 Getting Started
+## License
 
-### Run the web dashboard
-1. Download `JustDrinks_Dashboard.html`
-2. Double-click to open in any browser (Chrome, Edge, Firefox, Safari)
-3. No server or installation required
-
-### View the live dashboard online
-```
-https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html
-```
-
-### Open the Power BI report
-```
-https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare
-```
-
-### Apply the Power BI brand theme
-1. Open your `.pbix` file in Power BI Desktop
-2. Go to **View → Themes → Browse for themes**
-3. Select `JustDrinks_Theme.json`
-
-### Follow the Power BI dashboard build spec
-1. Open `JustDrinks_Dashboard_BuildSpec.docx`
-2. Import the theme first
-3. Follow Section 5 step by step — each visual has type, position, field bindings, and formatting
+Released under the MIT License. See [LICENSE](LICENSE).
 
 ---
 
-## 🛠 Tech Stack
+**Built by Bih Brandy Sango** · Data Scientist and BI Analyst
 
-| Layer | Technology |
-|---|---|
-| **Data model** | Power BI Desktop · Tabular model (compatibility level 1567) |
-| **Data transformation** | Power Query M |
-| **Analytical calculations** | DAX (Data Analysis Expressions) |
-| **Web dashboard** | HTML5 · CSS3 · Vanilla JavaScript (ES2020) |
-| **Charts** | Chart.js 4.4.1 |
-| **Typography** | Sora · JetBrains Mono (Google Fonts) |
-| **Persistence** | Browser LocalStorage API |
-| **Presentation** | PowerPoint (pptxgenjs) |
-| **Documentation** | Word (.docx) · Markdown |
-| **Version control** | Git · GitHub |
-| **Hosting** | GitHub Pages |
-
----
-
-## 📦 Data Sources
-
-| Source file | Records | Description |
-|---|---|---|
-| `SalesFINAL12312016` | 12.8M | Sales transactions Jan–Dec 2016 |
-| `PurchasesFINAL12312016` | 2.4M | Purchase orders |
-| `InvoicePurchases12312016` | ~5K | Vendor invoices with freight |
-| `BegInvFINAL12312016` | ~200K | Inventory snapshot — Jan 1 2016 |
-| `EndInvFINAL12312016` | ~200K | Inventory snapshot — Dec 31 2016 |
-| `2017PurchasePricesDec` | 12,261 | Product master with current prices |
-
----
-
-## 🗺 Improvement Roadmap
-
-### 🔴 High Priority
-- [x] **H1** — Delete dormant Sales↔Purchases Many-to-Many bidirectional relationship *(done Oct 2026)*
-- [x] **H2** — Delete 4 unused auto-detected fact-to-fact InventoryId relationships *(done Oct 2026)*
-- [x] **H3** — Mark `Date` as a date table *(done Oct 2026)*
-- [ ] **H4** — Fix 4 products with `Size = "Unknown"` in Power Query
-- [ ] **H5** — Replace Total COGS proxy with true cost-of-sold-goods
-
-- [x] **Fix** — `AvgInv` averaged stock per inventory row instead of totalling it, which made Inventory Turnover read 1,560,331. It now sums units on hand, giving 7.2× *(done Oct 2026)*
-
-### 🟡 Medium Priority
-- [ ] **M1** — Rename tables to dimensional conventions (FactSales, DimProduct, etc.)
-- [ ] **M2** — Build a `DimVendor` dimension
-- [ ] **M3** — Retire legacy calculated tables
-- [ ] **M4** — Migrate visuals from alias measures to canonical names
-- [ ] **M5** — Add `DimInventoryItem` dimension keyed on InventoryId
-
-### 🟢 Low Priority
-- [ ] **L1** — Add KPI goal thresholds for traffic-light visuals
-- [ ] **L2** — Add Row-Level Security (RLS) for multi-store access
-- [ ] **L3** — Convert `_ShelfTimeHelper` to Power Query M
-- [ ] **L4** — Add fiscal-calendar columns to Date table
-- [ ] **L5** — Add column descriptions on all dimension columns
-
----
-
-## 🏆 Maturity Rating
-
-| # | Dimension | Score |
-|---|---|---|
-| 1 | Star schema integrity | ⭐⭐⭐⭐ 4/5 |
-| 2 | Date dimension quality | ⭐⭐⭐⭐⭐ 5/5 |
-| 3 | Relationships hygiene | ⭐⭐⭐⭐⭐ 5/5 |
-| 4 | Measure organisation | ⭐⭐⭐⭐⭐ 5/5 |
-| 5 | DAX quality & efficiency | ⭐⭐⭐⭐ 4/5 |
-| 6 | Naming conventions | ⭐⭐ 2/5 |
-| 7 | Data quality handling | ⭐⭐⭐ 3/5 |
-| 8 | Performance | ⭐⭐⭐⭐ 4/5 |
-| 9 | UX for report builders | ⭐⭐⭐⭐ 4/5 |
-| 10 | Documentation & governance | ⭐⭐⭐⭐ 4/5 |
-
-### Overall: **40 / 50 · 80% · Grade B+ (Very good)**
-
-H1–H3 were completed in October 2026: 5 unused relationships removed (25 to 20, none many-to-many) and `Date` marked as the date table. Key totals were checked before and after and did not change ($452.06M revenue, $130.16M gross profit). Finishing H4 and H5 would bring the score to about **84% (A−)**.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgements
-
-- **Project built by:** Bih Brandy Sango
-- Charts powered by [Chart.js](https://www.chartjs.org/)
-- Typography: [Sora](https://fonts.google.com/specimen/Sora) · [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)
-- AI assistance: Claude (Anthropic)
-
----
-
-<div align="center">
-  <strong>JustDrinks LTD Analytics · FY 2016 · Built May 2026</strong><br/>
-  <sub>Power BI · DAX · Power Query M · HTML · CSS · JavaScript · Chart.js</sub><br/><br/>
-  <a href="https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html">🌐 Live Dashboard</a> ·
-  <a href="https://app.powerbi.com/links/YR9nMdbf1D?ctid=74283479-689a-49e8-9a3b-d4098db086cb&pbi_source=linkShare">📊 Power BI Report</a> ·
-  <a href="JustDrinks_DataModel_Documentation.docx">📄 Documentation</a> ·
-  <a href="JustDrinks_PitchDeck_v3.pptx">🎤 Pitch Deck</a>
-</div>
+- 🌐 [Web dashboard](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html)
+- 📊 [Power BI project](powerbi/JustDrinks%20LTD.pbip)
+- 📄 [Strategic brief](docs/JustDrinks-Strategic-Brief.pdf)

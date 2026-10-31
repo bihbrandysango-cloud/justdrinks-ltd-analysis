@@ -1,0 +1,33 @@
+{
+  "name": "JustDrinks Ink",
+  "dataColors": [
+    "#111418",
+    "#E9A23B",
+    "#6B7FB3",
+    "#B8C6E6",
+    "#C0392B",
+    "#3E4C6B",
+    "#F3C97A",
+    "#CBD5E8"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1B2230",
+  "tableAccent": "#111418",
+  "good": "#6B7FB3",
+  "bad": "#C0392B",
+  "neutral": "#E9A23B",
+  "textClasses": {
+    "label": {
+      "fontFace": "Segoe UI"
+    },
+    "callout": {
+      "fontFace": "Segoe UI"
+    },
+    "title": {
+      "fontFace": "Segoe UI Semibold"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold"
+    }
+  }
+}
