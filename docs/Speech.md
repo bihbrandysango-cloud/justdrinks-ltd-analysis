@@ -12,7 +12,7 @@ JustDrinks is a retailer of wine and spirits with about 80 stores. Over the last
 
 The leadership team asked three things. Where does the money come from? How well is the company buying and holding stock? And which vendors, stores and products drive profit?
 
-I answered them in a Power BI report of 12 pages, which follows the questions in order.
+I answered them in a Power BI report of 13 pages, which follows the questions in order.
 
 ## Slide 3: The data (about 40 seconds)
 
@@ -26,7 +26,7 @@ Two things to keep in mind. Stock is counted only twice, at the start and the en
 
 This is the Executive Summary page of the report. Sales were $452 million and gross profit was $130 million, a margin of 28.8 percent. Purchases were $322 million.
 
-The line chart shows sales in black and purchases in orange. Sales rise through the year and peak in July and December. Purchases peak in July and October, then fall.
+The line chart shows sales in black and purchases in orange. Sales rise through the year and peak in July and December. By order date, purchases peak in July and October, then fall.
 
 That gap at the end of the year is the main finding, and I'll come back to it.
 
@@ -60,11 +60,11 @@ That is useful buying power for negotiating terms, and a risk if one supplier fa
 
 ## Slide 9: Sales against purchases (about 60 seconds)
 
-This is the finding I'd act on first. From October, sales climb and purchases fall.
+This is the finding I'd look at first, and the date matters. From October, sales climb and orders fall.
 
-In December, sales were $52.3 million and purchases $26.3 million, half as much. In units, the company sold 3.8 million bottles and bought 2.8 million. It drew down about a million units of stock in the busiest month.
+In December, sales were $52.3 million. Orders placed that month were $26.3 million, half as much, and goods received were $32.5 million. In units, the company sold 3.8 million bottles, ordered 2.8 million and received 3.4 million. So December stock fell by about 973,000 units by order date and about 375,000 by receipt date. Receipts are closer to what reached the shelves, so I'd quote the second figure.
 
-December also has the highest margin, 49.6 percent, against 12.6 percent in October. Part of that is real demand, and part is buying timing, because gross profit is sales minus purchases.
+December also has the highest margin: 49.6 percent by order date and 38 percent by receipt date. The lowest month moves too, from October at 12.6 percent to August at 19.5 percent. Part of the December figure is real demand, and part is buying timing, because gross profit is sales minus purchases.
 
 ## Slide 10: Recommendations (about 65 seconds)
 
@@ -102,7 +102,7 @@ Thank you. I'm happy to take questions.
 
 **Which vendors are critical suppliers?** The report ranks vendors by purchase value, with order count as the tie-breaker. Diageo ranks first, then Martignetti, Jim Beam, Pernod Ricard, Bacardi and Constellation.
 
-**How does inventory purchased compare with inventory sold?** Purchases ran ahead of sales in most months, but in November and December sales overtook them, with a drawdown of about 1.2 million units.
+**How does inventory purchased compare with inventory sold?** By order date, purchases ran ahead of sales in most months, but in November and December sales overtook them, with a drawdown of about 1.25 million units. By receipt date, November still adds stock and only December falls short, so the two-month drawdown is about 274,000 units.
 
 **Which brands have the longest shelf time?** Some wine brands take 280 to 340 days to make a first sale. Category averages are 9.1 days for wine and 6.2 days for spirits.
 
@@ -110,4 +110,6 @@ Thank you. I'm happy to take questions.
 
 **Why did you correct the wine and spirits labels?** The sizes made it clear. Spirits sizes (50mL, 1750mL) were labelled wine, and wine sizes (5-litre boxes, 187mL four-packs) were labelled spirits.
 
-**What would you do first?** Buy holiday stock earlier. It is the biggest gap in the data, and it needs no new customers.
+**Why do you show two December stock figures?** Orders placed in one month often arrive in the next. By order date December stock falls by about 973,000 units, and by receipt date about 375,000. Receipts are closer to what reached the shelves.
+
+**What would you do first?** Buy holiday stock earlier. December stock falls on both views, and the change needs no new customers.

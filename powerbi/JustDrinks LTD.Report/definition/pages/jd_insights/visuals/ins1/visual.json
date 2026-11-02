@@ -43,7 +43,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Inventory is counted only at the start and end of the year, so turnover (7.2 times, about 50 days of stock) is not tracked by month. By month, December has the highest sales ($52.3M, up 75% on January) and margin (49.6% against 35.9%). October has the lowest margin (12.6%) after heavy buying. Gross profit here is sales minus purchases, so buying timing swings the monthly margin.",
+                    "value": "Inventory is counted only at the start and end of the year, so turnover (7.2 times, about 50 days of stock) is not tracked by month. December has the highest sales ($52.3M, up 75% on January) and the highest margin on both views: 49.6% by order date and 38.0% by receipt date. The lowest month moves from October (12.6%) to August (19.5%). Gross profit here is sales minus purchases, so buying timing swings the monthly margin.",
                     "textStyle": {
                       "fontSize": "14pt",
                       "color": "#161A21"
