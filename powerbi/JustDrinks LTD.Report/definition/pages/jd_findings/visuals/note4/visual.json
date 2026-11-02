@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "December sales vs purchases",
+                    "value": "December sales vs orders",
                     "textStyle": {
                       "fontSize": "18pt",
                       "fontWeight": "bold",
@@ -43,7 +43,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Sales were $52.3M against $26.3M of purchases, and 3.8M units were sold against 2.8M bought. Stock is drawn down by about 1M units in December.",
+                    "value": "Sales were $52.3M against $26.3M ordered and $32.5M received. Stock falls by about 973K units by order date and 375K by receipt date.",
                     "textStyle": {
                       "fontSize": "14pt",
                       "color": "#161A21"

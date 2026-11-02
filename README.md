@@ -60,7 +60,7 @@ The work covers the full BI cycle:
 | Gross profit | **$130.2M** | A margin of 28.8%, with sales minus purchases of $321.9M |
 | Sales from two sizes | **85%** | 750mL ($254.0M) and 1750mL ($132.1M) |
 | Largest vendor | **15.8% of purchases** | Diageo, $51.0M. The top five vendors are 45% |
-| December sales vs purchases | **$52.3M vs $26.3M** | Stock is drawn down by about a million units |
+| December sales vs purchases | **$52.3M vs $26.3M ordered, $32.5M received** | Stock falls by about 973,000 units by order date and 375,000 by receipt date |
 
 ---
 
@@ -197,7 +197,7 @@ The case-study data is not included, because the sales file alone is 1.7 GB.
 
 ## Key insights
 
-1. **Purchasing lags the holiday peak.** Sales climb into November and December ($42.3M and $52.3M), but monthly purchases fall from $31.8M in October to $26.3M in December.
+1. **Orders lag the holiday peak.** Sales climb into November and December ($42.3M and $52.3M), but monthly orders fall from $31.8M in October to $26.3M in December. Goods received rise to $32.5M in December, so stock falls by about 973,000 units by order date and 375,000 by receipt date.
 
 2. **Sales and margin rise together.** December has the highest sales and margin (49.6% against 35.9% in January). October has the lowest margin (12.6%) after heavy buying. Stock is counted only at the start and end of the year, so turnover (7.2 times, about 50 days of stock) can't be tracked by month.
 
@@ -215,7 +215,7 @@ The case-study data is not included, because the sales file alone is 1.7 GB.
 
 | Priority | Action | Expected impact |
 |---|---|---|
-| High | Buy holiday stock earlier | Closes the gap between December sales and purchases |
+| High | Buy holiday stock earlier | Eases a December stock fall of 375,000 to 973,000 units, depending on the date used |
 | High | Protect the 750mL and 1750mL sizes | They are 85% of sales |
 | Medium | Use vendor volume to negotiate, and line up a back-up supplier | Diageo is 15.8% of purchases and the top five are 45% |
 | Medium | Learn from the best stores and cities | Lifts the weakest stores |
@@ -231,7 +231,7 @@ While rebuilding the report I checked its text against the model and corrected t
 
 - **Wine and spirits codes.** The two were labelled the wrong way round. The group labelled wine held 50mL minis and 1750mL bottles, and the group labelled spirits held 5-litre boxes and 187mL four-packs. Spirits are now 64.19% of sales.
 - **Inventory turnover.** About 7.2 (50 days of stock), not 2.0.
-- **December purchasing.** There is no spike. Purchases fall while sales peak.
+- **December purchasing.** There is no spike. Orders fall while sales peak.
 - **Order date against receipt date.** December stock falls by about 973,000 units on order dates and about 375,000 on receipt dates. Receipts are closer to what reached the shelf, so the web dashboard shows both. Monthly margin moves the same way: 49.6% and 38% for December.
 - **Store figures.** They are not identical across stores.
 - **Critical Supplier Score.** It returned 1 for every vendor. It now ranks vendors by purchase value, with order count as the tie-breaker.

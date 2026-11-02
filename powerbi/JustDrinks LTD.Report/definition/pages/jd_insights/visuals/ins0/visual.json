@@ -31,7 +31,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Purchasing lags the holiday peak",
+                    "value": "Orders lag the holiday peak",
                     "textStyle": {
                       "fontSize": "19pt",
                       "fontWeight": "bold",
@@ -43,7 +43,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Sales climb into November and December ($42.3M and $52.3M), but monthly purchases fall from $31.8M in October to $26.3M in December. Stock is drawn down in the busiest weeks, so the risk is running short.",
+                    "value": "Sales climb into November and December ($42.3M and $52.3M), but monthly orders fall from $31.8M in October to $26.3M in December. Goods received rise to $32.5M. December stock falls by about 973,000 units by order date and 375,000 by receipt date, so the risk of running short is smaller than orders alone suggest.",
                     "textStyle": {
                       "fontSize": "16pt",
                       "color": "#161A21"
