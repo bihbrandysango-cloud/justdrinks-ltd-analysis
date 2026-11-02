@@ -66,7 +66,7 @@ The work covers the full BI cycle:
 
 ## Report pages
 
-Click any image to view full size.
+Click any image to view full size. These screenshots show the previous design. The current report has the JustDrinks branding and a What-If page, and new screenshots are on the way.
 
 ### 1. Home
 
