@@ -66,7 +66,7 @@ The work covers the full BI cycle:
 
 ## Report pages
 
-Click any image to view full size. These screenshots show the previous design. The current report has the JustDrinks branding and a What-If page, and new screenshots are on the way.
+Click any image to view full size.
 
 ### 1. Home
 
@@ -108,25 +108,31 @@ Click any image to view full size. These screenshots show the previous design. T
 
 ![Profitability](docs/screenshots/07-profitability.jpg)
 
-### 8. Key findings
+### 8. What-if scenarios
 
-![Key findings](docs/screenshots/08-key-findings.jpg)
+*What better vendor terms and stronger weak stores could add, in three scenarios. The live sliders are in the web dashboard.*
 
-### 9. Insights
+![What-if scenarios](docs/screenshots/08-what-if.jpg)
 
-![Insights](docs/screenshots/09-insights.jpg)
+### 9. Key findings
 
-### 10. Recommendations
+![Key findings](docs/screenshots/09-key-findings.jpg)
 
-![Recommendations](docs/screenshots/10-recommendations.jpg)
+### 10. Insights
 
-### 11. Future data needs
+![Insights](docs/screenshots/10-insights.jpg)
 
-![Future data needs](docs/screenshots/11-future-data-needs.jpg)
+### 11. Recommendations
 
-### 12. Summary
+![Recommendations](docs/screenshots/11-recommendations.jpg)
 
-![Summary](docs/screenshots/12-summary.jpg)
+### 12. Future data needs
+
+![Future data needs](docs/screenshots/12-future-data-needs.jpg)
+
+### 13. Summary
+
+![Summary](docs/screenshots/13-summary.jpg)
 
 For the story behind each page, see [the strategic brief](docs/JustDrinks-Strategic-Brief.pdf).
 
