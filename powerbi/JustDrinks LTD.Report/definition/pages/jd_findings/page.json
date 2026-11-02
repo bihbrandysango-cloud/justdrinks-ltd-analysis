@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "jd_findings",
-  "displayName": "8. Key Findings",
+  "displayName": "9. Key Findings",
   "displayOption": "FitToPage",
   "height": 720,
   "width": 1280,
@@ -9,12 +9,28 @@
     "background": [
       {
         "properties": {
-          "color": {
-            "solid": {
-              "color": {
+          "image": {
+            "image": {
+              "name": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#EEF1F7'"
+                    "Value": "'jd_bg.png'"
+                  }
+                }
+              },
+              "url": {
+                "expr": {
+                  "ResourcePackageItem": {
+                    "PackageName": "RegisteredResources",
+                    "PackageType": 1,
+                    "ItemName": "jd_bg.png"
+                  }
+                }
+              },
+              "scaling": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Fit'"
                   }
                 }
               }
@@ -38,7 +54,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#EEF1F7'"
+                    "Value": "'#F4F5F8'"
                   }
                 }
               }

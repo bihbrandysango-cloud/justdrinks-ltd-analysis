@@ -2,6 +2,110 @@ table 2017PurchasePricesDec
 	lineageTag: 59dc8770-0214-41fe-be9e-fe12c44e04ed
 
 	/// Total sales amount in dollars (sum of SalesDollars)
+	measure 'Purchases ($M)' =
+			[Total Purchase ($)]
+		formatString: """$""#,0,,.0""M"""
+		displayFolder: 08 What-If
+		lineageTag: b8bc02d5-7c09-5d35-be84-d2c5d56b5c18
+
+	measure 'Spark Profit' =
+			IF ( [Total Sales ($)] > 0, [Gross Profit] )
+		formatString: """$""#,0,,.0""M"""
+		displayFolder: 08 What-If
+		lineageTag: cbd0523b-2d42-5317-8eb4-98ff7cbe119a
+
+	measure 'Spark Purchases' =
+			IF ( [Total Sales ($)] > 0, [Total Purchase ($)] )
+		formatString: """$""#,0,,.0""M"""
+		displayFolder: 08 What-If
+		lineageTag: bb2f2f26-0620-5838-9255-6daada0c8be1
+
+	measure 'Spark Margin' =
+			IF ( [Total Sales ($)] > 0, [Gross Profit Margin (%)] )
+		formatString: 0.00%
+		displayFolder: 08 What-If
+		lineageTag: 92dfa77e-5341-5d18-becc-4da421e04f0d
+
+	measure 'WI Top 5 Vendor Purchases' =
+			SUMX (
+			    TOPN ( 5, VALUES ( PurchasesFINAL12312016[VendorName] ), [Total Purchase ($)] ),
+			    [Total Purchase ($)]
+			)
+		formatString: """$""#,0,,.0""M"""
+		displayFolder: 08 What-If
+		lineageTag: 98b5f81a-4bcb-50b9-9aa8-9d58c8bae851
+
+	measure 'WI Median Store Sales' =
+			MEDIANX ( VALUES ( SalesFINAL12312016[Store] ), [Total Sales ($)] )
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: 0fe05ffb-9bc4-52ea-9f0a-4e5682885baf
+
+	measure 'WI Store Gap' =
+			VAR _median = [WI Median Store Sales]
+			RETURN
+			    SUMX (
+			        FILTER ( VALUES ( SalesFINAL12312016[Store] ), [Total Sales ($)] < _median ),
+			        _median - [Total Sales ($)]
+			    )
+		formatString: """$""#,0,,.0""M"""
+		displayFolder: 08 What-If
+		lineageTag: f660aa64-282a-56e5-990e-901952ce0e0d
+
+	measure 'WI Added Profit Cautious' =
+			[WI Top 5 Vendor Purchases] * 0.01 + [WI Store Gap] * 0.1 * [Gross Profit Margin (%)]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: e27e982b-38db-5d84-a7dd-4640919a92b8
+
+	measure 'WI Scenario Profit Cautious' =
+			[Gross Profit] + [WI Added Profit Cautious]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: 62ca0867-2911-5ee0-943b-d959f80e30f5
+
+	measure 'WI Scenario Margin Cautious' =
+			DIVIDE ( [WI Scenario Profit Cautious], [Total Sales ($)] + [WI Store Gap] * 0.1 )
+		formatString: 0.00%
+		displayFolder: 08 What-If
+		lineageTag: effa9f5b-9e91-56c9-8bba-59f9c7e94fe0
+
+	measure 'WI Added Profit Base' =
+			[WI Top 5 Vendor Purchases] * 0.02 + [WI Store Gap] * 0.25 * [Gross Profit Margin (%)]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: ab2795ef-1bd3-5e3f-b8da-74db8dea362e
+
+	measure 'WI Scenario Profit Base' =
+			[Gross Profit] + [WI Added Profit Base]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: dab8a9de-8e0a-5d81-863d-330e4c179b24
+
+	measure 'WI Scenario Margin Base' =
+			DIVIDE ( [WI Scenario Profit Base], [Total Sales ($)] + [WI Store Gap] * 0.25 )
+		formatString: 0.00%
+		displayFolder: 08 What-If
+		lineageTag: a863356a-8a20-5d7e-9a73-37a36bf6a693
+
+	measure 'WI Added Profit Stretch' =
+			[WI Top 5 Vendor Purchases] * 0.04 + [WI Store Gap] * 0.5 * [Gross Profit Margin (%)]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: 0fedc53f-5d3e-57aa-b53f-d8db53c618ac
+
+	measure 'WI Scenario Profit Stretch' =
+			[Gross Profit] + [WI Added Profit Stretch]
+		formatString: """$""#,0,,.00""M"""
+		displayFolder: 08 What-If
+		lineageTag: 87fc59d1-9dfd-5598-93c5-be409f235db2
+
+	measure 'WI Scenario Margin Stretch' =
+			DIVIDE ( [WI Scenario Profit Stretch], [Total Sales ($)] + [WI Store Gap] * 0.5 )
+		formatString: 0.00%
+		displayFolder: 08 What-If
+		lineageTag: 2b18ced9-1c81-52ac-80b0-95d611a477a9
+
 	measure 'Total Sales ($)' = SUM ( SalesFINAL12312016[SalesDollars] )
 		formatString: "$"#,0.00;-"$"#,0.00
 		displayFolder: 01 Sales

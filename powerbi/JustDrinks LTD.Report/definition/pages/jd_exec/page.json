@@ -9,12 +9,28 @@
     "background": [
       {
         "properties": {
-          "color": {
-            "solid": {
-              "color": {
+          "image": {
+            "image": {
+              "name": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#EEF1F7'"
+                    "Value": "'jd_bg_exec.png'"
+                  }
+                }
+              },
+              "url": {
+                "expr": {
+                  "ResourcePackageItem": {
+                    "PackageName": "RegisteredResources",
+                    "PackageType": 1,
+                    "ItemName": "jd_bg_exec.png"
+                  }
+                }
+              },
+              "scaling": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Fit'"
                   }
                 }
               }
@@ -38,7 +54,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#EEF1F7'"
+                    "Value": "'#F4F5F8'"
                   }
                 }
               }

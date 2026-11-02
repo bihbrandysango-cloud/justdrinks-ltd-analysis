@@ -2,13 +2,14 @@
 
 **Where does the money come from, and where does it slip away?**
 
-A Power BI report on a year of sales, purchasing and inventory for JustDrinks Ltd., a retailer of wine and spirits with 80 stores in 68 cities. It answers the six sections of the JustDrinks data-visualisation case study in 12 pages, with a star-schema model, 54 DAX measures, and a web dashboard.
+A Power BI report on a year of sales, purchasing and inventory for JustDrinks Ltd., a retailer of wine and spirits with 80 stores in 68 cities. It answers the six sections of the JustDrinks data-visualisation case study in 13 pages, with a star-schema model and DAX measures. A separate web version, built in HTML, CSS and JavaScript, lets you click through the same numbers and test what-if scenarios.
 
 ![JustDrinks LTD executive summary](docs/screenshots/hero.jpg)
 
 ## Quick links
 
-- 🌐 [Web dashboard](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html), an interactive version with cross-filtering and dark mode
+- 🌐 [Web dashboard](https://bihbrandysango-cloud.github.io/justdrinks-ltd-analysis/JustDrinks_Dashboard.html), the HTML version, with click-to-filter months, a what-if simulator and dark mode
+- 🎬 [Walkthrough video (55 seconds)](docs/JustDrinks-walkthrough.mp4), a screen recording of the web dashboard
 - 📊 [Power BI project](powerbi/JustDrinks%20LTD.pbip) (open in Power BI Desktop)
 - 📄 [Strategic brief (PDF)](docs/JustDrinks-Strategic-Brief.pdf), which renders inline on GitHub
 - 🎞️ [Presentation (PowerPoint)](docs/JustDrinks-Presentation.pptx) with the speech in the slide notes
@@ -45,7 +46,7 @@ The work covers the full BI cycle:
 
 1. **Modelling** six source files into a star schema with a date table, a store dimension and five fact tables
 2. **Measuring** sales, purchases, inventory, margin and vendor ranking in 54 DAX measures
-3. **Visualising** the results in a 12-page report with a navigation rail and a web dashboard
+3. **Visualising** the results in a 13-page report with a navigation rail, plus a separate web dashboard
 4. **Presenting** the findings in an 11-slide deck, a strategic brief and a speech
 
 ---
@@ -65,7 +66,7 @@ The work covers the full BI cycle:
 
 ## Report pages
 
-Click any image to view full size.
+Click any image to view full size. These screenshots show the previous design. The current report has the JustDrinks branding and a What-If page, and new screenshots are on the way.
 
 ### 1. Home
 
@@ -225,6 +226,7 @@ While rebuilding the report I checked its text against the model and corrected t
 - **Wine and spirits codes.** The two were labelled the wrong way round. The group labelled wine held 50mL minis and 1750mL bottles, and the group labelled spirits held 5-litre boxes and 187mL four-packs. Spirits are now 64.19% of sales.
 - **Inventory turnover.** About 7.2 (50 days of stock), not 2.0.
 - **December purchasing.** There is no spike. Purchases fall while sales peak.
+- **Order date against receipt date.** December stock falls by about 973,000 units on order dates and about 375,000 on receipt dates. Receipts are closer to what reached the shelf, so the web dashboard shows both. Monthly margin moves the same way: 49.6% and 38% for December.
 - **Store figures.** They are not identical across stores.
 - **Critical Supplier Score.** It returned 1 for every vendor. It now ranks vendors by purchase value, with order count as the tie-breaker.
 
@@ -238,7 +240,7 @@ The earlier documents, including the first deck and the data model notes, are ke
 |---|---|
 | Data preparation | Power Query |
 | Modelling and measures | Power BI, DAX |
-| Visualisation | Power BI Desktop, Chart.js (web dashboard) |
+| Visualisation | Power BI Desktop; HTML, CSS, JavaScript and SVG (web dashboard) |
 | Documentation | PowerPoint, PDF |
 
 ---

@@ -73,6 +73,16 @@
           "name": "jd_logo.png",
           "path": "jd_logo.png",
           "type": "Image"
+        },
+        {
+          "name": "jd_bg.png",
+          "path": "jd_bg.png",
+          "type": "Image"
+        },
+        {
+          "name": "jd_bg_exec.png",
+          "path": "jd_bg_exec.png",
+          "type": "Image"
         }
       ]
     }

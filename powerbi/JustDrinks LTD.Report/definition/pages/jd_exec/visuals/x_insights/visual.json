@@ -1,0 +1,336 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "x_insights",
+  "position": {
+    "x": 834,
+    "y": 424,
+    "z": 2100,
+    "height": 278,
+    "width": 434,
+    "tabOrder": 2100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Key insights",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "✓  ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#A9690C",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "Sales of $452.1M",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " at a 28.8% gross margin",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#566072"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "✓  ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#A9690C",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "Second half sales",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " beat the first half by 33%",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#566072"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "✓  ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#A9690C",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "750mL and 1750mL",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " bring in 85% of sales",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#566072"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "✓  ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#A9690C",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "Five vendors",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " take 45% of all purchases",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#566072"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "✓  ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#A9690C",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "Store 50",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#161A21",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " earns a 15.5% margin, about half the company rate",
+                    "textStyle": {
+                      "fontSize": "10.5pt",
+                      "color": "#566072"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E4E7ED'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

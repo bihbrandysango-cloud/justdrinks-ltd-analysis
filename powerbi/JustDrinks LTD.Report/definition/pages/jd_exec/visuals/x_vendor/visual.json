@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "x_vendor",
   "position": {
-    "x": 788,
-    "y": 400,
+    "x": 384,
+    "y": 424,
     "z": 2007,
-    "height": 306,
-    "width": 478,
+    "height": 278,
+    "width": 440,
     "tabOrder": 2007
   },
   "visual": {
@@ -38,10 +38,10 @@
                       "Entity": "2017PurchasePricesDec"
                     }
                   },
-                  "Property": "Total Purchase ($)"
+                  "Property": "Purchases ($M)"
                 }
               },
-              "queryRef": "2017PurchasePricesDec.Total Purchase ($)",
+              "queryRef": "2017PurchasePricesDec.Purchases ($M)",
               "nativeQueryRef": "Purchases",
               "displayName": "Purchases"
             },
@@ -107,6 +107,19 @@
             }
           }
         }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -156,7 +169,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -165,7 +178,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -178,7 +191,46 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }
@@ -232,7 +284,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Purchases by vendor, largest first'"
+                  "Value": "'Five vendors take 45% of all purchases'"
                 }
               }
             },
@@ -255,7 +307,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1B2230'"
+                      "Value": "'#161A21'"
                     }
                   }
                 }

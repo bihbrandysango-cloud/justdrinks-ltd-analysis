@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "nav8",
   "position": {
-    "x": 24,
-    "y": 524,
+    "x": 11,
+    "y": 420,
     "z": 928,
-    "height": 40,
-    "width": 88,
+    "height": 32,
+    "width": 100,
     "tabOrder": 928
   },
   "visual": {
@@ -19,10 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Plan",
+                    "value": "Findings",
                     "textStyle": {
-                      "fontSize": "10pt",
-                      "color": "#C9D2E3"
+                      "fontSize": "9.5pt",
+                      "color": "#FFFFFF",
+                      "fontWeight": "bold"
                     }
                   }
                 ],
@@ -44,24 +45,24 @@
                 }
               }
             },
-            "top": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
-                }
-              }
-            },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "2D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "2D"
                 }
               }
             }
@@ -83,7 +84,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1E242D'"
+                      "Value": "'#171C24'"
                     }
                   }
                 }
@@ -105,7 +106,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }
@@ -145,7 +164,7 @@
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'jd_recs'"
+                  "Value": "'jd_findings'"
                 }
               }
             }
