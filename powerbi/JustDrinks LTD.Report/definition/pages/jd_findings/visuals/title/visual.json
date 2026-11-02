@@ -3,9 +3,9 @@
   "name": "title",
   "position": {
     "x": 138,
-    "y": 8,
+    "y": 4,
     "z": 930,
-    "height": 82,
+    "height": 70,
     "width": 900,
     "tabOrder": 930
   },
@@ -21,9 +21,9 @@
                   {
                     "value": "Key Findings",
                     "textStyle": {
-                      "fontSize": "28pt",
+                      "fontSize": "20pt",
                       "fontWeight": "bold",
-                      "color": "#111418",
+                      "color": "#161A21",
                       "fontFamily": "Segoe UI Semibold"
                     }
                   }
@@ -34,8 +34,8 @@
                   {
                     "value": "Direct answers to the case-study questions, checked against the model",
                     "textStyle": {
-                      "fontSize": "11pt",
-                      "color": "#6B7385"
+                      "fontSize": "10pt",
+                      "color": "#566072"
                     }
                   }
                 ]

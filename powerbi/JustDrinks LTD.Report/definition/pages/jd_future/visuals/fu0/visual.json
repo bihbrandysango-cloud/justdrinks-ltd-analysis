@@ -35,7 +35,7 @@
                     "textStyle": {
                       "fontSize": "20pt",
                       "fontWeight": "bold",
-                      "color": "#111418"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -46,7 +46,7 @@
                     "value": "Customer data: demographics, behaviour and feedback (CSAT and NPS).",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#1B2230"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -57,7 +57,7 @@
                     "value": "Vendor data: lead times, fulfilment rates, quality metrics and contract terms.",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#1B2230"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -68,7 +68,7 @@
                     "value": "Benefit: customer lifetime value, segmentation and vendor scoring.",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#1B2230"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -159,7 +159,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -168,7 +168,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -182,6 +182,58 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }

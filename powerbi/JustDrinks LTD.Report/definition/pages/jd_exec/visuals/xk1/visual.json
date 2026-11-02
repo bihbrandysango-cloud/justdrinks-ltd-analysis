@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "xk1",
   "position": {
-    "x": 1044,
+    "x": 410,
     "y": 88,
     "z": 2002,
-    "height": 144,
-    "width": 224,
+    "height": 76,
+    "width": 167,
     "tabOrder": 2002
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "2017PurchasePricesDec.Gross Profit",
-              "nativeQueryRef": "Gross Profit"
+              "nativeQueryRef": "Gross profit, $1.63M a store",
+              "displayName": "Gross profit, $1.63M a store"
             }
           ]
         }
@@ -40,7 +41,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "26D"
+                  "Value": "20D"
                 }
               }
             },
@@ -49,7 +50,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#111418'"
+                      "Value": "'#161A21'"
                     }
                   }
                 }
@@ -78,7 +79,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "8.5D"
                 }
               }
             },
@@ -87,7 +88,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#6B7385'"
+                      "Value": "'#566072'"
                     }
                   }
                 }
@@ -111,25 +112,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#E4E9F4'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
+                  "Value": "false"
                 }
               }
             }
@@ -142,25 +125,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#DDE2EE'"
-                    }
-                  }
-                }
-              }
-            },
-            "radius": {
-              "expr": {
-                "Literal": {
-                  "Value": "22D"
+                  "Value": "false"
                 }
               }
             }
@@ -183,31 +148,31 @@
       "padding": [
         {
           "properties": {
-            "top": {
-              "expr": {
-                "Literal": {
-                  "Value": "4D"
-                }
-              }
-            },
-            "bottom": {
-              "expr": {
-                "Literal": {
-                  "Value": "4D"
-                }
-              }
-            },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "2D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "2D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
                 }
               }
             }

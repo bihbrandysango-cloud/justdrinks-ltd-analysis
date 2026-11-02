@@ -46,7 +46,7 @@
                     "value": "Spirits: lowest at store 29 ($10.51), highest at store 76 ($18.75). Wine: lowest at store 45 ($10.23), highest at store 3 ($18.68).",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#1B2230"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -137,7 +137,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -146,7 +146,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -160,6 +160,58 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }

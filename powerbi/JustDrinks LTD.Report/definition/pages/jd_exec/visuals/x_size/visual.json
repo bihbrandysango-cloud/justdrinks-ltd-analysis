@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "x_size",
   "position": {
-    "x": 446,
-    "y": 400,
+    "x": 650,
+    "y": 178,
     "z": 2006,
-    "height": 306,
-    "width": 330,
+    "height": 236,
+    "width": 390,
     "tabOrder": 2006
   },
   "visual": {
@@ -79,12 +79,15 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#6B7FB3'"
+                      "Value": "'#171C24'"
                     }
                   }
                 }
               }
             }
+          },
+          "selector": {
+            "metadata": "2017PurchasePricesDec.Total Sales ($)"
           }
         }
       ],
@@ -207,7 +210,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -216,7 +219,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -229,7 +232,46 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }
@@ -283,7 +325,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Sales by bottle size'"
+                  "Value": "'750mL and 1750mL make 85% of sales'"
                 }
               }
             },
@@ -306,7 +348,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1B2230'"
+                      "Value": "'#161A21'"
                     }
                   }
                 }
@@ -317,5 +359,105 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "topSizes",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "2017PurchasePricesDec"
+              }
+            },
+            "Property": "Size"
+          }
+        },
+        "type": "TopN",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "subquery",
+              "Expression": {
+                "Subquery": {
+                  "Query": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "2017PurchasePricesDec",
+                        "Type": 0
+                      }
+                    ],
+                    "Select": [
+                      {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "s"
+                            }
+                          },
+                          "Property": "Size"
+                        },
+                        "Name": "field"
+                      }
+                    ],
+                    "OrderBy": [
+                      {
+                        "Direction": 2,
+                        "Expression": {
+                          "Measure": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "s"
+                              }
+                            },
+                            "Property": "Total Sales ($)"
+                          }
+                        }
+                      }
+                    ],
+                    "Top": 6
+                  }
+                }
+              },
+              "Type": 2
+            },
+            {
+              "Name": "s",
+              "Entity": "2017PurchasePricesDec",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "s"
+                          }
+                        },
+                        "Property": "Size"
+                      }
+                    }
+                  ],
+                  "Table": {
+                    "SourceRef": {
+                      "Source": "subquery"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }

@@ -157,7 +157,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -166,7 +166,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -179,7 +179,46 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }
@@ -256,7 +295,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1B2230'"
+                      "Value": "'#161A21'"
                     }
                   }
                 }

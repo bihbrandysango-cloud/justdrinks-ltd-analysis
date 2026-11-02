@@ -35,7 +35,7 @@
                     "textStyle": {
                       "fontSize": "19pt",
                       "fontWeight": "bold",
-                      "color": "#111418"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -46,7 +46,7 @@
                     "value": "Inventory is counted only at the start and end of the year, so turnover (7.2 times, about 50 days of stock) is not tracked by month. By month, December has the highest sales ($52.3M, up 75% on January) and margin (49.6% against 35.9%). October has the lowest margin (12.6%) after heavy buying. Gross profit here is sales minus purchases, so buying timing swings the monthly margin.",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#1B2230"
+                      "color": "#161A21"
                     }
                   }
                 ]
@@ -137,7 +137,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DDE2EE'"
+                      "Value": "'#E4E7ED'"
                     }
                   }
                 }
@@ -146,7 +146,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "22D"
+                  "Value": "14D"
                 }
               }
             }
@@ -160,6 +160,58 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#171C24'"
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
                 }
               }
             }

@@ -1,983 +1,560 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JustDrinks LTD — Analytics</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>JustDrinks LTD Analytics</title>
+<meta name="description" content="Interactive analysis of 12.8 million sales lines and 2.4 million purchase lines for JustDrinks Ltd., an 80-store drinks retailer. Built by Bih Brandy Sango."/>
+<link rel="icon" href="docs/logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --navy:#1E2761;--navy-d:#131A45;--navy-m:#2C3E8C;
-  --amber:#F2A65A;--amber-d:#D4853A;
-  --wine:#7B2D26;--sage:#5B8C7E;
-  --ice:#CADCFC;--ice-l:#EEF2FA;
-  --good:#059669;--warn:#D97706;--bad:#DC2626;
-  --bg:#F4F7FB;--surf:#FFFFFF;--surf2:#F8FAFD;
-  --bd:#E2E8F0;--bd2:#CBD5E1;
-  --tx:#0F172A;--tx2:#475569;--tx3:#94A3B8;
-  --sw:240px;--hh:64px;--bnh:64px;
-  --r:12px;--rs:8px;
-  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
-  --shl:0 8px 32px rgba(0,0,0,.12);
-  --f:'Sora',sans-serif;--fm:'JetBrains Mono',monospace;
-  --tr:.18s cubic-bezier(.4,0,.2,1);
+  --page:#F4F5F8;--card:#FFFFFF;--line:#E4E7ED;--line2:#EEF0F4;
+  --tx:#161A21;--tx2:#566072;--tx3:#8791A1;
+  --ink:#171C24;--amber:#E39A2D;--amber-tx:#A9690C;--amber-bg:#FCF3E3;
+  --slate:#6B7FB3;--red:#C0392B;--red-bg:#FBECEA;--green:#1B8A57;--green-bg:#E7F5EE;
+  --shadow:0 1px 2px rgba(23,28,36,.04),0 8px 24px rgba(23,28,36,.06);
+  --r:14px;
+  --f:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
-[data-theme=dark]{
-  --bg:#0D1117;--surf:#161B22;--surf2:#1C2128;
-  --bd:#30363D;--bd2:#484F58;
-  --tx:#E6EDF3;--tx2:#8B949E;--tx3:#6E7681;
-  --ice-l:#1C2340;--sh:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.3);
+:root[data-theme=dark]{
+  --page:#0E1116;--card:#171B22;--line:#2A303A;--line2:#222730;
+  --tx:#F0F2F5;--tx2:#A5AEBC;--tx3:#737D8C;
+  --ink:#DCE1E9;--amber:#EFAA45;--amber-tx:#EFAA45;--amber-bg:#2C2415;
+  --slate:#8FA2D1;--red:#EC6A5C;--red-bg:#33201E;--green:#4CC48C;--green-bg:#15291F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px}
-body{font-family:var(--f);background:var(--bg);color:var(--tx);display:flex;min-height:100vh;overflow-x:hidden;transition:background var(--tr),color var(--tr);width:100%}
-button{cursor:pointer;border:none;background:none;font-family:inherit}
-input,select{font-family:inherit}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{font-family:var(--f);background:var(--page);color:var(--tx);min-height:100vh;font-variant-numeric:tabular-nums;line-height:1.45}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:6px}
 
-/* Sidebar */
-#sidebar{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--navy-d);display:flex;flex-direction:column;z-index:100;transition:transform var(--tr)}
-#main{margin-left:var(--sw);min-height:100vh;display:flex;flex-direction:column;transition:margin var(--tr);flex:1;width:calc(100% - var(--sw));max-width:calc(100% - var(--sw));overflow-x:hidden}
-.sb-brand{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
-.brand-row{display:flex;align-items:center;gap:10px}
-.brand-ico{width:36px;height:36px;background:var(--amber);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.brand-name{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.01em}
-.brand-sub{font-size:.7rem;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
-.sb-nav{padding:16px 12px;flex:1}
-.nav-sec{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;padding:0 8px;margin:16px 0 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rs);color:rgba(255,255,255,.55);font-size:.88rem;font-weight:500;cursor:pointer;transition:all var(--tr);margin-bottom:2px}
-.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
-.nav-item.active{background:var(--amber);color:#fff;font-weight:600}
-.sb-foot{padding:14px;border-top:1px solid rgba(255,255,255,.08)}
-.theme-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:var(--rs);color:rgba(255,255,255,.55);font-size:.85rem;transition:all var(--tr)}
-.theme-btn:hover{background:rgba(255,255,255,.07);color:#fff}
-.tog-track{width:36px;height:20px;background:rgba(255,255,255,.15);border-radius:20px;position:relative;margin-left:auto;flex-shrink:0;transition:background var(--tr)}
-.tog-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform var(--tr)}
-[data-theme=dark] .tog-track{background:var(--amber)}
-[data-theme=dark] .tog-thumb{transform:translateX(16px)}
+/* rail */
+#rail{position:fixed;inset:0 auto 0 0;width:236px;background:linear-gradient(178deg,#1D242E 0%,#0B0E12 100%);color:#fff;display:flex;flex-direction:column;padding:20px 14px 16px;z-index:20}
+.brand{display:flex;gap:11px;align-items:center;padding:0 6px 18px;border-bottom:1px solid rgba(255,255,255,.09)}
+.brand img{width:40px;height:40px;border-radius:11px;background:#fff;object-fit:cover}
+.brand b{display:block;font-size:.98rem;font-weight:700;letter-spacing:-.01em}
+.brand span{display:block;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:#98A2B3;margin-top:1px}
+nav{margin-top:14px;display:flex;flex-direction:column;gap:3px}
+.nv{display:flex;align-items:center;gap:11px;width:100%;padding:10px 11px;border-radius:10px;color:#B4BCC8;font-size:.88rem;font-weight:500;text-align:left;position:relative;transition:background .15s,color .15s;white-space:nowrap}
+.nv svg{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nv:hover{background:rgba(255,255,255,.06);color:#fff}
+.nv.on{background:rgba(227,154,45,.14);color:#fff;font-weight:600}
+.nv.on::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:#E39A2D}
+.nv.on svg{stroke:#EFAA45}
+.railfoot{margin-top:auto;padding:14px 6px 0;border-top:1px solid rgba(255,255,255,.09);font-size:.74rem;color:#98A2B3;line-height:1.6}
+.railfoot b{color:#fff;font-weight:600}
+.railfoot .by{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.09)}
+.themebtn{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.74rem;color:#B4BCC8;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.14);width:100%}
+.themebtn:hover{color:#fff;border-color:rgba(255,255,255,.3)}
 
-/* Topbar */
-#topbar{height:var(--hh);background:var(--surf);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50;transition:background var(--tr);width:100%}
-.tb-title{font-size:1.1rem;font-weight:700;color:var(--tx);flex:1}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--rs);font-size:.82rem;font-weight:600;transition:all var(--tr);border:1px solid transparent;cursor:pointer}
-.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-m)}
-.btn-amber{background:var(--amber);color:#fff}.btn-amber:hover{background:var(--amber-d)}
-.btn-ghost{background:var(--surf2);color:var(--tx2);border-color:var(--bd)}.btn-ghost:hover{border-color:var(--bd2);color:var(--tx)}
-.btn-danger{background:var(--bad);color:#fff}.btn-danger:hover{opacity:.88}
-.btn-sm{padding:6px 11px;font-size:.78rem}
-.btn-success{background:var(--good);color:#fff}
+/* main */
+#main{margin-left:236px;min-width:0}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:18px;position:sticky;top:0;z-index:10}
+h1{font-size:1.42rem;font-weight:700;letter-spacing:-.022em}
+.sub{font-size:.85rem;color:var(--tx2);margin-top:1px}
+.pills{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-size:.76rem;color:var(--tx2);padding:5px 11px;border:1px solid var(--line);border-radius:99px;background:var(--page);white-space:nowrap}
+.pill b{color:var(--tx);font-weight:650}
+.view{padding:22px 28px 36px;display:none}
+.view.on{display:block;animation:rise .25s ease}
+@keyframes rise{from{transform:translateY(5px)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.view.on{animation:none}}
 
-/* Filterbar */
-#filterbar{background:var(--surf);border-bottom:1px solid var(--bd);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:var(--hh);z-index:40;transition:background var(--tr);width:100%}
-.fl{font-size:.75rem;font-weight:600;color:var(--tx2);white-space:nowrap}
-.fs{padding:6px 28px 6px 10px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surf2);color:var(--tx);font-size:.82rem;font-family:var(--f);-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer;transition:all var(--tr)}
-.fs:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,39,97,.1)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--navy);color:#fff;border-radius:20px;font-size:.73rem;font-weight:600}
-.chip-a{background:var(--amber)}
-.chip-x{cursor:pointer;opacity:.7;font-size:.85rem;line-height:1}.chip-x:hover{opacity:1}
+/* cards */
+.grid{display:grid;gap:14px;margin-bottom:14px}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g21{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:17px 18px;min-width:0}
+.kpi{display:flex;flex-direction:column}
+.kl{font-size:.8rem;font-weight:600;color:var(--tx2)}
+.kc{font-size:.71rem;color:var(--tx3);margin-top:1px}
+.kv{font-size:1.86rem;font-weight:750;letter-spacing:-.03em;margin:7px 0 3px;line-height:1.1}
+.kd{font-size:.74rem;color:var(--tx2);min-height:2.3em}
+.kd b{font-weight:650}
+.up{color:var(--green)}.dn{color:var(--red)}.am{color:var(--amber-tx)}
+.spark{display:block;width:100%;height:36px;margin-top:9px}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+h2{font-size:.97rem;font-weight:680;letter-spacing:-.012em;line-height:1.3}
+.cs{font-size:.75rem;color:var(--tx3);margin-top:2px}
+.chart{width:100%;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.take{margin-top:12px;padding-top:12px;border-top:1px solid var(--line2);font-size:.82rem;color:var(--tx2);line-height:1.55}
+.take b{color:var(--tx);font-weight:650}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.74rem;color:var(--tx2);margin:0 0 8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.seg{display:inline-flex;background:var(--page);border:1px solid var(--line);border-radius:9px;padding:2px;flex:none}
+.seg button{font-size:.74rem;font-weight:550;color:var(--tx2);padding:4px 10px;border-radius:7px;white-space:nowrap}
+.seg button.on{background:var(--card);color:var(--tx);font-weight:650;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.selchip{display:none;align-items:center;gap:8px;font-size:.78rem;background:var(--amber-bg);color:var(--amber-tx);padding:6px 11px;border-radius:9px;margin-bottom:14px;font-weight:600;width:max-content;max-width:100%}
+.selchip.on{display:inline-flex}
+.selchip button{font-weight:700;text-decoration:underline;font-size:.76rem}
+table{width:100%;border-collapse:collapse;font-size:.81rem}
+th{font-size:.69rem;font-weight:650;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line2);text-align:right}
+tr:last-child td{border-bottom:0}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+td:first-child{font-weight:550}
+.tw{overflow-x:auto}
+.tag{display:inline-block;font-size:.67rem;font-weight:650;padding:1px 7px;border-radius:99px}
+.tag.s{background:var(--line2);color:var(--tx)}.tag.w{background:var(--amber-bg);color:var(--amber-tx)}
+.axis{font-size:10.5px;fill:var(--tx3)}
+.val{font-size:11px;font-weight:650;fill:var(--tx)}
+.note{font-size:10.5px;fill:var(--tx3)}
+.hit{fill:transparent;cursor:pointer}
+.hit:hover{fill:rgba(135,145,161,.1)}
+#tip{position:fixed;pointer-events:none;background:#10141A;color:#fff;font-size:.76rem;line-height:1.5;padding:8px 11px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;transition:opacity .1s;z-index:50;max-width:270px}
+#tip b{font-weight:650}
+.src{font-size:.73rem;color:var(--tx3);margin-top:6px;line-height:1.55}
 
-/* Pages */
-#p-dash,#p-add,#p-set{display:none;padding:20px;flex:1;width:100%;box-sizing:border-box}
-#p-dash.on,#p-add.on,#p-set.on{display:block;animation:fadeIn .22s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* brand */
+.hmark{display:flex;align-items:center;gap:13px;min-width:0}
+.hmark img{width:44px;height:44px;flex:none;border-radius:50%}
+.railbtn{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:7px;font-size:.76rem;font-weight:600;color:#fff;padding:7px 10px;border-radius:8px;background:rgba(227,154,45,.16);border:1px solid rgba(227,154,45,.4);text-decoration:none}
+.railbtn:hover{background:rgba(227,154,45,.3)}
+.railbtn.sec{background:none;border-color:rgba(255,255,255,.16);color:#B4BCC8;font-weight:500}
+.pagefoot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:8px;padding-top:14px;border-top:1px solid var(--line);font-size:.76rem;color:var(--tx3)}
+.pagefoot .l{display:flex;align-items:center;gap:9px}
+.pagefoot img{width:24px;height:24px;border-radius:50%}
+.pagefoot b{color:var(--tx);font-weight:650}
+.pagefoot a{color:var(--amber-tx);font-weight:600;text-decoration:none;margin-left:14px}
+.pagefoot a:hover{text-decoration:underline}
+.simlogo{position:absolute;right:20px;top:18px;width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.sim{position:relative}
 
-/* KPI */
-.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px}
-.kpi{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--sh);transition:transform var(--tr),box-shadow var(--tr);min-width:0}
-.kpi:hover{transform:translateY(-2px);box-shadow:var(--shl)}
-.kpi-bar{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:var(--r) 0 0 var(--r)}
-.kpi-ico{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:1.8rem;opacity:.07}
-.kpi-lbl{font-size:.7rem;font-weight:600;color:var(--tx2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px}
-.kpi-val{font-size:1.65rem;font-weight:800;color:var(--tx);line-height:1;margin-bottom:5px;font-variant-numeric:tabular-nums}
-.kpi-sub{font-size:.73rem;color:var(--tx3)}
-.kpi-tr{font-weight:600;font-size:.73rem}.kpi-tr.up{color:var(--good)}.kpi-tr.dn{color:var(--bad)}
+/* simulator */
+.sim{background:linear-gradient(130deg,#1A212B 0%,#141920 58%,#3A2C12 100%);border:0;color:#fff;padding:22px 24px}
+.sim h2{font-size:1.08rem;color:#fff}.sim .cs{color:#A5AEBC;font-size:.8rem}
+.sl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;margin:18px 0 16px}
+.sl label{display:flex;justify-content:space-between;gap:12px;font-size:.84rem;font-weight:600}
+.sl label output{color:#EFAA45;font-weight:750;white-space:nowrap}
+.sl small{display:block;color:#A5AEBC;font-size:.74rem;margin-top:5px;line-height:1.45}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;margin-top:10px;background:linear-gradient(90deg,#E39A2D var(--p,0%),rgba(255,255,255,.2) var(--p,0%));cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid #E39A2D;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:#fff;border:4px solid #E39A2D}
+.presets{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.presets button{font-size:.76rem;font-weight:600;color:#fff;padding:5px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.22)}
+.presets button:hover,.presets button.on{background:#E39A2D;border-color:#E39A2D;color:#14181E}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.tile{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:11px;padding:13px 15px}
+.tile b{display:block;font-size:1.5rem;font-weight:750;letter-spacing:-.02em;line-height:1.15}
+.tile span{font-size:.74rem;color:#A5AEBC}
+.tile b.g{color:#6FE0A9}
+.simnote{margin-top:14px;border-left:3px solid #E39A2D;background:rgba(0,0,0,.22);padding:10px 13px;border-radius:0 8px 8px 0;font-size:.84rem;line-height:1.5}
+pre{font-family:ui-monospace,Consolas,monospace;font-size:.74rem;line-height:1.6;background:var(--page);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;color:var(--tx)}
 
-/* Chart grid */
-.cg2{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:16px;width:100%}
-.cg22{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;width:100%}
-.cc{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--sh);min-width:0;overflow:hidden}
-.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
-.ct{font-size:.9rem;font-weight:700;color:var(--tx)}
-.cs{font-size:.7rem;color:var(--tx3);margin-top:2px}
-.cw canvas{max-height:210px}
-.cw-t canvas{max-height:270px}
+/* plan */
+.rec{display:grid;grid-template-columns:42px minmax(0,1fr) minmax(120px,auto);gap:15px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line2)}
+.rec:first-of-type{padding-top:4px}.rec:last-of-type{border-bottom:0;padding-bottom:2px}
+.rec .n{width:38px;height:38px;border-radius:11px;background:var(--amber-bg);color:var(--amber-tx);display:grid;place-items:center;font-weight:750}
+.rec h3{font-size:.93rem;font-weight:670;letter-spacing:-.01em}
+.rec p{font-size:.83rem;color:var(--tx2);margin-top:3px;line-height:1.55}
+.rec .fig{text-align:right;font-size:1.12rem;font-weight:750;letter-spacing:-.02em}
+.rec .fig small{display:block;font-size:.69rem;font-weight:500;color:var(--tx3);letter-spacing:0}
+.list{list-style:none;font-size:.83rem;color:var(--tx2)}
+.list li{padding:8px 0;border-bottom:1px solid var(--line2);line-height:1.5}
+.list li:last-child{border:0;padding-bottom:0}
+.list b{color:var(--tx);font-weight:650}
 
-/* Table */
-.twrap{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px;width:100%}
-.thead-{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
-table{width:100%;border-collapse:collapse}
-thead th{padding:9px 13px;text-align:left;font-size:.7rem;font-weight:700;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;background:var(--surf2);border-bottom:1px solid var(--bd)}
-tbody tr{transition:background var(--tr)}
-tbody tr:hover{background:var(--ice-l)}
-tbody td{padding:9px 13px;font-size:.82rem;color:var(--tx);border-bottom:1px solid var(--bd)}
-tbody tr:last-child td{border-bottom:none}
-.mono{font-family:var(--fm);font-size:.78rem}
-.badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:700}
-.bw{background:rgba(123,45,38,.11);color:var(--wine)}
-.bs{background:rgba(91,140,126,.11);color:var(--sage)}
-.bg_{background:rgba(5,150,105,.1);color:var(--good)}
-.bwa{background:rgba(217,119,6,.1);color:var(--warn)}
-.bb{background:rgba(220,38,38,.1);color:var(--bad)}
-.bnew{background:rgba(30,39,97,.1);color:var(--navy)}
-
-/* Prog bar */
-.pb{height:5px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:5px}
-.pbf{height:100%;background:linear-gradient(90deg,var(--navy),var(--amber));border-radius:3px;transition:width .5s}
-
-/* Add tx */
-.tx-lay{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
-.fc{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;box-shadow:var(--sh)}
-.ft{font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:18px;padding-bottom:13px;border-bottom:1px solid var(--bd)}
-.fr{margin-bottom:14px}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-.flbl{display:block;font-size:.74rem;font-weight:600;color:var(--tx2);margin-bottom:5px}
-.fi{width:100%;padding:8px 11px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surf2);color:var(--tx);font-size:.84rem;font-family:var(--f);transition:all var(--tr)}
-.fi:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,39,97,.1);background:var(--surf)}
-.fi::placeholder{color:var(--tx3)}
-.fsel{width:100%;padding:8px 28px 8px 11px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surf2);color:var(--tx);font-size:.84rem;font-family:var(--f);-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;cursor:pointer;transition:all var(--tr)}
-.fsel:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,39,97,.1);background:var(--surf)}
-.fac{display:flex;gap:9px;margin-top:18px;padding-top:14px;border-bottom:0;border-top:1px solid var(--bd)}
-.fac .btn{flex:1;justify-content:center}
-.tx-side{display:flex;flex-direction:column;gap:13px}
-.bulk-row{display:flex;gap:9px;flex-wrap:wrap}
-
-/* Settings */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.scard{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;box-shadow:var(--sh)}
-.stitle{font-size:.9rem;font-weight:700;color:var(--tx);margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--bd)}
-.srow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bd)}
-.srow:last-child{border-bottom:none;padding-bottom:0}
-.sname{font-size:.85rem;font-weight:600;color:var(--tx)}
-.sdesc{font-size:.73rem;color:var(--tx3);margin-top:2px}
-.sw_{width:42px;height:23px;background:var(--bd2);border-radius:23px;position:relative;cursor:pointer;transition:background var(--tr)}
-.sw_.on{background:var(--navy)}
-.sw-th{position:absolute;top:3px;left:3px;width:17px;height:17px;background:#fff;border-radius:50%;transition:transform var(--tr);box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.sw_.on .sw-th{transform:translateX(19px)}
-.swatches{display:flex;gap:5px;flex-wrap:wrap}
-.sw-dot{width:26px;height:26px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all var(--tr)}
-.sw-dot.on,.sw-dot:hover{transform:scale(1.15);border-color:var(--tx)}
-.mg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.mb{background:var(--surf2);border:1px solid var(--bd);border-radius:var(--rs);padding:11px;text-align:center}
-.mb-v{font-size:1rem;font-weight:800;color:var(--navy)}
-[data-theme=dark] .mb-v{color:var(--ice)}
-.mb-l{font-size:.7rem;color:var(--tx3);margin-top:2px}
-
-/* Bottom nav */
-#bnav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnh);background:var(--surf);border-top:1px solid var(--bd);align-items:center;justify-content:space-around;z-index:100}
-.bn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 14px;cursor:pointer;color:var(--tx3);font-size:.67rem;font-weight:600;transition:all var(--tr)}
-.bn.on{color:var(--navy)}[data-theme=dark] .bn.on{color:var(--amber)}
-.bn-ico{font-size:1.25rem}
-
-/* Toast */
-#toast{position:fixed;bottom:76px;right:22px;background:var(--navy);color:#fff;padding:11px 17px;border-radius:var(--rs);font-size:.82rem;font-weight:600;box-shadow:var(--shl);transform:translateY(16px);opacity:0;transition:all .28s;pointer-events:none;z-index:200;max-width:320px}
-#toast.on{transform:translateY(0);opacity:1}
-
-/* Scrollbar */
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
-
-/* Responsive */
-@media(max-width:900px){
-  #sidebar{transform:translateX(-100%)}
-  #main{margin-left:0;padding-bottom:var(--bnh)}
-  #bnav{display:flex}
-  #p-dash,#p-add,#p-set{padding:14px}
-  .cg2,.cg22{grid-template-columns:1fr}
-  .tx-lay{grid-template-columns:1fr}
-  .sg{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:repeat(3,1fr)}
-  .bulk-row{flex-direction:column}
+@media(max-width:1180px){.g5{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.pills{display:none}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){
+  .hmark img{width:36px;height:36px}.simlogo{width:34px;height:34px;right:14px;top:14px}
+  #rail{position:sticky;top:0;bottom:auto;right:0;width:auto;flex-direction:row;align-items:center;padding:8px 12px;gap:8px;overflow-x:auto}
+  .brand{border:0;padding:0}.brand div,.railfoot{display:none}.brand img{width:32px;height:32px}
+  nav{flex-direction:row;margin:0}.nv{padding:8px 10px;font-size:.8rem}.nv.on::before{display:none}
+  #main{margin-left:0}header{position:static;padding:14px 16px}.view{padding:14px 16px 28px}
+  .g5,.g4,.g3,.g2,.g21{grid-template-columns:minmax(0,1fr)}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.sl{grid-template-columns:minmax(0,1fr)}
+  .rec{grid-template-columns:42px minmax(0,1fr)}.rec .fig{grid-column:2;text-align:left}
 }
-@media(max-width:480px){
-  .kpi-grid{grid-template-columns:1fr 1fr}
-  .fr2{grid-template-columns:1fr}
-}
+@media(max-width:480px){.g5{grid-template-columns:minmax(0,1fr)}.tiles{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
-
-<aside id="sidebar">
-  <div class="sb-brand">
-    <div class="brand-row">
-      <div class="brand-ico">🍷</div>
-      <div>
-        <div class="brand-name">JustDrinks LTD</div>
-        <div class="brand-sub">Analytics 2016</div>
-      </div>
-    </div>
-  </div>
-  <nav class="sb-nav">
-    <div class="nav-sec">Main</div>
-    <div class="nav-item active" id="ni-dash" onclick="nav('dash')"><span>📊</span> Dashboard</div>
-    <div class="nav-item" id="ni-add" onclick="nav('add')"><span>➕</span> Add Transaction</div>
-    <div class="nav-sec">System</div>
-    <div class="nav-item" id="ni-set" onclick="nav('set')"><span>⚙️</span> Settings</div>
-  </nav>
-  <div class="sb-foot">
-    <button class="theme-btn" onclick="toggleTheme()">
-      <span id="t-ico">🌙</span>
-      <span id="t-lbl">Dark Mode</span>
-      <div class="tog-track"><div class="tog-thumb"></div></div>
-    </button>
+<aside id="rail">
+  <div class="brand"><img src="docs/logo.png" alt="JustDrinks logo"/><div><b>JustDrinks LTD</b><span>2016 BI case study</span></div></div>
+  <nav id="nav" aria-label="Dashboard pages"></nav>
+  <div class="railfoot">
+    <b>12.8M</b> sales lines<br/><b>2.4M</b> purchase lines<br/>80 stores, 68 cities, 128 vendors<br/>Checked against the raw CSVs
+    <div class="by"><b>Bih Brandy Sango</b><br/>Data and BI analyst</div>
+    <a class="railbtn" href="https://github.com/bihbrandysango-cloud/justdrinks-ltd-analysis#report-pages" target="_blank" rel="noopener">Power BI report <span>↗</span></a>
+    <a class="railbtn sec" href="https://github.com/bihbrandysango-cloud/justdrinks-ltd-analysis" target="_blank" rel="noopener">GitHub project <span>↗</span></a>
+    <button class="themebtn" id="theme" type="button"></button>
   </div>
 </aside>
-
 <div id="main">
-  <header id="topbar">
-    <div class="tb-title" id="tb-title">Executive Dashboard</div>
-    <div style="display:flex;gap:9px;align-items:center">
-      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Export</button>
-      <button class="btn btn-amber btn-sm" onclick="nav('add')">＋ Add Sale</button>
-    </div>
+  <header>
+    <div class="hmark"><img src="docs/logo.png" alt="JustDrinks logo"/><div><h1 id="h"></h1><div class="sub" id="hs"></div></div></div>
+    <div class="pills" id="pills"></div>
   </header>
-
-  <div id="filterbar">
-    <span class="fl">Month</span>
-    <select class="fs" id="f-month" onchange="applyF()">
-      <option value="all">All Months</option>
-      <option value="Jan 2016">Jan 2016</option><option value="Feb 2016">Feb 2016</option>
-      <option value="Mar 2016">Mar 2016</option><option value="Apr 2016">Apr 2016</option>
-      <option value="May 2016">May 2016</option><option value="Jun 2016">Jun 2016</option>
-      <option value="Jul 2016">Jul 2016</option><option value="Aug 2016">Aug 2016</option>
-      <option value="Sep 2016">Sep 2016</option><option value="Oct 2016">Oct 2016</option>
-      <option value="Nov 2016">Nov 2016</option><option value="Dec 2016">Dec 2016</option>
-    </select>
-    <span class="fl">Category</span>
-    <select class="fs" id="f-cat" onchange="applyF()">
-      <option value="all">All Categories</option>
-      <option value="Wine">Wine</option><option value="Spirits">Spirits</option>
-    </select>
-    <span class="fl">Store</span>
-    <select class="fs" id="f-store" onchange="applyF()"></select>
-    <div class="chips" id="chips"></div>
-    <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="clearF()">✕ Clear</button>
-  </div>
-
-  <!-- DASHBOARD -->
-  <div id="p-dash" class="on">
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-bar" style="background:var(--navy)"></div><div class="kpi-ico">💰</div><div class="kpi-lbl">Total Revenue</div><div class="kpi-val" id="k-rev">$452.1M</div><div class="kpi-sub"><span class="kpi-tr up">↑ 8.3%</span> 2016 full year</div></div>
-      <div class="kpi"><div class="kpi-bar" style="background:var(--good)"></div><div class="kpi-ico">📈</div><div class="kpi-lbl">Gross Profit</div><div class="kpi-val" id="k-gp">$130.2M</div><div class="kpi-sub"><span class="kpi-tr up">28.8%</span> GP margin</div></div>
-      <div class="kpi"><div class="kpi-bar" style="background:var(--amber)"></div><div class="kpi-ico">🏪</div><div class="kpi-lbl">Active Stores</div><div class="kpi-val" id="k-stores">80</div><div class="kpi-sub">$5.65M avg/store</div></div>
-      <div class="kpi"><div class="kpi-bar" style="background:var(--sage)"></div><div class="kpi-ico">📦</div><div class="kpi-lbl">Purchases</div><div class="kpi-val" id="k-purch">$321.9M</div><div class="kpi-sub">5,543 purchase orders</div></div>
-      <div class="kpi"><div class="kpi-bar" style="background:var(--wine)"></div><div class="kpi-ico">🍾</div><div class="kpi-lbl">Units Sold</div><div class="kpi-val" id="k-qty">32.9M</div><div class="kpi-sub">all product lines</div></div>
-      <div class="kpi"><div class="kpi-bar" style="background:var(--navy-m)"></div><div class="kpi-ico">⏱</div><div class="kpi-lbl">Avg Shelf Days</div><div class="kpi-val" id="k-shelf">7.7</div><div class="kpi-sub">receive → first sale</div></div>
-    </div>
-
-    <div class="cg2">
-      <div class="cc">
-        <div class="ch">
-          <div><div class="ct">Monthly Revenue &amp; Gross Profit</div><div class="cs">Click bars to filter all visuals by month</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="vfClear('month')">Reset</button>
-        </div>
-        <div class="cw cw-t"><canvas id="c-trend"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="ch"><div><div class="ct">Sales by Category</div><div class="cs">Click slice to cross-filter</div></div></div>
-        <div class="cw"><canvas id="c-donut"></canvas></div>
-        <div id="donut-leg" style="display:flex;gap:14px;justify-content:center;margin-top:10px;font-size:.77rem;color:var(--tx2)"></div>
-      </div>
-    </div>
-
-    <div class="cg22">
-      <div class="cc">
-        <div class="ch">
-          <div><div class="ct">Top 10 Stores by Revenue</div><div class="cs">Click bar to filter by store</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="vfClear('store')">Reset</button>
-        </div>
-        <div class="cw"><canvas id="c-stores"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="ch"><div><div class="ct">GP Margin by Category</div><div class="cs">Gross profit % comparison</div></div></div>
-        <div class="cw"><canvas id="c-margin"></canvas></div>
-      </div>
-    </div>
-
-    <div class="cg22">
-      <div class="cc">
-        <div class="ch"><div><div class="ct">Sales vs Purchases</div><div class="cs">Monthly 2016 comparison</div></div></div>
-        <div class="cw"><canvas id="c-combo"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="ch"><div><div class="ct">Store Performance Scatter</div><div class="cs">Revenue vs GP margin · size = sales vol</div></div></div>
-        <div class="cw"><canvas id="c-scatter"></canvas></div>
-      </div>
-    </div>
-
-    <div class="twrap">
-      <div class="thead-">
-        <span style="font-size:.9rem;font-weight:700;color:var(--tx)">Top Products by Revenue</span>
-        <span style="font-size:.77rem;color:var(--tx3)" id="prod-ct">20 products</span>
-      </div>
-      <div style="overflow-x:auto">
-        <table><thead><tr><th>#</th><th>Product</th><th>Category</th><th>Revenue</th><th>GP Margin</th><th>Units</th><th>Share</th></tr></thead>
-        <tbody id="prod-tb"></tbody></table>
-      </div>
-    </div>
-
-    <div class="twrap">
-      <div class="thead-">
-        <span style="font-size:.9rem;font-weight:700;color:var(--tx)">Recent Transactions</span>
-        <span style="font-size:.77rem;color:var(--tx3)" id="tx-ct">Latest entries</span>
-      </div>
-      <div style="overflow-x:auto">
-        <table><thead><tr><th>Date</th><th>Product</th><th>Category</th><th>Store</th><th>Qty</th><th>Price</th><th>Revenue</th></tr></thead>
-        <tbody id="tx-tb"></tbody></table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADD TX -->
-  <div id="p-add">
-    <div class="tx-lay">
-      <div class="fc">
-        <div class="ft">➕ Add New Transaction</div>
-        <div class="fr2">
-          <div><label class="flbl">Date</label><input type="date" class="fi" id="tx-date"/></div>
-          <div><label class="flbl">Store</label><select class="fsel" id="tx-store"></select></div>
-        </div>
-        <div class="fr">
-          <label class="flbl">Product</label>
-          <input type="text" class="fi" id="tx-prod" placeholder="e.g. Jack Daniels No 7 Black" list="prod-dl"/>
-          <datalist id="prod-dl"></datalist>
-        </div>
-        <div class="fr2">
-          <div><label class="flbl">Category</label><select class="fsel" id="tx-cat"><option value="Wine">Wine</option><option value="Spirits">Spirits</option></select></div>
-          <div><label class="flbl">Quantity</label><input type="number" class="fi" id="tx-qty" placeholder="0" min="1"/></div>
-        </div>
-        <div class="fr2">
-          <div><label class="flbl">Unit Price ($)</label><input type="number" class="fi" id="tx-price" placeholder="0.00" step="0.01"/></div>
-          <div><label class="flbl">Cost ($)</label><input type="number" class="fi" id="tx-cost" placeholder="0.00" step="0.01"/></div>
-        </div>
-        <div class="fr"><label class="flbl">City</label><input type="text" class="fi" id="tx-city" placeholder="e.g. DONCASTER"/></div>
-        <div class="fac">
-          <button class="btn btn-ghost" onclick="clearTxForm()">Clear</button>
-          <button class="btn btn-navy" onclick="addTx()">＋ Add Transaction</button>
-        </div>
-      </div>
-
-      <div class="tx-side">
-        <div class="bulk-row">
-          <button class="btn btn-amber" onclick="add10()">⚡ Add 10 Random Transactions</button>
-          <button class="btn btn-danger" onclick="reset60()">🔄 Reset 60-Day Demo</button>
-        </div>
-        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-          <div class="kpi"><div class="kpi-bar" style="background:var(--navy)"></div><div class="kpi-lbl">Total Tx</div><div class="kpi-val" id="m-ct" style="font-size:1.25rem">—</div></div>
-          <div class="kpi"><div class="kpi-bar" style="background:var(--amber)"></div><div class="kpi-lbl">Today</div><div class="kpi-val" id="m-today" style="font-size:1.25rem">—</div></div>
-          <div class="kpi"><div class="kpi-bar" style="background:var(--good)"></div><div class="kpi-lbl">Added Rev</div><div class="kpi-val" id="m-rev" style="font-size:1.1rem">—</div></div>
-        </div>
-        <div class="twrap" style="margin-bottom:0">
-          <div class="thead-">
-            <span style="font-size:.88rem;font-weight:700;color:var(--tx)">Recently Added</span>
-            <button class="btn btn-ghost btn-sm" onclick="clearTx()">Clear All</button>
-          </div>
-          <div style="overflow-x:auto;max-height:380px;overflow-y:auto">
-            <table><thead><tr><th>Date</th><th>Product</th><th>Cat</th><th>Qty</th><th>Revenue</th></tr></thead>
-            <tbody id="new-tb"></tbody></table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SETTINGS -->
-  <div id="p-set">
-    <div style="margin-bottom:18px">
-      <div style="font-size:1.15rem;font-weight:800;color:var(--tx)">Settings</div>
-      <div style="font-size:.82rem;color:var(--tx3);margin-top:3px">Customize your dashboard experience</div>
-    </div>
-    <div class="sg">
-      <div class="scard">
-        <div class="stitle">🎨 Appearance</div>
-        <div class="srow">
-          <div><div class="sname">Dark Mode</div><div class="sdesc">Switch between light and dark theme</div></div>
-          <div class="sw_" id="dark-sw" onclick="toggleTheme()"><div class="sw-th"></div></div>
-        </div>
-        <div class="srow">
-          <div><div class="sname">Accent Color</div><div class="sdesc">Primary highlight color</div></div>
-          <div class="swatches">
-            <div class="sw-dot on" style="background:#1E2761" data-c="#1E2761" onclick="setAccent(this)"></div>
-            <div class="sw-dot" style="background:#F2A65A" data-c="#F2A65A" onclick="setAccent(this)"></div>
-            <div class="sw-dot" style="background:#059669" data-c="#059669" onclick="setAccent(this)"></div>
-            <div class="sw-dot" style="background:#7B2D26" data-c="#7B2D26" onclick="setAccent(this)"></div>
-            <div class="sw-dot" style="background:#5B8C7E" data-c="#5B8C7E" onclick="setAccent(this)"></div>
-          </div>
-        </div>
-      </div>
-      <div class="scard">
-        <div class="stitle">💾 Data</div>
-        <div class="srow">
-          <div><div class="sname">LocalStorage</div><div class="sdesc" id="ls-usage">Calculating...</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="calcLS()">Refresh</button>
-        </div>
-        <div class="srow">
-          <div><div class="sname">User Transactions</div><div class="sdesc" id="tx-count-s">Loading...</div></div>
-          <button class="btn btn-danger btn-sm" onclick="clearTx()">Clear</button>
-        </div>
-        <div class="srow">
-          <div><div class="sname">Export CSV</div><div class="sdesc">Download all added transactions</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="exportCSV()">Export</button>
-        </div>
-        <div class="srow">
-          <div><div class="sname">Reset Settings</div><div class="sdesc">Restore all defaults</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="resetSettings()">Reset</button>
-        </div>
-      </div>
-      <div class="scard">
-        <div class="stitle">📊 Model Stats</div>
-        <div class="mg">
-          <div class="mb"><div class="mb-v">$452M</div><div class="mb-l">Total Revenue</div></div>
-          <div class="mb"><div class="mb-v">28.8%</div><div class="mb-l">GP Margin</div></div>
-          <div class="mb"><div class="mb-v">80</div><div class="mb-l">Stores</div></div>
-          <div class="mb"><div class="mb-v">12,261</div><div class="mb-l">Products</div></div>
-          <div class="mb"><div class="mb-v">32.9M</div><div class="mb-l">Units Sold</div></div>
-          <div class="mb"><div class="mb-v">5,543</div><div class="mb-l">PO Count</div></div>
-        </div>
-      </div>
-      <div class="scard">
-        <div class="stitle">ℹ️ About</div>
-        <div class="srow"><div><div class="sname">App Version</div><div class="sdesc">JustDrinks LTD Analytics</div></div><span style="font-size:.75rem;font-family:var(--fm);color:var(--tx3)">v2.0</span></div>
-        <div class="srow"><div><div class="sname">Data Source</div><div class="sdesc">Power BI Desktop — JustDrinks Capstone</div></div><span style="font-size:.75rem;color:var(--good);font-weight:600">● Live</span></div>
-        <div class="srow"><div><div class="sname">Fiscal Period</div><div class="sdesc">Jan — Dec 2016</div></div><span style="font-size:.75rem;color:var(--tx3)">FY 2016</span></div>
-        <div class="srow"><div><div class="sname">Last Refresh</div><div class="sdesc" id="lr-time">—</div></div><button class="btn btn-ghost btn-sm" onclick="refreshTime()">Now</button></div>
-      </div>
-    </div>
-  </div>
+  <main id="views"></main>
 </div>
-
-<div id="bnav">
-  <div class="bn on" id="bn-dash" onclick="nav('dash')"><span class="bn-ico">📊</span>Dashboard</div>
-  <div class="bn" id="bn-add" onclick="nav('add')"><span class="bn-ico">➕</span>Add Tx</div>
-  <div class="bn" id="bn-set" onclick="nav('set')"><span class="bn-ico">⚙️</span>Settings</div>
-</div>
-
-<div id="toast"></div>
-
+<div id="tip" role="status"></div>
 <script>
-/* DATA */
-const D={
-  monthly:[
-    {m:"Jan 2016",s:201601,rev:29854028,purch:19138815,gp:10715213},
-    {m:"Feb 2016",s:201602,rev:28876607,purch:20147365,gp:8729243},
-    {m:"Mar 2016",s:201603,rev:28988412,purch:20252969,gp:8735443},
-    {m:"Apr 2016",s:201604,rev:30723735,purch:21798730,gp:8925005},
-    {m:"May 2016",s:201605,rev:36041211,purch:28693060,gp:7348150},
-    {m:"Jun 2016",s:201606,rev:39290701,purch:29699192,gp:9591509},
-    {m:"Jul 2016",s:201607,rev:49696467,purch:32193842,gp:17502624},
-    {m:"Aug 2016",s:201608,rev:39056166,purch:30747884,gp:8308282},
-    {m:"Sep 2016",s:201609,rev:38477539,purch:26840920,gp:11636619},
-    {m:"Oct 2016",s:201610,rev:36433142,purch:31836532,gp:4596610},
-    {m:"Nov 2016",s:201611,rev:42312697,purch:27252267,gp:15060430},
-    {m:"Dec 2016",s:201612,rev:22312248,purch:14096186,gp:8216062},
-  ],
-  stores:[
-    {id:76,city:"DONCASTER",rev:25451535,gp:7926429},
-    {id:34,city:"PITMERDEN",rev:20928718,gp:6468550},
-    {id:73,city:"DONCASTER",rev:21735975,gp:6668018},
-    {id:38,city:"GOULCREST",rev:19451643,gp:5935068},
-    {id:66,city:"EANVERNESS",rev:17825658,gp:5582147},
-    {id:67,city:"EANVERNESS",rev:15098061,gp:4663074},
-    {id:69,city:"MOUNTMEND",rev:14446730,gp:4407019},
-    {id:50,city:"MOUNTMEND",rev:16938876,gp:2621525},
-    {id:60,city:"IRRAGIN",rev:12123849,gp:3698782},
-    {id:15,city:"WANBORNE",rev:10402884,gp:2803396},
-  ],
-  products:[
-    {n:"Jack Daniels No 7 Black",c:"Spirits",rev:7964747,gpm:.2687,qty:334824},
-    {n:"Tito's Handmade Vodka",c:"Spirits",rev:7399658,gpm:.2407,qty:358288},
-    {n:"Grey Goose Vodka",c:"Spirits",rev:7209608,gpm:.2699,qty:274794},
-    {n:"Captain Morgan Spiced Rum",c:"Spirits",rev:6356321,gpm:.2727,qty:385838},
-    {n:"Absolut 80 Proof",c:"Spirits",rev:6244752,gpm:.2561,qty:341297},
-    {n:"Jameson Irish Whiskey",c:"Spirits",rev:5715760,gpm:.2461,qty:235981},
-    {n:"Ketel One Vodka",c:"Spirits",rev:5070084,gpm:.2754,qty:189684},
-    {n:"Baileys Irish Cream",c:"Wine",rev:4150122,gpm:.2939,qty:237743},
-    {n:"Kahlua",c:"Wine",rev:3604859,gpm:.2465,qty:212434},
-    {n:"Tanqueray",c:"Spirits",rev:3456698,gpm:.2807,qty:152510},
-    {n:"Jim Beam",c:"Spirits",rev:3387951,gpm:.2729,qty:264054},
-    {n:"Bacardi Superior Rum",c:"Spirits",rev:3164376,gpm:.3171,qty:275874},
-    {n:"Crown Royal",c:"Spirits",rev:3050337,gpm:.2557,qty:102755},
-    {n:"Patron Silver Tequila",c:"Spirits",rev:2841673,gpm:.2562,qty:79094},
-    {n:"Dewars White Label",c:"Wine",rev:2715618,gpm:.3124,qty:117037},
-    {n:"Bombay Sapphire Gin",c:"Spirits",rev:2668756,gpm:.2845,qty:117958},
-    {n:"Johnnie Walker Black Label",c:"Spirits",rev:2409135,gpm:.2143,qty:48833},
-    {n:"Smirnoff 80 Proof",c:"Spirits",rev:2408194,gpm:.3376,qty:477926},
-    {n:"Jose Cuervo Especial",c:"Spirits",rev:2585343,gpm:.2622,qty:201256},
-    {n:"Smirnoff Traveler",c:"Spirits",rev:2592041,gpm:.1943,qty:148265},
-  ],
-  PRODS:["Jack Daniels No 7 Black","Tito's Handmade Vodka","Grey Goose Vodka","Captain Morgan Spiced Rum",
-    "Absolut 80 Proof","Jameson Irish Whiskey","Ketel One Vodka","Baileys Irish Cream",
-    "Kahlua","Tanqueray","Jim Beam","Bacardi Superior Rum","Crown Royal","Patron Silver Tequila",
-    "Dewars White Label","Bombay Sapphire Gin","Johnnie Walker Black Label","Smirnoff 80 Proof",
-    "Jose Cuervo Especial","Mirassou Moscato","Barefoot Bubbly Red Moscato","Carnivor Cab Svgn"],
-};
+const D={"month":[{"m":"2016-01","sp":18289796,"wi":11564232,"spu":1300925,"wiu":894034,"po":19138815,"pou":2130443,"rc":20514449,"rcu":2232313},{"m":"2016-02","sp":18580057,"wi":10296550,"spu":1317503,"wiu":807789,"po":20147365,"pou":2242110,"rc":19833841,"rcu":2182428},{"m":"2016-03","sp":18537550,"wi":10450862,"spu":1333115,"wiu":886511,"po":20252969,"pou":2199278,"rc":20983950,"rcu":2319276},{"m":"2016-04","sp":20091246,"wi":10632488,"spu":1396872,"wiu":892553,"po":21798730,"pou":2328996,"rc":20886046,"rcu":2218612},{"m":"2016-05","sp":23255750,"wi":12785461,"spu":1581695,"wiu":1042801,"po":28693060,"pou":3011592,"rc":26439771,"rcu":2778905},{"m":"2016-06","sp":25025087,"wi":14265614,"spu":1689069,"wiu":1169875,"po":29699192,"pou":3038355,"rc":29120996,"rcu":3025276},{"m":"2016-07","sp":33285357,"wi":16411110,"spu":2113525,"wiu":1326123,"po":32193842,"pou":3252027,"rc":33408384,"rcu":3322525},{"m":"2016-08","sp":24905360,"wi":14150806,"spu":1716517,"wiu":1175749,"po":30747884,"pou":3224148,"rc":31454989,"rcu":3328118},{"m":"2016-09","sp":23654944,"wi":14822595,"spu":1652232,"wiu":1187811,"po":26840920,"pou":2906400,"rc":27521421,"rcu":2953690},{"m":"2016-10","sp":23375314,"wi":13057828,"spu":1661790,"wiu":1062867,"po":31836532,"pou":3086254,"rc":27720974,"rcu":2788824},{"m":"2016-11","sp":27676826,"wi":14635871,"spu":1792022,"wiu":1158493,"po":27252267,"pou":2673905,"rc":31565630,"rcu":3051058},{"m":"2016-12","sp":33487723,"wi":18824525,"spu":2290322,"wiu":1467683,"po":26349073,"pou":2785110,"rc":32450314,"rcu":3383352}],"sizes":[{"n":"750mL","sp":122923531,"wi":131055667,"spu":5982706,"wiu":10248818},{"n":"1750mL","sp":132099259,"wi":736,"spu":5931208,"wiu":67},{"n":"1500mL","sp":386078,"wi":19556548,"spu":38112,"wiu":1927494},{"n":"375mL","sp":11854620,"wi":978330,"spu":1069854,"wiu":87035},{"n":"1000mL","sp":12160382,"wi":210507,"spu":591863,"wiu":14794},{"n":"50mL","sp":8709349,"wi":7929,"spu":5996456,"wiu":8009},{"n":"3000mL","sp":0,"wi":4473308,"spu":0,"wiu":273026},{"n":"5000mL","sp":28006,"wi":3464258,"spu":1401,"wiu":222105}],"stores":[{"id":76,"c":"Doncaster","sp":14390382,"wi":11061154,"u":1573145,"pu":17525106},{"id":73,"c":"Doncaster","sp":12365494,"wi":9370481,"u":1365482,"pu":15067957},{"id":34,"c":"Pitmerden","sp":13373819,"wi":7554900,"u":1365123,"pu":14460168},{"id":38,"c":"Goulcrest","sp":10573700,"wi":8877943,"u":1320833,"pu":13516574},{"id":66,"c":"Eanverness","sp":10120045,"wi":7705613,"u":1118778,"pu":12243511},{"id":50,"c":"Mountmend","sp":11572963,"wi":5365913,"u":1078369,"pu":14317351},{"id":67,"c":"Eanverness","sp":8194946,"wi":6903115,"u":950670,"pu":10434987},{"id":69,"c":"Mountmend","sp":8507684,"wi":5939046,"u":969958,"pu":10039711},{"id":60,"c":"Irragin","sp":7435401,"wi":4688448,"u":840562,"pu":8425067},{"id":15,"c":"Wanborne","sp":6765328,"wi":3637556,"u":736960,"pu":7599488},{"id":55,"c":"Dry Gulch","sp":5879609,"wi":4260185,"u":659216,"pu":7172954},{"id":41,"c":"Larnwick","sp":6216733,"wi":2964052,"u":680848,"pu":7252249},{"id":49,"c":"Garigill","sp":5904277,"wi":2856431,"u":667329,"pu":6153488},{"id":74,"c":"Paentmarwy","sp":6333430,"wi":2389278,"u":619773,"pu":7585453},{"id":10,"c":"Hornsey","sp":6258435,"wi":1892098,"u":636618,"pu":5786958},{"id":23,"c":"Arbington","sp":4890182,"wi":2981295,"u":598025,"pu":5546941},{"id":68,"c":"Solaris","sp":4251152,"wi":3563334,"u":580777,"pu":5214653},{"id":33,"c":"Hornsey","sp":4680324,"wi":2410441,"u":519053,"pu":4987971},{"id":1,"c":"Hardersfield","sp":4137066,"wi":2528601,"u":558588,"pu":4844714},{"id":6,"c":"Goulcrest","sp":3783532,"wi":2668149,"u":461757,"pu":4374800},{"id":2,"c":"Ashborne","sp":4451671,"wi":1979851,"u":417757,"pu":4504047},{"id":32,"c":"Mountmend","sp":4177069,"wi":1929372,"u":453196,"pu":4417079},{"id":59,"c":"Claethorpes","sp":3968463,"wi":1847507,"u":442645,"pu":4075618},{"id":9,"c":"Blackpool","sp":4058686,"wi":1677382,"u":465680,"pu":3951593},{"id":61,"c":"Aethelney","sp":4343435,"wi":1339270,"u":410829,"pu":4006056},{"id":79,"c":"Ballymena","sp":3611992,"wi":2056209,"u":413449,"pu":3993526},{"id":25,"c":"Caershire","sp":3165063,"wi":2347226,"u":443320,"pu":3762636},{"id":7,"c":"Stanmore","sp":3259977,"wi":2223370,"u":409837,"pu":3792050},{"id":11,"c":"Cardend","sp":2571279,"wi":2732896,"u":382582,"pu":3557100},{"id":14,"c":"Bromwich","sp":4130798,"wi":987063,"u":429660,"pu":3594585},{"id":56,"c":"Beggar'S Hole","sp":3211227,"wi":1894955,"u":390668,"pu":3490889},{"id":64,"c":"Cesterfield","sp":2238638,"wi":2792658,"u":368806,"pu":3386250},{"id":71,"c":"Clarcton","sp":3504255,"wi":1305827,"u":379576,"pu":3307224},{"id":48,"c":"Norfolk","sp":3955416,"wi":835899,"u":328852,"pu":3416208},{"id":72,"c":"Hardersfield","sp":3398444,"wi":1267866,"u":400527,"pu":3251303},{"id":21,"c":"Balerno","sp":2382226,"wi":2140354,"u":338589,"pu":3186371},{"id":27,"c":"Mountmend","sp":3493488,"wi":750659,"u":356765,"pu":3040203},{"id":30,"c":"Culcheth","sp":2841755,"wi":1245069,"u":333112,"pu":2983014},{"id":53,"c":"Hillfar","sp":3223486,"wi":860328,"u":341666,"pu":2927638},{"id":51,"c":"Aberdeen","sp":2865121,"wi":1106609,"u":328156,"pu":2758455},{"id":54,"c":"Guthram","sp":2070376,"wi":1747519,"u":278648,"pu":2610671},{"id":22,"c":"Sharnwick","sp":2465205,"wi":1265591,"u":303607,"pu":2622723},{"id":75,"c":"Barncombe","sp":2790671,"wi":916564,"u":313123,"pu":2590808},{"id":19,"c":"Wintervale","sp":2411067,"wi":1254580,"u":285718,"pu":2914428},{"id":77,"c":"Tamworth","sp":2782432,"wi":872336,"u":287326,"pu":2656433},{"id":20,"c":"Bredwardine","sp":2593162,"wi":968490,"u":324191,"pu":2473695},{"id":8,"c":"Alnerwick","sp":2564425,"wi":986372,"u":281492,"pu":2474463},{"id":58,"c":"Hartlepool","sp":2764386,"wi":726697,"u":295499,"pu":2455856},{"id":44,"c":"Porthcrawl","sp":2058089,"wi":1402533,"u":254826,"pu":2924151},{"id":39,"c":"Easthallow","sp":1761480,"wi":1683632,"u":260632,"pu":2289833},{"id":31,"c":"Hornsey","sp":2644851,"wi":742691,"u":315634,"pu":2375624},{"id":4,"c":"Eanverness","sp":2241818,"wi":905042,"u":269520,"pu":2247278},{"id":12,"c":"Leeside","sp":1613397,"wi":1496737,"u":234217,"pu":2084605},{"id":62,"c":"Kilmarnock","sp":2245307,"wi":721067,"u":260098,"pu":2052730},{"id":78,"c":"Easthaven","sp":2120677,"wi":800292,"u":256099,"pu":2231546},{"id":42,"c":"Black Hollow","sp":1664054,"wi":1210564,"u":224326,"pu":1945664},{"id":47,"c":"Pella'S Wish","sp":1713454,"wi":922653,"u":199724,"pu":1819522},{"id":35,"c":"Halivaara","sp":1820033,"wi":739614,"u":226968,"pu":1800185},{"id":13,"c":"Tarmsworth","sp":2049031,"wi":444142,"u":213947,"pu":1796043},{"id":40,"c":"Bullmar","sp":1614929,"wi":854326,"u":192192,"pu":1690905},{"id":57,"c":"Lanteglos","sp":1686465,"wi":656449,"u":195122,"pu":1668277},{"id":43,"c":"Wolford","sp":1796222,"wi":517966,"u":203313,"pu":1605598},{"id":17,"c":"Oldham","sp":1706262,"wi":428085,"u":187593,"pu":1468039},{"id":70,"c":"Keld","sp":1497876,"wi":570541,"u":178150,"pu":1491132},{"id":63,"c":"Swordbreak","sp":1470460,"wi":443410,"u":148450,"pu":1353305},{"id":16,"c":"Lundy","sp":1452695,"wi":460952,"u":154096,"pu":1349377},{"id":52,"c":"Graycott","sp":1290687,"wi":556468,"u":140855,"pu":1293238},{"id":24,"c":"Palperroth","sp":1216479,"wi":485809,"u":158296,"pu":1177823},{"id":28,"c":"Larnwick","sp":1195487,"wi":465224,"u":136878,"pu":1169277},{"id":65,"c":"Luton","sp":981885,"wi":677625,"u":134656,"pu":1102766},{"id":45,"c":"Veritas","sp":1108741,"wi":341526,"u":133588,"pu":1018554},{"id":36,"c":"Lewes","sp":1041984,"wi":367299,"u":115944,"pu":1001289},{"id":5,"c":"Sutton","sp":1002931,"wi":331852,"u":124104,"pu":956213},{"id":18,"c":"Furness","sp":911783,"wi":398272,"u":94518,"pu":930180},{"id":46,"c":"Tywardreath","sp":756663,"wi":461592,"u":89704,"pu":583892},{"id":37,"c":"Paethsmouth","sp":747537,"wi":311056,"u":84773,"pu":755638},{"id":81,"c":"Pembroke","sp":624090,"wi":310870,"u":73129,"pu":1742230},{"id":29,"c":"Aylesbury","sp":470055,"wi":257866,"u":68434,"pu":509555},{"id":26,"c":"Knife'S Edge","sp":419679,"wi":146695,"u":45839,"pu":428652},{"id":3,"c":"Hornsey","sp":311194,"wi":108539,"u":35111,"pu":286622}],"vendTop":[["DIAGEO NORTH AMERICA INC",50959797,5459788],["MARTIGNETTI COMPANIES",27861690,2640411],["JIM BEAM BRANDS COMPANY",24203151,2737165],["PERNOD RICARD USA",24124092,1647558],["BACARDI USA INC",17624379,1427075],["CONSTELLATION BRANDS INC",15573918,2325892],["BROWN-FORMAN CORP",13529433,1006122],["ULTRA BEVERAGE COMPANY LLP",13210614,1077527],["E & J GALLO WINERY",12289608,1858260],["M S WALKER INC",10935817,1372841],["SAZERAC CO INC",9916770,1417727],["MOET HENNESSY USA INC",9472995,427867]],"vendN":128,"vendTotal":321900770,"brands":[{"n":"Jack Daniels No 7 Black","c":1,"r":5101920,"u":142049,"pu":3811252},{"n":"Tito's Handmade Vodka","c":1,"r":4819073,"u":160247,"pu":3804041},{"n":"Absolut 80 Proof","c":1,"r":4538121,"u":187140,"pu":3418304},{"n":"Capt Morgan Spiced Rum","c":1,"r":4475973,"u":200412,"pu":3261198},{"n":"Ketel One Vodka","c":1,"r":4223108,"u":135838,"pu":3023206},{"n":"Grey Goose Vodka","c":1,"r":3383912,"u":141860,"pu":2466636},{"n":"Jameson Irish Whiskey","c":1,"r":2773368,"u":69627,"pu":2177285},{"n":"Tanqueray","c":1,"r":2640491,"u":90481,"pu":1903740},{"n":"Smirnoff Traveler","c":1,"r":2592041,"u":148265,"pu":2088335},{"n":"Jim Beam","c":1,"r":2435393,"u":107061,"pu":1773427},{"n":"Kendall Jackson Chard Vt RSV","c":2,"r":2326008,"u":214238,"pu":1460072},{"n":"Veuve Clicquot Brut Yellow","c":2,"r":1584665,"u":38506,"pu":1098336},{"n":"Moet & Chandon Nectar Imp Rs","c":2,"r":1533635,"u":29498,"pu":1014484},{"n":"Josh Cellars Cab Svgn Sonoma","c":2,"r":1095045,"u":78392,"pu":675453},{"n":"R M Woodbridge Chard Cal","c":2,"r":1016329,"u":101339,"pu":612328},{"n":"Cavit Pinot Grigio","c":2,"r":945345,"u":87974,"pu":599076},{"n":"Santa Margherita Pnt Grigio","c":2,"r":923055,"u":46511,"pu":549996},{"n":"Oyster Bay Svgn Bl Marlboro","c":2,"r":890334,"u":90267,"pu":600613},{"n":"Moet & Chandon Imperial","c":2,"r":834892,"u":23290,"pu":577389},{"n":"Apothic Winemakers Red Blend","c":2,"r":812899,"u":91600,"pu":515598}],"rows":[12825363,2372474],"dec15":6950117};
+/* ---------- derived figures ---------- */
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const M=D.month.map((r,i)=>({...r,l:MN[i],s:r.sp+r.wi,su:r.spu+r.wiu}));
+const S=sum(M.map(r=>r.s)),P=D.vendTotal,GP=S-P,GM=GP/S;
+const SP=sum(M.map(r=>r.sp)),WI=sum(M.map(r=>r.wi));
+const ST=D.stores.map(r=>({...r,s:r.sp+r.wi,m:(r.sp+r.wi-r.pu)/(r.sp+r.wi)}));
+const sortedS=ST.map(r=>r.s).sort((a,b)=>a-b);
+const MED=(sortedS[39]+sortedS[40])/2;
+const TOP5=sum(D.vendTop.slice(0,5).map(v=>v[1]));
+const BEHIND=ST.filter(r=>r.s<MED),GAP=sum(BEHIND.map(r=>MED-r.s));
+const H1=sum(M.slice(0,6).map(r=>r.s)),H2=sum(M.slice(6).map(r=>r.s));
+const money=(v,d=1)=>{const a=Math.abs(v),n=v<0?'-':'';return a>=1e9?n+'$'+(a/1e9).toFixed(d)+'B':a>=1e6?n+'$'+(a/1e6).toFixed(d)+'M':a>=1e3?n+'$'+(a/1e3).toFixed(0)+'K':n+'$'+a.toFixed(0)};
+const units=(v,d=2)=>{const a=Math.abs(v),n=v<0?'-':'';return a>=1e6?n+(a/1e6).toFixed(d)+'M':a>=1e3?n+(a/1e3).toFixed(0)+'K':n+a};
+const pct=(v,d=1)=>(v*100).toFixed(d)+'%';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 
-/* STATE */
-const ST={
-  page:'dash',theme:'light',
-  f:{month:'all',cat:'all',store:'all'},
-  vf:{month:null,cat:null,store:null},
-  charts:{},settings:{accent:'#1E2761'}
-};
+/* ---------- state ---------- */
+const state={view:'overview',basis:'po',month:null,cat:'all',sortStores:'top',unit:'dollars'};
+const basisLabel=()=>state.basis==='po'?'ordered':'received';
+const pur=r=>state.basis==='po'?r.po:r.rc;
 
-/* LS */
-const LS={
-  get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},
-  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){console.warn(e)}}
-};
-const getTx=()=>LS.get('jd_tx',[]);
-const saveTx=v=>LS.set('jd_tx',v);
-
-/* NAV */
-function nav(p){
-  ST.page=p;
-  ['dash','add','set'].forEach(x=>{
-    document.getElementById('p-'+x).classList.toggle('on',x===p);
-    document.getElementById('ni-'+x)?.classList.toggle('active',x===p);
-    document.getElementById('bn-'+x)?.classList.toggle('on',x===p);
+/* ---------- chart helpers ---------- */
+const NS=(w,h,inner,label)=>`<svg viewBox="0 0 ${w} ${h}" height="${h}" role="img" aria-label="${esc(label||'chart')}">${inner}</svg>`;
+function niceMax(v){const e=Math.pow(10,Math.floor(Math.log10(v))),f=v/e;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e}
+function spark(vals,color,fill=true){
+  const w=200,h=36,mn=Math.min(...vals),mx=Math.max(...vals),x=i=>2+i*(w-6)/(vals.length-1),y=v=>h-4-(v-mn)/((mx-mn)||1)*(h-10);
+  const p=vals.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${fill?`<polygon points="${x(0)},${h} ${p} ${x(vals.length-1)},${h}" fill="${color}" opacity=".1"/>`:''}<polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.8" vector-effect="non-scaling-stroke"/><line x1="${x(vals.length-1)}" y1="${y(vals[vals.length-1])}" x2="${x(vals.length-1)}" y2="${y(vals[vals.length-1])}" stroke="${color}" stroke-width="6" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function lineChart(el,{labels,series,h=280,fmt=money,tips,onPick,picked,area=0}){
+  const w=Math.max(el.clientWidth,300),L=50,R=14,T=14,B=26,all=series.flatMap(s=>s.v),mx=niceMax(Math.max(...all)*1.04);
+  const x=i=>L+i*(w-L-R)/(labels.length-1),y=v=>T+(1-v/mx)*(h-T-B);
+  let g='';
+  for(let i=0;i<=4;i++){const v=mx*i/4;g+=`<line x1="${L}" x2="${w-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line2)"/><text class="axis" x="${L-8}" y="${y(v)+3.5}" text-anchor="end">${fmt(v,0)}</text>`}
+  labels.forEach((l,i)=>{if(w>480||i%2==0)g+=`<text class="axis" x="${x(i)}" y="${h-8}" text-anchor="middle">${l}</text>`});
+  if(picked!=null)g+=`<rect x="${x(picked)-(w-L-R)/(labels.length-1)/2}" y="${T-4}" width="${(w-L-R)/(labels.length-1)}" height="${h-T-B+8}" fill="var(--amber-bg)" opacity=".85"/>`;
+  series.forEach((s,k)=>{
+    const pts=s.v.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    if(k===area)g+=`<polygon points="${x(0)},${y(0)} ${pts} ${x(s.v.length-1)},${y(0)}" fill="${s.c}" opacity=".07"/>`;
+    g+=`<polyline points="${pts}" fill="none" stroke="${s.c}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" ${s.dash?'stroke-dasharray="5 4"':''}/>`;
+    s.v.forEach((v,i)=>{g+=`<circle cx="${x(i)}" cy="${y(v)}" r="${i===picked?4.5:2.8}" fill="${s.c}" stroke="var(--card)" stroke-width="1.4"/>`});
   });
-  const titles={dash:'Executive Dashboard',add:'Add Transaction',set:'Settings'};
-  document.getElementById('tb-title').textContent=titles[p];
-  document.getElementById('filterbar').style.display=p==='dash'?'flex':'none';
-  if(p==='add'){renderNewTb();updateMini()}
-  if(p==='set'){calcLS();updateTxCountS()}
-  if(p==='dash')setTimeout(renderAll,50);
+  (series[0].mark||[]).forEach(i=>{g+=`<text class="val" x="${x(i)}" y="${y(series[0].v[i])-10}" text-anchor="middle">${fmt(series[0].v[i])}</text>`});
+  labels.forEach((l,i)=>{const bw=(w-L-R)/(labels.length-1);g+=`<rect class="hit" data-i="${i}" x="${x(i)-bw/2}" y="${T-4}" width="${bw}" height="${h-T-B+8}" data-tip="${esc(tips(i))}" ${onPick?'tabindex="0" role="button"':''} aria-label="${esc(l)}"/>`});
+  el.innerHTML=NS(w,h,g,series.map(s=>s.n).join(' and ')+' by month');
+  if(onPick)el.querySelectorAll('.hit').forEach(r=>{const go=()=>onPick(+r.dataset.i);r.onclick=go;r.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+}
+function hbars(el,rows,{fmt=money,lw=150,ref,rh=27,extra}={}){
+  const w=Math.max(el.clientWidth,300),R=extra?128:78,top=ref?16:2,h=rows.length*rh+top+(ref?4:2),mx=Math.max(...rows.map(r=>r.v),ref?ref.v:0),small=w<430,LW=small?Math.min(lw,112):lw;
+  const X=v=>LW+Math.max(v,0)/mx*(w-LW-R);
+  let g='';
+  rows.forEach((r,i)=>{const yy=top+i*rh,bh=rh-10;
+    g+=`<g data-tip="${esc(r.tip||(r.l+': '+fmt(r.v)))}"><rect x="0" y="${yy}" width="${w}" height="${rh}" fill="transparent"/><text class="axis" style="fill:var(--tx2);font-size:11.5px" x="${LW-9}" y="${yy+bh/2+4}" text-anchor="end">${esc(small&&r.l.length>17?r.l.slice(0,16)+'…':r.l)}</text><rect x="${LW}" y="${yy}" width="${Math.max(X(r.v)-LW,1.5)}" height="${bh}" rx="3.5" fill="${r.c||'var(--ink)'}"/>${r.c2?`<rect x="${X(r.v-r.v2)}" y="${yy}" width="${X(r.v)-X(r.v-r.v2)}" height="${bh}" rx="3.5" fill="${r.c2}"/>`:''}<text class="val" x="${X(r.v)+7}" y="${yy+bh/2+4}">${fmt(r.v)}</text>${r.e?`<text class="note" x="${X(r.v)+7+fmt(r.v).length*6.6+5}" y="${yy+bh/2+4}">${esc(r.e)}</text>`:''}</g>`});
+  if(ref){g+=`<line x1="${X(ref.v)}" x2="${X(ref.v)}" y1="11" y2="${h-1}" stroke="var(--tx3)" stroke-dasharray="3 3"/><text class="note" x="${X(ref.v)}" y="8" text-anchor="middle">${esc(ref.l)}</text>`}
+  el.innerHTML=NS(w,h,g,'bar chart');
+}
+function cols(el,rows,{h=220,fmt=money,ref,neg=false}={}){
+  const w=Math.max(el.clientWidth,300),L=44,R=8,T=20,B=24,vals=rows.map(r=>r.v),mx=niceMax(Math.max(...vals,ref?ref.v:0)*1.05),mn=neg?-niceMax(Math.max(...vals.map(v=>-v),1)*1.05):0;
+  const y=v=>T+(mx-v)/(mx-mn)*(h-T-B),step=(w-L-R)/rows.length,bw=Math.min(step*.66,46);
+  let g='';
+  [mx,mx/2,0,...(neg?[mn]:[])].forEach(v=>{g+=`<line x1="${L}" x2="${w-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v===0?'var(--line)':'var(--line2)'}"/><text class="axis" x="${L-7}" y="${y(v)+3.5}" text-anchor="end">${fmt(v,0)}</text>`});
+  rows.forEach((r,i)=>{const cx=L+step*(i+.5),top=Math.min(y(r.v),y(0)),ht=Math.max(Math.abs(y(r.v)-y(0)),1);
+    g+=`<g data-tip="${esc(r.tip||r.l+': '+fmt(r.v))}"><rect x="${cx-step/2}" y="${T-14}" width="${step}" height="${h-T-B+14}" fill="transparent"/><rect x="${cx-bw/2}" y="${top}" width="${bw}" height="${ht}" rx="3.5" fill="${r.c||'var(--ink)'}"/>${step>26?`<text class="val" style="font-size:10.5px" x="${cx}" y="${r.v<0?top+ht+12:top-5}" text-anchor="middle">${fmt(r.v)}</text>`:''}<text class="axis" x="${cx}" y="${h-7}" text-anchor="middle">${esc(r.l)}</text></g>`});
+  if(ref){g+=`<line x1="${L}" x2="${w-R}" y1="${y(ref.v)}" y2="${y(ref.v)}" stroke="var(--tx3)" stroke-dasharray="4 3"/><text class="note" x="${w-R}" y="${y(ref.v)-5}" text-anchor="end">${esc(ref.l)}</text>`}
+  el.innerHTML=NS(w,h,g,'column chart');
+}
+function scatter(el,pts,{h=320}={}){
+  const w=Math.max(el.clientWidth,300),L=44,R=14,T=12,B=34,mxX=Math.ceil(Math.max(...pts.map(p=>p.x))/5e6)*5e6,yMin=0,yMax=.4;
+  const X=v=>L+v/mxX*(w-L-R),Y=v=>T+(yMax-Math.min(Math.max(v,yMin),yMax))/(yMax-yMin)*(h-T-B);
+  let g='';
+  [0,.1,.2,.3,.4].forEach(v=>{g+=`<line x1="${L}" x2="${w-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line2)"/><text class="axis" x="${L-7}" y="${Y(v)+3.5}" text-anchor="end">${v*100}%</text>`});
+  for(let v=0;v<=mxX;v+=5e6)g+=`<text class="axis" x="${X(v)}" y="${h-B+15}" text-anchor="middle">${money(v,0)}</text>`;
+  g+=`<text class="note" x="${L+(w-L-R)/2}" y="${h-3}" text-anchor="middle">Store sales</text>`;
+  g+=`<line x1="${L}" x2="${w-R}" y1="${Y(GM)}" y2="${Y(GM)}" stroke="var(--tx3)" stroke-dasharray="4 3"/><text class="note" x="${w-R}" y="${Y(GM)-5}" text-anchor="end">Company ${pct(GM)}</text>`;
+  pts.forEach(p=>{g+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="${p.hi?6.5:4.5}" fill="${p.c}" fill-opacity="${p.hi?.95:.62}" stroke="var(--card)" data-tip="${esc(p.tip)}"/>`;
+    if(p.hi)g+=`<text class="val" x="${X(p.x)+(X(p.x)>w-110?-10:10)}" y="${Y(p.y)+4}" text-anchor="${X(p.x)>w-110?'end':'start'}" style="font-size:10.5px">${esc(p.hi)}</text>`});
+  el.innerHTML=NS(w,h,g,'store sales against margin');
 }
 
-/* THEME */
-function toggleTheme(){
-  ST.theme=ST.theme==='light'?'dark':'light';
-  document.documentElement.setAttribute('data-theme',ST.theme);
-  document.getElementById('t-ico').textContent=ST.theme==='light'?'🌙':'☀️';
-  document.getElementById('t-lbl').textContent=ST.theme==='light'?'Dark Mode':'Light Mode';
-  const sw=document.getElementById('dark-sw');
-  sw.classList.toggle('on',ST.theme==='dark');
-  LS.set('jd_settings',{...LS.get('jd_settings',{}),theme:ST.theme,accent:ST.settings.accent});
-  setTimeout(renderAll,80);
-}
-function setAccent(el){
-  document.querySelectorAll('.sw-dot').forEach(s=>s.classList.remove('on'));
-  el.classList.add('on');
-  ST.settings.accent=el.dataset.c;
-  document.documentElement.style.setProperty('--navy',el.dataset.c);
-  LS.set('jd_settings',{...LS.get('jd_settings',{}),accent:el.dataset.c,theme:ST.theme});
-  setTimeout(renderAll,80);
-}
+/* ---------- pages ---------- */
+const ic={ov:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',mix:'<path d="M8 2h8M9 2v6l-4 11a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3L15 8V2"/><path d="M7 15h10"/>',st:'<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>',ve:'<path d="M1 4h14v12H1z"/><path d="M15 9h4l4 4v3h-8z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>',ti:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',wi:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',pl:'<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/>'};
+const PAGES=[
+ {id:'overview',n:'Overview',i:'ov',t:'Executive Overview',s:'Where the money comes from, and where it slips away'},
+ {id:'mix',n:'Sales Mix',i:'mix',t:'Sales Mix',s:'What sells: spirits and wine, bottle sizes and top products'},
+ {id:'stores',n:'Stores',i:'st',t:'Stores and Cities',s:'How far apart the 80 stores are, in sales and in margin'},
+ {id:'vendors',n:'Vendors',i:'ve',t:'Vendors',s:'How concentrated the buying is'},
+ {id:'timing',n:'Stock Timing',i:'ti',t:'Stock Timing',s:'Units sold against units ordered and units received'},
+ {id:'whatif',n:'What-If Simulator',i:'wi',t:'What-If Simulator',s:'Size the prize from better vendor terms and lifting weak stores'},
+ {id:'plan',n:'Insights and Plan',i:'pl',t:'Insights and Plan',s:'What to do next, and what this data cannot tell us'}
+];
+const R={};
+const seg=(id,opts,cur)=>`<div class="seg" role="group" data-seg="${id}">${opts.map(([v,l])=>`<button type="button" data-v="${v}" class="${v===cur?'on':''}" aria-pressed="${v===cur}">${l}</button>`).join('')}</div>`;
+const BASIS=()=>seg('basis',[['po','By order date'],['rc','By receipt date']],state.basis);
 
-/* FILTERS */
-function applyF(){
-  ST.f.month=document.getElementById('f-month').value;
-  ST.f.cat=document.getElementById('f-cat').value;
-  ST.f.store=document.getElementById('f-store').value;
-  updateChips();renderAll();
-}
-function clearF(){
-  ST.f={month:'all',cat:'all',store:'all'};
-  ST.vf={month:null,cat:null,store:null};
-  ['f-month','f-cat','f-store'].forEach(id=>document.getElementById(id).value='all');
-  updateChips();renderAll();
-}
-function vfClear(k){ST.vf[k]=null;updateChips();renderAll()}
-function updateChips(){
-  const el=document.getElementById('chips');el.innerHTML='';
-  const add=(t,cls,rm)=>{
-    const c=document.createElement('div');
-    c.className='chip'+(cls?' chip-'+cls:'');
-    c.innerHTML=`${t} <span class="chip-x">✕</span>`;
-    c.querySelector('.chip-x').addEventListener('click',rm);
-    el.appendChild(c);
+R.overview=()=>{
+  const sel=state.month,r=sel!=null?M[sel]:null;
+  const sv=r?r.s:S,pv=r?pur(r):P,gv=sv-pv,mv=gv/sv;
+  const gpS=M.map(x=>x.s-pur(x)),mS=M.map(x=>(x.s-pur(x))/x.s),lo=mS.indexOf(Math.min(...mS)),hi=mS.indexOf(Math.max(...mS));
+  const pk=M.map(x=>x.s).indexOf(Math.max(...M.map(x=>x.s)));
+  const kpi=(l,c,v,col,d,sp)=>`<div class="card kpi" data-tip="${esc(l+': '+v)}"><div class="kl">${l}</div><div class="kc">${c}</div><div class="kv" ${col?`style="color:${col}"`:''}>${v}</div><div class="kd">${d}</div>${sp}</div>`;
+  const scope=r?r.l+' 2016':'full year 2016';
+  return `
+  <div class="selchip ${r?'on':''}">Showing ${r?r.l:''} 2016 <button type="button" id="clr">Back to full year</button></div>
+  <div class="grid g5">
+   ${kpi('Total sales',scope,money(sv),'',r?`<b>${pct(sv/S)}</b> of the year`:`<b class="up">▲ ${pct(H2/H1-1)}</b> second half on first half`,spark(M.map(x=>x.s),'var(--ink)'))}
+   ${kpi('Gross profit','sales minus purchases',money(gv),'var(--green)',r?`on ${basisLabel()} purchases`:`<b>${money(GP/80,2)}</b> average per store`,spark(gpS,'var(--green)'))}
+   ${kpi('Gross margin',r?`${scope}, ${basisLabel()} purchases`:'company-wide',pct(mv),mv<.2?'var(--red)':'',`<b class="dn">${pct(mS[lo])}</b> in ${M[lo].l} to <b class="up">${pct(mS[hi])}</b> in ${M[hi].l}`,spark(mS,'var(--slate)'))}
+   ${kpi('Total purchases',r?scope:'128 vendors',money(pv),'var(--amber-tx)',`<b>${pct(TOP5/P,0)}</b> of the year's buying is from five vendors`,spark(M.map(pur),'var(--amber)'))}
+   ${kpi('Active stores','in 68 cities','80','',`<b>${money(MED)}</b> median store, <b>${money(ST[0].s)}</b> best`,spark(ST.map(x=>x.s),'var(--red)'))}
+  </div>
+  <div class="grid g21">
+   <div class="card">
+    <div class="ch"><div><h2>Sales pull away from purchases in the last two months</h2><div class="cs">Monthly dollars. Click a month to update the cards above.</div></div>${BASIS()}</div>
+    <div class="legend"><span><i style="background:var(--ink)"></i>Sales</span><span><i style="background:var(--amber)"></i>Purchases (${basisLabel()})</span></div>
+    <div class="chart" id="c_tr"></div>
+    <p class="take"><b>${M[pk].l} sales hit ${money(M[pk].s)}, against ${money(pur(M[pk]))} of stock ${basisLabel()} that month.</b> ${state.basis==='po'?'On order dates, December looks like buying stopped. Switch to receipt date: the gap shrinks, because November orders were still arriving.':'Receipt date is closer to when stock reached shelves, so the December gap is much smaller than the order date view suggests.'}</p>
+   </div>
+   <div class="card">
+    <div class="ch"><div><h2>Spirits bring in almost two of every three dollars</h2><div class="cs">Share of total sales</div></div></div>
+    <div class="chart" id="c_cat"></div>
+    <div class="ch" style="margin:16px 0 6px"><div><h2>Two bottle sizes carry the business</h2><div class="cs">Top sizes by sales</div></div></div>
+    <div class="chart" id="c_sz"></div>
+    <p class="take"><b>750mL and 1750mL make ${pct((D.sizes[0].sp+D.sizes[0].wi+D.sizes[1].sp+D.sizes[1].wi)/S,0)} of sales.</b> Each one outsells all the other sizes put together.</p>
+   </div>
+  </div>`;
+};
+R.overview.after=()=>{
+  lineChart(c_tr,{labels:M.map(x=>x.l),series:[{n:'Sales',v:M.map(x=>x.s),c:'var(--ink)',mark:[6,11]},{n:'Purchases',v:M.map(pur),c:'var(--amber)'}],picked:state.month,h:252,
+    tips:i=>`<b>${M[i].l} 2016</b><br>Sales ${money(M[i].s)}<br>Purchases ${basisLabel()} ${money(pur(M[i]))}<br>Margin ${pct((M[i].s-pur(M[i]))/M[i].s)}`,
+    onPick:i=>{state.month=state.month===i?null:i;render()}});
+  hbars(c_cat,[{l:'Spirits',v:SP,c:'var(--ink)',e:pct(SP/S)},{l:'Wine',v:WI,c:'var(--amber)',e:pct(WI/S)}],{lw:58,extra:1});
+  hbars(c_sz,D.sizes.slice(0,4).map((z,i)=>({l:z.n,v:z.sp+z.wi,c:i<2?'var(--ink)':'var(--tx3)',e:pct((z.sp+z.wi)/S,0)})),{lw:58,extra:1});
+  const c=document.getElementById('clr');if(c)c.onclick=()=>{state.month=null;render()};
+};
+
+R.mix=()=>{
+  const c=state.cat,isS=c==='sp',isW=c==='wi',lab=isS?'Spirits':isW?'Wine':'Total';
+  const bs=D.brands.filter(b=>c==='all'?true:(isS?b.c===1:b.c===2)).sort((a,b)=>b.r-a.r).slice(0,10);
+  const tot=c==='all'?S:isS?SP:WI;
+  return `<div style="margin-bottom:14px">${seg('cat',[['all','All categories'],['sp','Spirits'],['wi','Wine']],c)}</div>
+  <div class="grid g4">
+   <div class="card kpi"><div class="kl">${lab} sales</div><div class="kc">full year 2016</div><div class="kv">${money(tot)}</div><div class="kd">${pct(tot/S)} of company sales</div>${spark(M.map(x=>c==='all'?x.s:x[c]),'var(--ink)')}</div>
+   <div class="card kpi"><div class="kl">Units sold</div><div class="kc">bottles and packs</div><div class="kv">${units(sum(M.map(x=>c==='all'?x.su:x[c+'u'])),1)}</div><div class="kd"><b>$${(tot/sum(M.map(x=>c==='all'?x.su:x[c+'u']))).toFixed(2)}</b> average sale per unit</div>${spark(M.map(x=>c==='all'?x.su:x[c+'u']),'var(--slate)')}</div>
+   <div class="card kpi"><div class="kl">Best month</div><div class="kc">by sales</div><div class="kv">${(()=>{const v=M.map(x=>c==='all'?x.s:x[c]);return M[v.indexOf(Math.max(...v))].l})()}</div><div class="kd">${(()=>{const v=M.map(x=>c==='all'?x.s:x[c]);return money(Math.max(...v))+', or '+pct(Math.max(...v)/tot)+' of the year'})()}</div>${spark(M.map(x=>c==='all'?x.s:x[c]),'var(--green)')}</div>
+   <div class="card kpi"><div class="kl">Slowest month</div><div class="kc">by sales</div><div class="kv">${(()=>{const v=M.map(x=>c==='all'?x.s:x[c]);return M[v.indexOf(Math.min(...v))].l})()}</div><div class="kd">${(()=>{const v=M.map(x=>c==='all'?x.s:x[c]);return money(Math.min(...v))+', '+pct(Math.min(...v)/Math.max(...v),0)+' of the best month'})()}</div>${spark(M.map(x=>c==='all'?x.s:x[c]),'var(--tx3)')}</div>
+  </div>
+  <div class="grid g2">
+   <div class="card"><div class="ch"><div><h2>${isW?'Wine sells mostly in 750mL':isS?'Spirits split between 1750mL and 750mL':'750mL leads, and 1750mL is all spirits'}</h2><div class="cs">Sales by bottle size. Hover for units.</div></div></div>
+    ${c==='all'?'<div class="legend"><span><i style="background:var(--ink)"></i>Spirits</span><span><i style="background:var(--amber)"></i>Wine</span></div>':''}
+    <div class="chart" id="c_s"></div></div>
+   <div class="card"><div class="ch"><div><h2>Top 10 products by sales</h2><div class="cs">Margin here is product sales minus product purchases</div></div></div>
+    <div class="tw"><table><thead><tr><th>Product</th><th>Type</th><th>Sales</th><th>Units</th><th>Margin</th></tr></thead><tbody>
+    ${bs.map(b=>`<tr><td>${esc(b.n)}</td><td><span class="tag ${b.c===1?'s':'w'}">${b.c===1?'Spirits':'Wine'}</span></td><td>${money(b.r,2)}</td><td>${units(b.u,0)}</td><td>${pct(1-b.pu/b.r)}</td></tr>`).join('')}
+    </tbody></table></div></div>
+  </div>`;
+};
+R.mix.after=()=>{
+  const c=state.cat,val=z=>c==='all'?z.sp+z.wi:z[c],un=z=>c==='all'?z.spu+z.wiu:z[c+'u'];
+  const rows=D.sizes.filter(z=>val(z)>0).sort((a,b)=>val(b)-val(a)).map(z=>({l:z.n,v:val(z),c:c==='wi'?'var(--amber)':'var(--ink)',...(c==='all'&&z.wi>0?{v2:z.wi,c2:'var(--amber)'}:{}),tip:`<b>${z.n}</b><br>Sales ${money(val(z))}<br>Units ${units(un(z))}${c==='all'?`<br>Spirits ${money(z.sp)}, wine ${money(z.wi)}`:''}`}));
+  hbars(c_s,rows,{lw:66,rh:36});
+};
+
+R.stores=()=>{
+  const best=ST[0],m50=ST.find(s=>s.id===50),m81=ST.find(s=>s.id===81);
+  const cities={};ST.forEach(s=>{cities[s.c]=(cities[s.c]||0)+s.s});const cs=Object.entries(cities).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const top10=sum(ST.slice(0,10).map(s=>s.s));
+  return `<div class="grid g4">
+   <div class="card kpi"><div class="kl">Best store</div><div class="kc">Store ${best.id}, ${best.c}</div><div class="kv">${money(best.s)}</div><div class="kd"><b>${(best.s/MED).toFixed(1)}×</b> the median store</div></div>
+   <div class="card kpi"><div class="kl">Median store</div><div class="kc">half of stores sit below this</div><div class="kv">${money(MED)}</div><div class="kd"><b>${BEHIND.length}</b> stores are ${money(GAP)} short of it in total</div></div>
+   <div class="card kpi"><div class="kl">Top 10 stores</div><div class="kc">share of company sales</div><div class="kv">${pct(top10/S,0)}</div><div class="kd">${money(top10)} from one store in eight</div></div>
+   <div class="card kpi"><div class="kl">Margin to check</div><div class="kc">Store 50, ${m50.c}</div><div class="kv" style="color:var(--red)">${pct(m50.m)}</div><div class="kd">Against ${pct(GM)} for the company, on ${money(m50.s)} of sales</div></div>
+  </div>
+  <div class="grid g21">
+   <div class="card"><div class="ch"><div><h2>Most big stores earn about 30%, but Store 50 does not</h2><div class="cs">Each dot is a store. Hover for detail.</div></div></div>
+    <div class="chart" id="c_sc"></div>
+    <p class="take"><b>Store 50 is the sixth-largest store but earns about half the company margin.</b> Finding out why matters more than the small stores' swings. Store ${m81.id} bought ${money(m81.pu,2)} against ${money(m81.s,2)} of sales and sits off the bottom of this chart at ${pct(m81.m,0)}, so its stock level is worth a look too.</p></div>
+   <div class="card"><div class="ch"><div><h2>Doncaster and Mountmend lead the cities</h2><div class="cs">Top 8 cities by sales</div></div></div>
+    <div class="chart" id="c_ci" data-rows='${esc(JSON.stringify(cs))}'></div></div>
+  </div>
+  <div class="grid g2">
+   <div class="card"><div class="ch"><div><h2>Top 10 stores</h2><div class="cs">Sales against the median store</div></div></div><div class="chart" id="c_t"></div></div>
+   <div class="card"><div class="ch"><div><h2>Bottom 10 stores</h2><div class="cs">Sales against the median store</div></div></div><div class="chart" id="c_b"></div></div>
+  </div>`;
+};
+R.stores.after=()=>{
+  scatter(c_sc,ST.map(s=>({x:s.s,y:s.m,c:s.m<.2?'var(--red)':s.s>=MED?'var(--ink)':'var(--slate)',hi:s.id===50?'Store 50':s.id===76?'Store 76':'',tip:`<b>Store ${s.id}, ${esc(s.c)}</b><br>Sales ${money(s.s,2)}<br>Purchases ${money(s.pu,2)}<br>Margin ${pct(s.m)}`})));
+  hbars(c_ci,JSON.parse(c_ci.dataset.rows).map(([c,v],i)=>({l:c,v,c:i<2?'var(--ink)':'var(--tx3)'})),{lw:92,rh:33});
+  const row=s=>({l:`Store ${s.id}, ${s.c}`,v:s.s,c:s.m<.2?'var(--red)':'var(--ink)',tip:`<b>Store ${s.id}, ${esc(s.c)}</b><br>Sales ${money(s.s,2)}<br>Margin ${pct(s.m)}`});
+  hbars(c_t,ST.slice(0,10).map(row),{lw:150,ref:{v:MED,l:'median'}});
+  hbars(c_b,ST.slice(-10).map(row),{lw:150,fmt:v=>money(v,2)});
+};
+
+R.vendors=()=>{
+  const v=D.vendTop,d=v[0];let cum=0;
+  return `<div class="grid g4">
+   <div class="card kpi"><div class="kl">Largest vendor</div><div class="kc">Diageo North America</div><div class="kv">${pct(d[1]/P)}</div><div class="kd">${money(d[1])} of ${money(P)} purchased</div></div>
+   <div class="card kpi"><div class="kl">Top five vendors</div><div class="kc">share of purchases</div><div class="kv">${pct(TOP5/P)}</div><div class="kd">${money(TOP5)}: the base for any negotiation</div></div>
+   <div class="card kpi"><div class="kl">Top ten vendors</div><div class="kc">share of purchases</div><div class="kv">${pct(sum(v.slice(0,10).map(x=>x[1]))/P)}</div><div class="kd">Out of ${D.vendN} vendors in total</div></div>
+   <div class="card kpi"><div class="kl">Units from Diageo</div><div class="kc">bottles and packs</div><div class="kv">${units(d[2])}</div><div class="kd">First by value and first by quantity</div></div>
+  </div>
+  <div class="grid g21">
+   <div class="card"><div class="ch"><div><h2>Five vendors take 45 cents of every dollar spent</h2><div class="cs">Purchases by vendor, top 12. Amber marks the top five.</div></div></div>
+   <div class="chart" id="c_v"></div>
+   <p class="take"><b>That is buying power and a risk at once.</b> One percent off the top five saves ${money(TOP5*.01)} a year. A supply problem at Diageo alone would touch about one dollar in six.</p></div>
+   <div class="card"><div class="ch"><div><h2>Running share</h2><div class="cs">How quickly the vendor list adds up</div></div></div>
+    <div class="tw"><table><thead><tr><th>Vendor</th><th>Spend</th><th>Running</th></tr></thead><tbody>
+    ${v.slice(0,10).map(x=>{cum+=x[1];return `<tr><td>${esc(tc(x[0]))}</td><td>${money(x[1])}</td><td>${pct(cum/P,0)}</td></tr>`}).join('')}
+    </tbody></table></div></div>
+  </div>`;
+};
+function tc(s){return s.toLowerCase().replace(/\b[a-z]/g,c=>c.toUpperCase()).replace(/\b(Usa|Llp|Llc)\b/g,m=>m.toUpperCase()).replace(/\bInc\b\.?|\bCorp\b\.?/g,'').replace(/ Company\b/,'').replace(/ Companies\b/,'').trim()}
+R.vendors.after=()=>{
+  hbars(c_v,D.vendTop.map((x,i)=>({l:tc(x[0]),v:x[1],c:i<5?'var(--amber)':'var(--tx3)',e:pct(x[1]/P),tip:`<b>${esc(tc(x[0]))}</b><br>Purchases ${money(x[1])}<br>Units ${units(x[2])}<br>Share ${pct(x[1]/P)}`})),{lw:150,rh:29,extra:1});
+};
+
+R.timing=()=>{
+  const dec=M[11],nov=M[10],oct=M[9];
+  const netPO=dec.pou-dec.su,netRC=dec.rcu-dec.su;
+  const lastTwoPO=nov.pou+dec.pou-nov.su-dec.su,lastTwoRC=nov.rcu+dec.rcu-nov.su-dec.su;
+  const mo=x=>(x.s-x.po)/x.s,mr=x=>(x.s-x.rc)/x.s;
+  return `<div class="grid g4">
+   <div class="card kpi"><div class="kl">December units sold</div><div class="kc">busiest month of the year</div><div class="kv">${units(dec.su)}</div><div class="kd">Up <b>${pct(dec.su/nov.su-1,0)}</b> on November</div></div>
+   <div class="card kpi"><div class="kl">December stock change</div><div class="kc">order date view</div><div class="kv" style="color:var(--red)">${units(netPO)}</div><div class="kd">Ordered ${units(dec.pou)} units</div></div>
+   <div class="card kpi"><div class="kl">December stock change</div><div class="kc">receipt date view</div><div class="kv am">${units(netRC)}</div><div class="kd">Received ${units(dec.rcu)} units</div></div>
+   <div class="card kpi"><div class="kl">December margin swing</div><div class="kc">order date, then receipt date</div><div class="kv">${pct(mo(dec),0)} → ${pct(mr(dec),0)}</div><div class="kd">Same sales, different purchase timing</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px"><div class="ch"><div><h2>December draws stock down on either view, but by much less on receipts</h2><div class="cs">Units per month. Hover for detail.</div></div></div>
+   <div class="legend"><span><i style="background:var(--ink)"></i>Units sold</span><span><i style="background:var(--amber)"></i>Units ordered</span><span><i style="background:var(--slate)"></i>Units received</span></div>
+   <div class="chart" id="c_u"></div>
+   <p class="take"><b>Stock falls by ${units(-netPO)} units in December if you count orders, and ${units(-netRC)} if you count receipts.</b> Across November and December together that is ${units(-lastTwoPO)} and ${units(-lastTwoRC)}. Receipts are nearer to what reached the shelf, so the second figure is the safer one to quote.</p></div>
+  <div class="grid g2">
+   <div class="card"><div class="ch"><div><h2>Stock change by month, on receipts</h2><div class="cs">Units received minus units sold</div></div></div><div class="chart" id="c_n"></div></div>
+   <div class="card"><div class="ch"><div><h2>Monthly margin moves with purchase timing</h2><div class="cs">Sales minus purchases, by receipt date</div></div></div><div class="chart" id="c_m"></div>
+   <p class="take"><b>Read monthly margin with care.</b> It compares a month's sales with what was bought that month, not with the cost of what was sold. The full-year ${pct(GM)} is the sturdier figure.</p></div>
+  </div>`;
+};
+R.timing.after=()=>{
+  lineChart(c_u,{labels:M.map(x=>x.l),fmt:(v,d)=>units(v,d===0?2:1),h:250,area:-1,series:[{n:'Units sold',v:M.map(x=>x.su),c:'var(--ink)'},{n:'Units ordered',v:M.map(x=>x.pou),c:'var(--amber)',dash:1},{n:'Units received',v:M.map(x=>x.rcu),c:'var(--slate)'}],
+    tips:i=>`<b>${M[i].l} 2016</b><br>Sold ${units(M[i].su)}<br>Ordered ${units(M[i].pou)}<br>Received ${units(M[i].rcu)}`});
+  cols(c_n,M.map(x=>{const v=x.rcu-x.su;return{l:x.l,v,c:v<0?'var(--red)':'var(--tx3)'}}),{neg:true,fmt:(v)=>units(v,1)});
+  cols(c_m,M.map(x=>{const v=(x.s-x.rc)/x.s;return{l:x.l,v,c:v<.2?'var(--red)':v>.35?'var(--green)':'var(--ink)'}}),{fmt:(v)=>pct(v,0),ref:{v:GM,l:'year '+pct(GM)}});
+};
+
+const sim={disc:2,gap:25};
+R.whatif=()=>`
+  <div class="card sim" style="margin-bottom:14px">
+   <img class="simlogo" src="docs/logo.png" alt=""/>
+   <h2>What is a better deal worth?</h2><div class="cs">Move either slider. Everything recalculates from the 2016 figures.</div>
+   <div class="sl">
+    <div><label for="s_d">Lower prices from the top five vendors <output id="o_d"></output></label><input type="range" id="s_d" min="0" max="5" step=".5" value="${sim.disc}"/><small>Applied to ${money(TOP5)} of purchases from Diageo, Martignetti, Jim Beam, Pernod Ricard and Bacardi.</small></div>
+    <div><label for="s_g">Close the gap for stores below the median <output id="o_g"></output></label><input type="range" id="s_g" min="0" max="50" step="5" value="${sim.gap}"/><small>${BEHIND.length} stores sit ${money(GAP)} below the ${money(MED)} median. Extra sales earn the ${pct(GM)} company margin.</small></div>
+   </div>
+   <div class="presets" id="pre">
+    <button type="button" data-d="1" data-g="10">Cautious</button><button type="button" data-d="2" data-g="25">Base case</button><button type="button" data-d="4" data-g="50">Stretch</button><button type="button" data-d="0" data-g="0">Today</button>
+   </div>
+   <div class="tiles">
+    <div class="tile"><b id="t_gp"></b><span>Scenario gross profit</span></div>
+    <div class="tile"><b id="t_up" class="g"></b><span>Added to gross profit</span></div>
+    <div class="tile"><b id="t_m"></b><span>Scenario margin (now ${pct(GM,2)})</span></div>
+    <div class="tile"><b id="t_s"></b><span>Added sales</span></div>
+   </div>
+   <div class="simnote" id="t_n"></div>
+  </div>
+  <div class="grid g2">
+   <div class="card"><div class="ch"><div><h2>Where the gain comes from</h2><div class="cs">Added gross profit by lever</div></div></div><div class="chart" id="c_w"></div>
+    <p class="take"><b>This is a sizing tool, not a forecast.</b> The percentages are assumptions to test, and the data has no vendor contract terms or store floor space behind them.</p></div>
+   <div class="card"><div class="ch"><div><h2>How it is calculated</h2><div class="cs">The same logic as DAX measures</div></div></div>
+<pre>Vendor Saving =
+    [Top 5 Vendor Purchases] * [Vendor Discount Value]
+
+Store Uplift Sales =
+    SUMX (
+        FILTER ( VALUES ( Store ), [Sales] &lt; [Median Store Sales] ),
+        [Median Store Sales] - [Sales]
+    ) * [Gap Closed Value]
+
+Scenario Gross Profit =
+    [Gross Profit] + [Vendor Saving]
+        + [Store Uplift Sales] * [Gross Profit Margin]</pre>
+   </div>
+  </div>`;
+R.whatif.after=()=>{
+  const d=s_d,g=s_g,fill=e=>e.style.setProperty('--p',((e.value-e.min)/(e.max-e.min)*100)+'%');
+  const calc=()=>{
+    sim.disc=+d.value;sim.gap=+g.value;fill(d);fill(g);
+    o_d.textContent=sim.disc.toFixed(1)+'%';o_g.textContent=sim.gap+'%';
+    const save=TOP5*sim.disc/100,xs=GAP*sim.gap/100,xg=xs*GM,up=save+xg,gp=GP+up,m=gp/(S+xs);
+    t_gp.textContent=money(gp,2);t_up.textContent='+'+money(up,2);t_m.textContent=pct(m,2);t_s.textContent='+'+money(xs,2);
+    t_n.innerHTML=up===0?'This is 2016 as it happened. Move a slider or pick a scenario.':`<b>${sim.disc}% off the top five and ${sim.gap}% of the store gap closed add ${money(up,2)} of gross profit, up ${pct(up/GP)}.</b> ${save>=xg?'Vendor terms do more of the work here, and they need no new customers.':'Store performance does more of the work here, though it takes longer to deliver.'}`;
+    document.querySelectorAll('#pre button').forEach(b=>b.classList.toggle('on',+b.dataset.d===sim.disc&&+b.dataset.g===sim.gap));
+    hbars(c_w,[{l:'Vendor terms',v:save,c:'var(--amber)',tip:`<b>Vendor terms</b><br>${sim.disc}% of ${money(TOP5)} = ${money(save,2)}`},{l:'Store uplift',v:xg,c:'var(--ink)',tip:`<b>Store uplift</b><br>${money(xs,2)} added sales at ${pct(GM)} = ${money(xg,2)}`}].map(r=>({...r,v:Math.max(r.v,0)})),{lw:96,rh:44,fmt:v=>money(v,2)});
   };
-  if(ST.f.month!=='all')add(`📅 ${ST.f.month}`,'a',()=>{document.getElementById('f-month').value='all';applyF()});
-  if(ST.f.cat!=='all')add(`🏷 ${ST.f.cat}`,'',()=>{document.getElementById('f-cat').value='all';applyF()});
-  if(ST.f.store!=='all')add(`🏪 Store ${ST.f.store}`,'',()=>{document.getElementById('f-store').value='all';applyF()});
-  if(ST.vf.month)add(`📆 ${ST.vf.month} ★`,'a',()=>vfClear('month'));
-  if(ST.vf.cat)add(`🍷 ${ST.vf.cat} ★`,'a',()=>vfClear('cat'));
-  if(ST.vf.store)add(`📍 Store ${ST.vf.store} ★`,'a',()=>vfClear('store'));
+  d.oninput=calc;g.oninput=calc;
+  document.querySelectorAll('#pre button').forEach(b=>b.onclick=()=>{d.value=b.dataset.d;g.value=b.dataset.g;calc()});
+  calc();
+};
+
+R.plan=()=>{
+  const two=(D.sizes[0].sp+D.sizes[0].wi+D.sizes[1].sp+D.sizes[1].wi);
+  const dec=M[11],m50=ST.find(s=>s.id===50);
+  const rec=(n,t,p,f,fs)=>`<div class="rec"><div class="n">${n}</div><div><h3>${t}</h3><p>${p}</p></div><div class="fig">${f}<small>${fs}</small></div></div>`;
+  return `<div class="grid g21">
+   <div class="card"><div class="ch"><div><h2>Five actions, in order</h2><div class="cs">Each one is tied to a figure in this dashboard</div></div></div>
+    ${rec(1,'Use vendor volume to negotiate',`The top five vendors are ${pct(TOP5/P,0)} of purchases and Diageo alone is ${pct(D.vendTop[0][1]/P)}. Ask for better terms, and line up a back-up supplier at the same time.`,'+'+money(TOP5*.02),'at 2% off the top five')}
+    ${rec(2,'Find out what is wrong at Store 50',`It is the sixth-largest store by sales, with a ${pct(m50.m)} margin against ${pct(GM)} for the company. Check its stock level and pricing first.`,money(m50.s*(GM-m50.m)),'margin gap in dollars')}
+    ${rec(3,'Copy what the best stores do',`Best store ${money(ST[0].s)}, median ${money(MED)}. Ask managers in Doncaster and Pitmerden what they do differently, then share it with the ${BEHIND.length} stores below the median.`,'+'+money(GAP*.25*GM),'closing 25% of the gap')}
+    ${rec(4,'Protect the two main sizes',`750mL and 1750mL are ${pct(two/S,0)} of sales. Keep them in stock through the summer and holiday peaks, and review any price or cost change on them first.`,money(two),'sales at stake')}
+    ${rec(5,'Check holiday stock timing',`December sold ${units(dec.su)} units and received ${units(dec.rcu)}. Stock still fell, so test whether more arriving by November would prevent stock-outs. This needs stock-out data to size.`,units(dec.rcu-dec.su),'December units, on receipts')}
+   </div>
+   <div>
+    <div class="card" style="margin-bottom:14px"><h2 style="margin-bottom:6px">What I found</h2><ul class="list">
+     <li><b>Sales rise through the year.</b> The second half beat the first by ${pct(H2/H1-1)}, with peaks in July and December.</li>
+     <li><b>Results depend on the date you use.</b> December looks like a ${pct((dec.s-dec.po)/dec.s,0)} margin by order date and ${pct((dec.s-dec.rc)/dec.s,0)} by receipt date.</li>
+     <li><b>Sales are concentrated.</b> The top 10 stores make ${pct(sum(ST.slice(0,10).map(s=>s.s))/S,0)} of sales. Two sizes make ${pct(two/S,0)}.</li>
+    </ul></div>
+    <div class="card"><h2 style="margin-bottom:6px">What this data cannot say</h2><ul class="list">
+     <li><b>Margin is an estimate.</b> It is sales minus purchases for the year, not sales minus the cost of what was sold.</li>
+     <li><b>No prior year.</b> There is only 2016, so the comparisons are within the year.</li>
+     <li><b>No stock-outs or monthly counts.</b> Stock was counted at the start and end of the year only, and lost sales are invisible.</li>
+     <li><b>No reasons.</b> The data shows what happened, so the first step on any store is to talk to its manager.</li>
+    </ul></div>
+   </div>
+  </div>
+  <p class="src">Source: SalesFINAL and PurchasesFINAL 2016 CSVs (${D.rows[0].toLocaleString()} and ${D.rows[1].toLocaleString()} rows). Annual purchases of ${money(P,2)} include ${money(D.dec15,2)} ordered in December 2015. Totals match the Power BI model.</p>`;
+};
+
+/* ---------- shell ---------- */
+const FOOT=`<div class="pagefoot"><div class="l"><img src="docs/logo.png" alt=""/><span><b>JustDrinks LTD</b>. Web version of the analysis, built with HTML, CSS and JavaScript by Bih Brandy Sango</span></div><div><a href="https://github.com/bihbrandysango-cloud/justdrinks-ltd-analysis#report-pages" target="_blank" rel="noopener">See the Power BI report ↗</a><a href="https://github.com/bihbrandysango-cloud/justdrinks-ltd-analysis" target="_blank" rel="noopener">GitHub ↗</a></div></div>`;
+const views=document.getElementById('views'),nav=document.getElementById('nav');
+nav.innerHTML=PAGES.map(p=>`<button type="button" class="nv" data-p="${p.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${ic[p.i]}</svg>${p.n}</button>`).join('');
+views.innerHTML=PAGES.map(p=>`<section class="view" id="v_${p.id}" aria-label="${p.t}"></section>`).join('');
+document.getElementById('pills').innerHTML=`<span class="pill">Sales <b>${money(S)}</b></span><span class="pill">Profit <b>${money(GP)}</b></span><span class="pill">Margin <b>${pct(GM)}</b></span><span class="pill">Stores <b>80</b></span>`;
+function render(){
+  const p=PAGES.find(x=>x.id===state.view);
+  h.textContent=p.t;hs.textContent=p.s;
+  nav.querySelectorAll('.nv').forEach(b=>{const on=b.dataset.p===p.id;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v_'+p.id));
+  const v=document.getElementById('v_'+p.id);v.innerHTML=R[p.id]()+FOOT;
+  v.querySelectorAll('[data-seg]').forEach(s=>s.querySelectorAll('button').forEach(b=>b.onclick=()=>{state[s.dataset.seg]=b.dataset.v;render()}));
+  if(R[p.id].after)R[p.id].after();
 }
-
-/* FILTERED DATA */
-function fMonthly(){
-  let d=D.monthly;
-  if(ST.f.month!=='all')d=d.filter(x=>x.m===ST.f.month);
-  if(ST.vf.month)d=d.filter(x=>x.m===ST.vf.month);
-  const cs=ST.f.cat==='all'?1:(ST.f.cat==='Wine'?.3581:.6419);
-  const vs=ST.vf.cat?(ST.vf.cat==='Wine'?.3581:.6419):1;
-  const sc=cs*vs;
-  return d.map(x=>({...x,rev:x.rev*sc,gp:x.gp*sc,purch:x.purch*sc}));
-}
-function fStores(){
-  let d=D.stores;
-  if(ST.f.store!=='all')d=d.filter(x=>String(x.id)===ST.f.store);
-  if(ST.vf.store)d=d.filter(x=>String(x.id)===String(ST.vf.store));
-  const cs=ST.f.cat==='all'?1:(ST.f.cat==='Wine'?.3581:.6419);
-  return d.map(x=>({...x,rev:x.rev*cs,gp:x.gp*cs}));
-}
-function fProds(){
-  let d=D.products;
-  if(ST.f.cat!=='all')d=d.filter(x=>x.c===ST.f.cat);
-  if(ST.vf.cat)d=d.filter(x=>x.c===ST.vf.cat);
-  return d;
-}
-
-/* CHART HELPERS */
-const isDk=()=>ST.theme==='dark';
-const txC=()=>isDk()?'#8B949E':'#475569';
-const gdC=()=>isDk()?'#30363D':'#E2E8F0';
-const sfC=()=>isDk()?'#161B22':'#FFFFFF';
-const BASE={responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{display:false},tooltip:{backgroundColor:isDk()?'#1C2128':'#0F172A',
-    titleColor:'#fff',bodyColor:'rgba(255,255,255,.8)',padding:9,cornerRadius:7,
-    displayColors:true,boxWidth:9,boxHeight:9,boxPadding:3}},
-  animation:{duration:380,easing:'easeInOutQuart'}};
-function dch(id){if(ST.charts[id]){ST.charts[id].destroy();delete ST.charts[id]}}
-
-/* RENDER ALL */
-function renderAll(){
-  updateKPIs();rTrend();rDonut();rStores();rMargin();rCombo();rScatter();rProds();rTxTb();
-}
-
-function updateKPIs(){
-  const m=fMonthly();const utx=getTx();
-  const aRev=utx.reduce((s,t)=>s+t.revenue,0);
-  const aQty=utx.reduce((s,t)=>s+t.qty,0);
-  const tRev=m.reduce((s,x)=>s+x.rev,0)||452062952;
-  const tGp=m.reduce((s,x)=>s+x.gp,0)||130162186;
-  const tPurch=m.reduce((s,x)=>s+x.purch,0)||321900766;
-  const ps=fProds();const tQty=(ps.reduce((s,x)=>s+x.qty,0)||32917876)+aQty;
-  const ts=fStores().length||80;
-  document.getElementById('k-rev').textContent=fM(tRev+aRev);
-  document.getElementById('k-gp').textContent=fM(tGp);
-  document.getElementById('k-stores').textContent=ts;
-  document.getElementById('k-purch').textContent=fM(tPurch);
-  document.getElementById('k-qty').textContent=fM(tQty,false);
-  document.getElementById('k-shelf').textContent='7.7';
-}
-
-function rTrend(){
-  dch('trend');const d=fMonthly();
-  const ctx=document.getElementById('c-trend').getContext('2d');
-  ST.charts.trend=new Chart(ctx,{type:'bar',
-    data:{labels:d.map(x=>x.m),datasets:[
-      {label:'Revenue',data:d.map(x=>x.rev),backgroundColor:'rgba(30,39,97,.72)',borderColor:'#1E2761',borderWidth:2,borderRadius:4,borderSkipped:false},
-      {label:'Gross Profit',data:d.map(x=>x.gp),backgroundColor:'rgba(5,150,105,.58)',borderColor:'#059669',borderWidth:2,borderRadius:4,borderSkipped:false}
-    ]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{display:true,labels:{color:txC(),font:{family:"'Sora',sans-serif",size:10}}}},
-      scales:{x:{grid:{display:false},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:9}}},
-        y:{grid:{color:gdC()},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:9},callback:v=>fM(v)}}},
-      onClick:(e,els)=>{if(els.length){ST.vf.month=d[els[0].index].m;updateChips();renderAll()}}}
-  });
-}
-
-function rDonut(){
-  dch('donut');
-  const m=fMonthly();const tot=m.reduce((s,x)=>s+x.rev,0)||452062952;
-  const catF=ST.f.cat!=='all'||ST.vf.cat;
-  const actCat=ST.f.cat!=='all'?ST.f.cat:(ST.vf.cat||null);
-  const wRev=actCat==='Spirits'?0:tot*.3581;
-  const spRev=actCat==='Wine'?0:tot*.6419;
-  const ctx=document.getElementById('c-donut').getContext('2d');
-  ST.charts.donut=new Chart(ctx,{type:'doughnut',
-    data:{labels:['Wine','Spirits'],datasets:[{data:[wRev,spRev],
-      backgroundColor:['rgba(123,45,38,.85)','rgba(91,140,126,.85)'],
-      borderColor:[sfC(),sfC()],borderWidth:3,hoverOffset:5}]},
-    options:{...BASE,cutout:'60%',
-      plugins:{...BASE.plugins,legend:{display:false},
-        tooltip:{...BASE.plugins.tooltip,callbacks:{label:c=>`${c.label}: ${fM(c.raw)} (${(c.raw/(wRev+spRev)*100).toFixed(1)}%)`}}},
-      onClick:(e,els)=>{if(els.length){const cat=els[0].index===0?'Wine':'Spirits';
-        ST.vf.cat=ST.vf.cat===cat?null:cat;updateChips();renderAll();}}}
-  });
-  const leg=document.getElementById('donut-leg');
-  leg.innerHTML=`<span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:50%;background:#7B2D26;display:inline-block"></span>Wine ${fM(wRev)}</span>
-    <span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:50%;background:#5B8C7E;display:inline-block"></span>Spirits ${fM(spRev)}</span>`;
-}
-
-function rStores(){
-  dch('stores');const d=fStores().slice(0,10);
-  const ctx=document.getElementById('c-stores').getContext('2d');
-  ST.charts.stores=new Chart(ctx,{type:'bar',
-    data:{labels:d.map(x=>`S${x.id}·${x.city.slice(0,6)}`),
-      datasets:[{label:'Revenue',data:d.map(x=>x.rev),
-        backgroundColor:d.map(x=>ST.vf.store===String(x.id)?'#F2A65A':'rgba(30,39,97,.72)'),
-        borderColor:'#1E2761',borderWidth:1,borderRadius:4,borderSkipped:false}]},
-    options:{...BASE,indexAxis:'y',
-      scales:{x:{grid:{color:gdC()},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8},callback:v=>fM(v)}},
-        y:{grid:{display:false},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8}}}},
-      onClick:(e,els)=>{if(els.length){const sid=String(d[els[0].index].id);
-        ST.vf.store=ST.vf.store===sid?null:sid;updateChips();renderAll();}}}
-  });
-}
-
-function rMargin(){
-  dch('margin');
-  const actCat=ST.f.cat!=='all'?ST.f.cat:(ST.vf.cat||null);
-  let labels,vals,colors;
-  if(actCat==='Wine'){labels=['Wine'];vals=[35.8];colors=['rgba(123,45,38,.8)']}
-  else if(actCat==='Spirits'){labels=['Spirits'];vals=[28.2];colors=['rgba(91,140,126,.8)']}
-  else{labels=['Wine','Spirits','Overall'];vals=[35.8,28.2,28.8];
-    colors=['rgba(123,45,38,.8)','rgba(91,140,126,.8)','rgba(30,39,97,.8)']}
-  const ctx=document.getElementById('c-margin').getContext('2d');
-  ST.charts.margin=new Chart(ctx,{type:'bar',
-    data:{labels,datasets:[{label:'GP Margin %',data:vals,backgroundColor:colors,
-      borderColor:colors.map(c=>c.replace('.8','1')),borderWidth:2,borderRadius:6,borderSkipped:false}]},
-    options:{...BASE,scales:{
-      x:{grid:{display:false},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:10}}},
-      y:{grid:{color:gdC()},max:50,ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:9},callback:v=>v+'%'}}},
-      plugins:{...BASE.plugins,legend:{display:false},
-        tooltip:{...BASE.plugins.tooltip,callbacks:{label:c=>`GP Margin: ${c.raw.toFixed(1)}%`}}}}
-  });
-}
-
-function rCombo(){
-  dch('combo');const d=fMonthly();
-  const ctx=document.getElementById('c-combo').getContext('2d');
-  ST.charts.combo=new Chart(ctx,{type:'bar',
-    data:{labels:d.map(x=>x.m.replace(' 2016','')),datasets:[
-      {label:'Purchases',type:'bar',data:d.map(x=>x.purch),backgroundColor:'rgba(202,220,252,.6)',borderColor:'#CADCFC',borderWidth:1,borderRadius:3},
-      {label:'Revenue',type:'line',data:d.map(x=>x.rev),borderColor:'#1E2761',backgroundColor:'transparent',borderWidth:2.5,pointBackgroundColor:'#1E2761',pointRadius:3,tension:.35}
-    ]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{display:true,labels:{color:txC(),font:{family:"'Sora',sans-serif",size:10}}}},
-      scales:{x:{grid:{display:false},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8}}},
-        y:{grid:{color:gdC()},ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8},callback:v=>fM(v)}}}}
-  });
-}
-
-function rScatter(){
-  dch('scatter');const d=fStores();
-  const ctx=document.getElementById('c-scatter').getContext('2d');
-  ST.charts.scatter=new Chart(ctx,{type:'scatter',
-    data:{datasets:[{label:'Store',
-      data:d.map(x=>({x:x.rev/1e6,y:(x.gp/x.rev)*100,label:`S${x.id}·${x.city}`})),
-      backgroundColor:d.map(x=>ST.vf.store===String(x.id)?'rgba(242,166,90,.8)':'rgba(30,39,97,.5)'),
-      borderColor:d.map(x=>ST.vf.store===String(x.id)?'#F2A65A':'#1E2761'),
-      borderWidth:1.5,pointRadius:d.map(x=>Math.max(4,Math.sqrt(x.rev/8e5))),
-      pointHoverRadius:d.map(x=>Math.max(6,Math.sqrt(x.rev/8e5))+2)}]},
-    options:{...BASE,plugins:{...BASE.plugins,legend:{display:false},
-      tooltip:{...BASE.plugins.tooltip,callbacks:{label:c=>`${c.raw.label}: $${c.raw.x.toFixed(1)}M · ${c.raw.y.toFixed(1)}% GP`}}},
-      scales:{x:{grid:{color:gdC()},title:{display:true,text:'Revenue ($M)',color:txC(),font:{family:"'Sora',sans-serif",size:9}},
-        ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8},callback:v=>`$${v}M`}},
-        y:{grid:{color:gdC()},title:{display:true,text:'GP Margin %',color:txC(),font:{family:"'Sora',sans-serif",size:9}},
-          ticks:{color:txC(),font:{family:"'Sora',sans-serif",size:8},callback:v=>v+'%'}}},
-      onClick:(e,els)=>{if(els.length){const sid=String(d[els[0].index].id);
-        ST.vf.store=ST.vf.store===sid?null:sid;updateChips();renderAll();}}}
-  });
-}
-
-function rProds(){
-  const d=fProds();const mx=Math.max(...d.map(x=>x.rev));
-  document.getElementById('prod-tb').innerHTML=d.map((x,i)=>`
-    <tr>
-      <td style="color:var(--tx3);font-size:.73rem">${i+1}</td>
-      <td style="font-weight:600;max-width:180px">${x.n}</td>
-      <td><span class="badge ${x.c==='Wine'?'bw':'bs'}">${x.c}</span></td>
-      <td class="mono">${fM(x.rev)}</td>
-      <td><span class="badge ${x.gpm>=.3?'bg_':x.gpm>=.25?'bwa':'bb'}">${(x.gpm*100).toFixed(1)}%</span></td>
-      <td class="mono">${x.qty.toLocaleString()}</td>
-      <td style="min-width:80px"><div class="pb"><div class="pbf" style="width:${(x.rev/mx*100).toFixed(0)}%"></div></div></td>
-    </tr>`).join('');
-  document.getElementById('prod-ct').textContent=`${d.length} products`;
-}
-
-function rTxTb(){
-  const utx=getTx().slice(-5).reverse();
-  const prods=fProds();const months=fMonthly().slice(-3);
-  const rows=[];
-  months.forEach(m=>{
-    const cnt=Math.min(6,Math.floor(m.rev/5e6));
-    for(let i=0;i<cnt;i++){
-      const p=prods[Math.floor(Math.random()*prods.length)]||D.products[0];
-      const st=D.stores[Math.floor(Math.random()*D.stores.length)];
-      const q=Math.floor(Math.random()*40)+1;const pr=p.rev/p.qty||12;
-      rows.push({date:m.m,prod:p.n,cat:p.c,store:st.id,qty:q,price:pr,rev:q*pr});
-    }
-  });
-  const allRows=[...utx.map(t=>({date:t.date,prod:t.product,cat:t.category,store:t.store,qty:t.qty,price:t.price,rev:t.revenue,isNew:true})),...rows.slice(0,12)];
-  document.getElementById('tx-tb').innerHTML=allRows.map(r=>`
-    <tr style="${r.isNew?'background:rgba(5,150,105,.05)':''}">
-      <td>${r.date}${r.isNew?' <span class="badge bnew" style="font-size:.64rem">NEW</span>':''}</td>
-      <td style="font-weight:${r.isNew?600:400};max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.prod}</td>
-      <td><span class="badge ${r.cat==='Wine'?'bw':'bs'}">${r.cat}</span></td>
-      <td>S${r.store}</td>
-      <td class="mono">${r.qty}</td>
-      <td class="mono">$${(r.price||0).toFixed(2)}</td>
-      <td class="mono" style="font-weight:600">${fM(r.rev)}</td>
-    </tr>`).join('');
-  document.getElementById('tx-ct').textContent=`Latest ${allRows.length}`;
-}
-
-/* ADD TX */
-function addTx(){
-  const date=document.getElementById('tx-date').value;
-  const store=document.getElementById('tx-store').value;
-  const prod=document.getElementById('tx-prod').value.trim();
-  const cat=document.getElementById('tx-cat').value;
-  const qty=parseInt(document.getElementById('tx-qty').value)||0;
-  const price=parseFloat(document.getElementById('tx-price').value)||0;
-  const cost=parseFloat(document.getElementById('tx-cost').value)||0;
-  const city=document.getElementById('tx-city').value.trim();
-  if(!date||!prod||!qty||!price){showT('⚠️ Fill in Date, Product, Qty and Price');return}
-  const tx={id:Date.now(),date,store:store||'—',product:prod,category:cat,qty,price,cost,city,
-    revenue:qty*price,gp:qty*(price-cost),createdAt:new Date().toISOString()};
-  saveTx([...getTx(),tx]);
-  clearTxForm();renderNewTb();updateMini();
-  if(ST.page==='dash')renderAll();
-  showT(`✅ Added ${prod} · ${fM(tx.revenue)}`);
-}
-
-function clearTxForm(){
-  ['tx-prod','tx-qty','tx-price','tx-cost','tx-city'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('tx-date').value=new Date().toISOString().split('T')[0];
-}
-
-function add10(){
-  const all=[];
-  for(let i=0;i<10;i++){
-    const p=D.products[Math.floor(Math.random()*D.products.length)];
-    const st=D.stores[Math.floor(Math.random()*D.stores.length)];
-    const q=Math.floor(Math.random()*35)+1;
-    const pr=+(p.rev/p.qty*(.92+Math.random()*.16)).toFixed(2);
-    const co=+(pr*(1-p.gpm)).toFixed(2);
-    const d=new Date();d.setDate(d.getDate()-Math.floor(Math.random()*20));
-    all.push({id:Date.now()+i,date:d.toISOString().split('T')[0],store:st.id,product:p.n,
-      category:p.c,qty:q,price:pr,cost:co,city:st.city,revenue:q*pr,gp:q*(pr-co),createdAt:new Date().toISOString()});
-  }
-  saveTx([...getTx(),...all]);renderNewTb();updateMini();
-  if(ST.page==='dash')renderAll();
-  showT('⚡ Added 10 random transactions');
-}
-
-function reset60(){
-  if(!confirm('Replace all transactions with 60 days of demo data?'))return;
-  const tx=[];const today=new Date();
-  for(let day=0;day<60;day++){
-    const d=new Date(today);d.setDate(today.getDate()-day);
-    const ds=d.toISOString().split('T')[0];
-    const cnt=Math.floor(Math.random()*4)+1;
-    for(let i=0;i<cnt;i++){
-      const p=D.products[Math.floor(Math.random()*D.products.length)];
-      const st=D.stores[Math.floor(Math.random()*D.stores.length)];
-      const q=Math.floor(Math.random()*25)+1;
-      const pr=+(p.rev/p.qty).toFixed(2);const co=+(pr*(1-p.gpm)).toFixed(2);
-      tx.push({id:Date.now()+day*100+i,date:ds,store:st.id,product:p.n,category:p.c,
-        qty:q,price:pr,cost:co,city:st.city,revenue:q*pr,gp:q*(pr-co),createdAt:new Date().toISOString()});
-    }
-  }
-  saveTx(tx);renderNewTb();updateMini();
-  if(ST.page==='dash')renderAll();
-  showT(`🔄 Loaded ${tx.length} demo transactions (60 days)`);
-}
-
-function clearTx(){
-  if(!confirm('Clear all added transactions?'))return;
-  saveTx([]);renderNewTb();updateMini();
-  if(ST.page==='dash')renderAll();
-  showT('🗑 Cleared');
-}
-
-function renderNewTb(){
-  const all=getTx().slice(-20).reverse();
-  const tb=document.getElementById('new-tb');
-  if(!all.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--tx3)">No transactions yet</td></tr>';return}
-  tb.innerHTML=all.map(t=>`<tr>
-    <td>${t.date}</td>
-    <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500" title="${t.product}">${t.product}</td>
-    <td><span class="badge ${t.category==='Wine'?'bw':'bs'}">${t.category.slice(0,2)}</span></td>
-    <td class="mono">${t.qty}</td>
-    <td class="mono">${fM(t.revenue)}</td>
-  </tr>`).join('');
-}
-
-function updateMini(){
-  const all=getTx();const today=new Date().toISOString().split('T')[0];
-  document.getElementById('m-ct').textContent=all.length;
-  document.getElementById('m-today').textContent=all.filter(t=>t.date===today).length;
-  document.getElementById('m-rev').textContent=fM(all.reduce((s,t)=>s+t.revenue,0));
-}
-
-/* SETTINGS */
-function calcLS(){
-  let tot=0;try{Object.keys(localStorage).forEach(k=>{tot+=localStorage.getItem(k).length})}catch{}
-  document.getElementById('ls-usage').textContent=`${(tot*2/1024).toFixed(1)} KB used`;
-}
-function updateTxCountS(){document.getElementById('tx-count-s').textContent=`${getTx().length} transactions stored`}
-function resetSettings(){
-  document.documentElement.removeAttribute('style');
-  document.querySelectorAll('.sw-dot').forEach(s=>s.classList.remove('on'));
-  document.querySelector('[data-c="#1E2761"]')?.classList.add('on');
-  ST.settings.accent='#1E2761';
-  LS.set('jd_settings',{theme:ST.theme,accent:'#1E2761'});
-  showT('⚙️ Settings reset');
-}
-function refreshTime(){document.getElementById('lr-time').textContent=new Date().toLocaleString();showT('✅ Refreshed')}
-function exportCSV(){
-  const all=getTx();
-  if(!all.length){showT('No transactions to export');return}
-  const hdr=['Date','Product','Category','Store','City','Qty','Price','Revenue','GP'];
-  const rows=all.map(t=>[t.date,`"${t.product}"`,t.category,t.store,t.city,t.qty,t.price.toFixed(2),t.revenue.toFixed(2),t.gp.toFixed(2)]);
-  const csv=[hdr,...rows].map(r=>r.join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='JustDrinks_Transactions.csv';a.click();
-  showT('⬇ Exported as CSV');
-}
-
-/* UTILS */
-function fM(v,dollar=true){
-  if(!v&&v!==0)return dollar?'$0':'0';
-  const abs=Math.abs(v);const s=dollar?'$':'';const neg=v<0?'-':'';
-  if(abs>=1e9)return `${neg}${s}${(abs/1e9).toFixed(1)}B`;
-  if(abs>=1e6)return `${neg}${s}${(abs/1e6).toFixed(1)}M`;
-  if(abs>=1e3)return `${neg}${s}${(abs/1e3).toFixed(1)}K`;
-  return `${neg}${s}${abs.toFixed(0)}`;
-}
-
-let _toastTimer;
-function showT(msg){
-  const t=document.getElementById('toast');t.textContent=msg;
-  t.classList.add('on');clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(()=>t.classList.remove('on'),3000);
-}
-
-/* INIT */
-function init(){
-  // load settings
-  const saved=LS.get('jd_settings',{});
-  if(saved.theme){ST.theme=saved.theme;document.documentElement.setAttribute('data-theme',ST.theme);
-    document.getElementById('t-ico').textContent=ST.theme==='light'?'🌙':'☀️';
-    document.getElementById('t-lbl').textContent=ST.theme==='light'?'Dark Mode':'Light Mode';
-    if(ST.theme==='dark')document.getElementById('dark-sw').classList.add('on');}
-  if(saved.accent){ST.settings.accent=saved.accent;
-    document.documentElement.style.setProperty('--navy',saved.accent);
-    document.querySelectorAll('.sw-dot').forEach(s=>s.classList.toggle('on',s.dataset.c===saved.accent));}
-
-  // populate store dropdowns
-  D.stores.forEach(st=>{
-    ['f-store','tx-store'].forEach(id=>{
-      const opt=document.createElement('option');
-      opt.value=st.id;opt.textContent=`Store ${st.id} · ${st.city}`;
-      if(id==='f-store'&&st===D.stores[0])opt.text='All Stores';
-      document.getElementById(id).appendChild(opt);
-    });
-  });
-  document.getElementById('f-store').insertAdjacentHTML('afterbegin','<option value="all">All Stores</option>');
-
-  // product datalist
-  const dl=document.getElementById('prod-dl');
-  D.PRODS.forEach(p=>{const o=document.createElement('option');o.value=p;dl.appendChild(o)});
-
-  // tx date default
-  document.getElementById('tx-date').value=new Date().toISOString().split('T')[0];
-
-  // last refresh
-  document.getElementById('lr-time').textContent=new Date().toLocaleString();
-
-  // charts
-  Chart.defaults.font.family="'Sora', sans-serif";
-  setTimeout(renderAll,100);
-
-  window.addEventListener('resize',()=>{if(ST.page==='dash')setTimeout(renderAll,100)});
-}
-
-window.addEventListener('DOMContentLoaded',init);
+nav.onclick=e=>{const b=e.target.closest('.nv');if(!b)return;state.view=b.dataset.p;history.replaceState(null,'','#'+state.view);render();window.scrollTo(0,0)};
+const start=location.hash.slice(1);if(PAGES.some(p=>p.id===start))state.view=start;
+/* tooltip */
+const tip=document.getElementById('tip');
+document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(!t){tip.style.opacity=0;return}
+  tip.innerHTML=t.getAttribute('data-tip');tip.style.opacity=1;const r=tip.getBoundingClientRect();
+  tip.style.left=Math.min(e.clientX+14,innerWidth-r.width-8)+'px';tip.style.top=Math.max(e.clientY-r.height-12,8)+'px'});
+/* theme */
+const themeBtn=document.getElementById('theme');
+function setTheme(t){document.documentElement.dataset.theme=t;themeBtn.textContent=t==='dark'?'☀ Light mode':'☾ Dark mode'}
+let saved=null;try{saved=localStorage.getItem('jd-theme')}catch(e){}
+setTheme(saved||'light');
+themeBtn.onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';setTheme(t);try{localStorage.setItem('jd-theme',t)}catch(e){}render()};
+let rt;let lastW=innerWidth;addEventListener('resize',()=>{if(innerWidth===lastW)return;lastW=innerWidth;clearTimeout(rt);rt=setTimeout(render,120)});
+render();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>render());
 </script>
 </body>
 </html>
