@@ -45,7 +45,7 @@ The leadership team asked for due diligence on sales, purchases and inventory fo
 The work covers the full BI cycle:
 
 1. **Modelling** six source files into a star schema with a date table, a store dimension and five fact tables
-2. **Measuring** sales, purchases, inventory, margin and vendor ranking in 54 DAX measures
+2. **Measuring** sales, purchases, inventory, margin and vendor ranking in 70 DAX measures
 3. **Visualising** the results in a 13-page report with a navigation rail, plus a separate web dashboard
 4. **Presenting** the findings in an 11-slide deck, a strategic brief and a speech
 
@@ -160,7 +160,7 @@ justdrinks-ltd-analysis/
 │
 └── powerbi/
     ├── JustDrinks LTD.pbip                   Open this in Power BI Desktop
-    ├── JustDrinks LTD.Report/                12 pages and visuals as readable JSON
+    ├── JustDrinks LTD.Report/                13 pages and visuals as readable JSON
     └── JustDrinks LTD.SemanticModel/         Tables, relationships and 54 measures as TMDL
 ```
 
